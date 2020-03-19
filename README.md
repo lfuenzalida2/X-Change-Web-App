@@ -4,7 +4,7 @@
 
 * Sebastián Torés - satores@uc.cl
 * Mathias Valdebenito - mlvaldebenito@uc.cl
-* ?
+* Lukas Fuenzalida - lfuenzalida2@uc.cl
 
 ## Some good practices
 
