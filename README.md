@@ -1,5 +1,11 @@
 # Not Apple
 
+## Members
+
+* Sebastián Torés - satores@uc.cl
+* Mathias Valdebenito - mlvaldebenito@uc.cl
+* ?
+
 ## Some good practices
 
 ### Commit naming convention
@@ -12,13 +18,13 @@ This repository uses [_GitFlow_](https://www.atlassian.com/git/tutorials/compari
 
 ### Pull requests
 
-Pull request should have meaning titles such as "Add home site to app". Descriptions should start with "This branch will" (and be followed by verbs such as "add", "create", "migrate" or any other).
+Pull request should have meaningful titles such as "Add home site to app". Descriptions should start with "This branch will" (and be followed by verbs such as "add", "create", "migrate" or any other).
 
 For merging branches, always use _Squash and merge_, with the exception of `develop` to `master`, where _Merge_ will be used.
 
-### Branch naming contract
+### Branch naming syntax
 
-All branches in repository must follow the following contract:
+All branches in this repository must follow the following syntax:
 
 ```text
 branch-type/name-of-branch
@@ -28,7 +34,7 @@ Where **branch-type** indicates what is the purpose of the branch. The possible 
 
 | **`branch-type`** | **description**                                                                                                                                |
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| feature           | Add a new feature to the main code. Features are client-oriented, meaning no features of code are included here.                               |
+| feature           | Add a new feature to the main code. Features are client-oriented, this means, no features of code should be included here.                               |
 | bugfix            | Fix a non-critical part of the code.                                                                                                           |
 | improvement       | Improve an already implemented feature. Improvements are also client-oriented.                                                                 |
 | library           | Packages and packages versioning oriented. Fixes of code for updating dependencies should be included here.                                    |
