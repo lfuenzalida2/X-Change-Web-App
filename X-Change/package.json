@@ -4,10 +4,14 @@
   "main": "index.js",
   "license": "MIT",
   "homepage": "https://github.com/IIC2513-2020-1/grupo-notapple.git",
-  "contributors": [{"name": "Lukas Fuenzalida",
-                    "email": "lfuenzalida2@uc.cl"},
-                    "Mathias Valdebenito",
-                    "Sebastián Torés"],
+  "contributors": [
+    {
+      "name": "Lukas Fuenzalida",
+      "email": "lfuenzalida2@uc.cl"
+    },
+    "Mathias Valdebenito",
+    "Sebastián Torés"
+  ],
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
@@ -57,6 +61,7 @@
     "nodemailer": "^6.4.6",
     "pg": "^7.18.2",
     "pg-hstore": "^2.3.3",
+    "postgres": "^1.0.2",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-dom": "^16.13.0",
