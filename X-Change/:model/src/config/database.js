@@ -1,7 +1,3 @@
-// requires enviroment variables
-// https://stackabuse.com/managing-environment-variables-in-node-js-with-dotenv/
-require('dotenv').config();
-
 const config = {
   default: {
     username: process.env.DB_USERNAME,
