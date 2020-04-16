@@ -1,6 +1,6 @@
 // requires enviroment variables
 // https://stackabuse.com/managing-environment-variables-in-node-js-with-dotenv/
-require('dotenv').config()
+require('dotenv').config();
 
 const config = {
   default: {
@@ -12,7 +12,7 @@ const config = {
   },
   development: {
     extend: 'default',
-    database: process.env.DB_NAME || 'iic2513template_dev',
+    database: process.env.DB_NAME,
   },
   test: {
     extend: 'default',
