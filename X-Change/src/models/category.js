@@ -3,8 +3,10 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
   }, {});
 
-  category.associate = function associate() {
-    // associations can be defined here. This method receives a models parameter.
+  category.associate = function associate(models) {
+    category.hasMany(models.object, {
+      foreignKey: 'categoryId',
+    });
   };
 
   return category;
