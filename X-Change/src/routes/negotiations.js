@@ -19,10 +19,13 @@ router.get('negotiations.list', '/', async (ctx) => {
 
 router.get('negotiations.show', '/:id', loadNegotiation, async (ctx) => {
   const { negotiation } = ctx.state;
+  const messagesList = await ctx.orm.message.findAll({ where: { negotiation: negotiation.id } });
   await ctx.render('negotiations/show', {
     negotiation,
     editNegotiationPath: ctx.router.url('negotiations.update', { id: negotiation.id }),
     deleteNegotiationPath: ctx.router.url('negotiations.delete', { id: negotiation.id }),
+    messagesList,
+    newMessagePath: ctx.router.url('messages.create'),
   });
 });
 

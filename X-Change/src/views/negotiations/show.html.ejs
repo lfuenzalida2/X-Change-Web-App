@@ -16,3 +16,16 @@
   <input type="hidden" name="_method" value="delete" />
   <input type="submit" value="Delete" />
 </form>
+
+<h3>Chat</h3>
+<% messagesList.forEach((message) => { %> %>
+  <%= message.sender %> says <%= message.text %> at <%= message.createdAt %>
+<% }) %>
+
+<form action="<%= newMessagePath  %>" method="POST">
+  <input type="hidden" name="sender" value=<%= negotiation.customer %> />
+  <input type="hidden" name="receiver" value=<%= negotiation.seller %> />
+  <input type="hidden" name="negotiation" value=<%= negotiation.id %> />
+  <textarea type="text" name="text" placeholder="Write a message..."></textarea>
+  <input type="submit" value="Send Message" />
+</form>
