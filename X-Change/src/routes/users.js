@@ -2,8 +2,14 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
+function MyError(name, message) {
+  this.name = name;
+  this.errors = [{ message }];
+  this.stack = (new Error()).stack;
+}
+
 router.get('users.list', '/', async (ctx) => {
-  const usersList = await ctx.orm.User.findAll();
+  const usersList = await ctx.orm.user.findAll();
   await ctx.render('users/index', {
     usersList,
     newUserPath: ctx.router.url('users.new'),
@@ -13,7 +19,7 @@ router.get('users.list', '/', async (ctx) => {
 });
 
 router.get('users.new', '/new', async (ctx) => {
-  const newUser = await ctx.orm.User.build();
+  const newUser = await ctx.orm.user.build();
   await ctx.render('users/new', {
     newUser,
     submitVariable: ctx.router.url('users.create'),
@@ -22,8 +28,14 @@ router.get('users.new', '/new', async (ctx) => {
 });
 
 router.post('users.create', '/', async (ctx) => {
-  const newUser = ctx.orm.User.build(ctx.request.body);
+  const newUser = ctx.orm.user.build(ctx.request.body);
+  const values = ctx.request.body;
   try {
+    if (values.password !== values.confirm_password) {
+      throw new MyError('PasswordError', "The passwords doesn't match, please try again");
+    } else if (values.mail !== values.mail_confirm) {
+      throw new MyError('MailError', "The emails doesn't match, please try again");
+    }
     await newUser.save({ fields: ['username', 'password', 'mail', 'number', 'region', 'profile_picture'] });
     ctx.redirect(ctx.router.url('users.list'));
   } catch (validationError) {
@@ -37,7 +49,7 @@ router.post('users.create', '/', async (ctx) => {
 });
 
 router.get('users.edit', '/:id/edit', async (ctx) => {
-  const newUser = await ctx.orm.User.findByPk(ctx.params.id);
+  const newUser = await ctx.orm.user.findByPk(ctx.params.id);
   await ctx.render('users/edit', {
     newUser,
     home: ctx.router.url('users.list'),
@@ -47,7 +59,7 @@ router.get('users.edit', '/:id/edit', async (ctx) => {
 
 
 router.patch('users.update', '/:id', async (ctx) => {
-  const newUser = await ctx.orm.User.findByPk(ctx.params.id);
+  const newUser = await ctx.orm.user.findByPk(ctx.params.id);
   try {
     const { username, password, mail, number, region, profile_picture } = ctx.request.body;
     await newUser.update({ username, password, mail, number, region, profile_picture });
@@ -63,7 +75,7 @@ router.patch('users.update', '/:id', async (ctx) => {
 });
 
 router.del('users.delete', '/:id', async (ctx) => {
-  const newUser = await ctx.orm.User.findByPk(ctx.params.id);
+  const newUser = await ctx.orm.user.findByPk(ctx.params.id);
   await newUser.destroy();
   ctx.redirect(ctx.router.url('users.list'));
 });

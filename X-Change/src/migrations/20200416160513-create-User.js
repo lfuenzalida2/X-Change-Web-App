@@ -1,5 +1,5 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Users', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('users', {
     id_user: {
       allowNull: false,
       autoIncrement: true,
@@ -26,7 +26,6 @@ module.exports = {
     profile_picture: {
       type: Sequelize.STRING,
     },
-
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,
