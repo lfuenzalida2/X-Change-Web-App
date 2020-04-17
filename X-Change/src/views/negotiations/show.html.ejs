@@ -3,29 +3,30 @@
   <form action="<%= editNegotiationPath %>" method="POST">
     <input type="hidden" name="_method" value="patch" />
     <input type="hidden" name="state" value="Accepted" />
-    <input type="submit" value="Accept Offer" />
+    <input type="submit" value="Aceptar Oferta" />
   </form>
   <form action="<%= editNegotiationPath %>" method="POST">
     <input type="hidden" name="_method" value="patch" />
     <input type="hidden" name="state" value="Cancelled" />
-    <input type="submit" value="Cancel Negotiation" />
+    <input type="submit" value="Cancelar Negociación" />
   </form>
 <% } %>
 
 <form action="<%= deleteNegotiationPath %>" method="POST">
   <input type="hidden" name="_method" value="delete" />
-  <input type="submit" value="Delete" />
+  <input type="submit" value="Eliminar" />
 </form>
-
-<h3>Chat</h3>
-<% messagesList.forEach((message) => { %> %>
-  <%= message.sender %> says <%= message.text %> at <%= message.createdAt %>
-<% }) %>
-
-<form action="<%= newMessagePath  %>" method="POST">
-  <input type="hidden" name="sender" value=<%= negotiation.customer %> />
-  <input type="hidden" name="receiver" value=<%= negotiation.seller %> />
-  <input type="hidden" name="negotiation" value=<%= negotiation.id %> />
-  <textarea type="text" name="text" placeholder="Write a message..."></textarea>
-  <input type="submit" value="Send Message" />
-</form>
+<div id=chat>
+  <h3>Chat con <%= negotiation.customer %></h3>
+  <% messagesList.forEach((message) => { %> %>
+    <%= message.sender %>: <%= message.text %>
+    <%= message.createdAt.toLocaleString("es-CL") %>
+  <% }) %>
+  <form action="<%= newMessagePath  %>" method="POST">
+    <input type="hidden" name="sender" value=<%= negotiation.customer %> />
+    <input type="hidden" name="receiver" value=<%= negotiation.seller %> />
+    <input type="hidden" name="negotiation" value=<%= negotiation.id %> />
+    <textarea type="text" name="text" placeholder="Escribe un mensaje..."></textarea>
+    <input type="submit" value="Enviar" />
+  </form>
+<div>

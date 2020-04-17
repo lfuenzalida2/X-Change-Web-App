@@ -9,7 +9,7 @@ async function loadNegotiation(ctx, next) {
 
 router.get('negotiations.list', '/', async (ctx) => {
   const negotiationsList = await ctx.orm.negotiation.findAll(); // Then find by logged user id
-  await ctx.render('negotiations/my-negotiations', {
+  await ctx.render('negotiations/index', {
     negotiationsList,
     createURL: ctx.router.url('negotiations.create'),
     showNegotiationPath: (negotiation) => ctx.router.url('negotiations.show', { id: negotiation.id }),
@@ -49,7 +49,7 @@ router.patch('negotiations.update', '/:id', loadNegotiation, async (ctx) => {
     await negotiation.update({ customer, seller, state });
     ctx.redirect(ctx.router.url('negotiations.list'));
   } catch (validationError) {
-    await ctx.render('negotiations/my-negotiations', {
+    await ctx.render('negotiations/index', {
       errors: validationError.errors, // Not displaying errors
     });
   }
