@@ -31,7 +31,7 @@ router.post('categories.create', '/', async (ctx) => {
     await category.save({ fields: ['name'] });
     ctx.redirect(ctx.router.url('categories.list'));
   } catch (validationError) {
-    await ctx.render('categories.new', {
+    await ctx.render('categories/new', {
       category,
       errors: validationError.errors,
       submitCategoryPath: ctx.router.url('categories.create'),
