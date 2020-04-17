@@ -34,6 +34,7 @@ router.post('objects.create', '/', async (ctx) => {
   } catch (validationError) {
     await ctx.render('objects/new', {
       object,
+      home: ctx.router.url('objects.list'),
       errors: validationError.errors,
       submitObjectPath: ctx.router.url('objects.create'),
     });
