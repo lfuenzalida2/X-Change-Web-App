@@ -1,8 +1,17 @@
 module.exports = (sequelize, DataTypes) => {
   const negotiation = sequelize.define('negotiation', {
-    customer: DataTypes.INTEGER,
-    seller: DataTypes.INTEGER,
-    state: DataTypes.STRING,
+    customer: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    seller: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    state: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   }, {});
 
   negotiation.associate = function associate() {
