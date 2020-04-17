@@ -22,6 +22,7 @@ router.get('objects.new', '/new', async (ctx) => {
   await ctx.render('objects/new', {
     object,
     submitObjectPath: ctx.router.url('objects.create'),
+    home: ctx.router.url('objects.list'),
   });
 });
 
@@ -31,7 +32,7 @@ router.post('objects.create', '/', async (ctx) => {
     await object.save({ fields: ['userId', 'categoryId', 'name', 'state', 'description'] });
     ctx.redirect(ctx.router.url('objects.list'));
   } catch (validationError) {
-    await ctx.render('objects.new', {
+    await ctx.render('objects/new', {
       object,
       errors: validationError.errors,
       submitObjectPath: ctx.router.url('objects.create'),
@@ -44,6 +45,7 @@ router.get('objects.edit', '/:id/edit', loadObject, async (ctx) => {
   const { object } = ctx.state;
   await ctx.render('objects/edit', {
     object,
+    home: ctx.router.url('objects.list'),
     submitObjectPath: ctx.router.url('objects.update', { id: object.id }),
   });
 });

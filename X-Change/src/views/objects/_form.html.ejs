@@ -3,12 +3,13 @@
     <div class="errors">
       You need to fix the following errors:
       <ul>
-        <% errors.forEach(error => { %>
+        <% locals.errors.forEach(error => { %>
           <li><%= error.message %></li>
         <% }); %>
       </ul>
     </div>
   <% } %>
+  <a href="<%= home %>">Volver a las listas</a>
  <form action="<%= submitObjectPath %>" method="post">
    <% if (!object.isNewRecord) { %>
      <input type="hidden" name="_method" value="patch" />
@@ -17,18 +18,19 @@
      <label for="userId">userId</label>
      <input type="text" name="userId" value="<%= object.userId %>"  />
    </div>
-   <div class="field">
-     <label for="categoryId">categoryId</label>
-     <input type="text" name="categoryId" value="<%= object.categoryId %>"  />
-   </div>
+   <select name="categoryId" value="<%= object.categoryId %>">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+   </select>
    <div class="field">
      <label for="name">Name</label>
      <input type="text" name="name" value="<%= object.name %>"  />
    </div>
-   <div class="field">
-     <label for="state">state</label>
-     <input type="text" name="state" value="<%= object.state %>"  />
-   </div>
+   <select name="state" value="<%= object.state %>">
+    <option value="true">true</option>
+    <option value="false">false</option>
+   </select>
    <div class="field">
      <label for="description">description</label>
      <input type="text" name="description" value="<%= object.description %>"  />

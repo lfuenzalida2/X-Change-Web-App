@@ -3,13 +3,24 @@ module.exports = (sequelize, DataTypes) => {
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
     state: DataTypes.BOOLEAN,
-    description: DataTypes.TEXT,
+    description: {
+      type: DataTypes.TEXT,
+      validate: {
+        notEmpty: true,
+      },
+    },
   }, {});
 
   object.associate = function associate(models) {
