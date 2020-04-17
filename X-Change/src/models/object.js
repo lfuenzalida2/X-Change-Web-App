@@ -4,11 +4,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    categoryId: {
-      type: DataTypes.INTEGER,
+    name: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
-    name: DataTypes.STRING,
     state: DataTypes.BOOLEAN,
     description: DataTypes.TEXT,
   }, {});
