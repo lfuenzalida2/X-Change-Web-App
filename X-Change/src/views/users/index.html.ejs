@@ -13,7 +13,7 @@
             <th>number</th>
             <th>region</th>
             <th>profile picture</th>
-            <th>Edit</th>
+            <th colspan="2">Edit</th>
         </tr>
     </thead>
     <tbody>
@@ -27,6 +27,12 @@
                 <td><%= user.region %></td>
                 <td><%= user.profile_picture %></td>
                 <td><a href="<%= editUserPath(user) %>">Edit</a></td>
+                <td>
+                    <form action="<%= delUserPath(user) %>" method="post">
+                        <input type="hidden" name="_method" value="delete">
+                        <input type="submit" value="X">
+                    </form>
+                </td>
             </tr>
         <% }) %>
     </tbody>
