@@ -13,6 +13,7 @@
             <th>number</th>
             <th>region</th>
             <th>profile picture</th>
+            <th>Edit</th>
         </tr>
     </thead>
     <tbody>
@@ -25,8 +26,11 @@
                 <td><%= user.number %></td>
                 <td><%= user.region %></td>
                 <td><%= user.profile_picture %></td>
+                <td><a href="<%= editUserPath(user) %>">Edit</a></td>
             </tr>
         <% }) %>
     </tbody>
 </table>
 <% } %>
+
+<a href="<%= newUserPath %>">New User</a>
