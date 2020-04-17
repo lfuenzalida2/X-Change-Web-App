@@ -31,7 +31,7 @@ router.post('users.create', '/', async (ctx) => {
       newUser,
       errors: validationError.errors,
       home: ctx.router.url('users.list'),
-      submitVariable: ctx.router.url('users.create', { id: newUser.id_user}),
+      submitVariable: ctx.router.url('users.create', { id: newUser.id_user }),
     });
   }
 });
@@ -41,7 +41,7 @@ router.get('users.edit', '/:id/edit', async (ctx) => {
   await ctx.render('users/edit', {
     newUser,
     home: ctx.router.url('users.list'),
-    submitVariable: ctx.router.url('users.update', { id: newUser.id_user}),
+    submitVariable: ctx.router.url('users.update', { id: newUser.id_user }),
   });
 });
 
