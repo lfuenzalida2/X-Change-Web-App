@@ -1,0 +1,72 @@
+<% if(newUser.isNewRecord) { %>
+<h1>Agregar un nuevo usuario</h1>
+<% } else { %>
+<h1>Actualiza al usuario <%= newUser.username %></h1>
+<% } %>
+
+<div>
+    <a href="<%= home %>">Volver a la lista</a>
+</div>
+
+
+<div>
+    <% if (locals.errors) { %>
+        <div class="errors">
+            You need to fix the following errors:
+        <ul>
+            <% locals.errors.forEach(error => { %>
+                <li><%= error.message %></li>
+            <% }); %>
+        </ul>
+        </div>
+    <% } %>
+    <form action="<%= submitVariable %>" method="post">
+        <% if (!newUser.isNewRecord) { %>
+            <input type="hidden" name="_method" value="patch"/>
+        <% } %>
+        <div>
+            <label for="username">Username</label>
+            <input type="text" name="username" value="<%= newUser.username %>" />
+        </div>
+        <div>
+            <label for="password">password</label>
+            <input type="text" name="password" value="<%= newUser.password %>"/>
+        </div>
+        <div>
+            <label for="confirm_password">confirm password</label>
+            <input type="text" name="confirm_password" value="<%= newUser.password %>"/>
+        </div>
+        <div>
+            <label for="mail">email</label>
+            <input type="text" name="mail" value="<%= newUser.mail %>"/>
+        </div>
+        <div>
+            <label for="confirm_email">confirm email</label>
+            <input type="text" name="confirm_email" value="<%= newUser.mail %>"/>
+        </div>
+        <div>
+            <label for="number">number</label>
+            <input type="number" name="number" value="<%= newUser.number %>"/>
+        </div>
+        <div>
+            <select name="region" value="<%= newUser.region %>">
+                <option value="temuco">Temuco</option>
+                <option value="santiago">Santiago</option>
+                <option value="concepcion">Concepcion</option>
+            </select>
+        </div>
+        <div>
+            <label for="profile_picture">picture</label>
+            <input type="text" name="profile_picture" value="<%= newUser.profile_picture %>"/>
+        </div>
+        <div>
+            <% if (newUser.isNewRecord) { %>
+                <input type="submit" name="create" value="Create">
+            <% }else { %>
+                <input type="submit" name="update" value="Update">
+            <% } %>
+
+        </div>
+
+    </form>
+</div>
