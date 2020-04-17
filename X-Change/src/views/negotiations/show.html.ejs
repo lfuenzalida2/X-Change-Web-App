@@ -1,0 +1,18 @@
+<h2>Negotiation between <%= negotiation.customer %> and <%= negotiation.seller %></h2>
+<% if(negotiation.state == "In Progress") { %>
+  <form action="<%= editNegotiationPath %>" method="POST">
+    <input type="hidden" name="_method" value="patch" />
+    <input type="hidden" name="state" value="Accepted" />
+    <input type="submit" value="Accept Offer" />
+  </form>
+  <form action="<%= editNegotiationPath %>" method="POST">
+    <input type="hidden" name="_method" value="patch" />
+    <input type="hidden" name="state" value="Cancelled" />
+    <input type="submit" value="Cancel Negotiation" />
+  </form>
+<% } %>
+
+<form action="<%= deleteNegotiationPath %>" method="POST">
+  <input type="hidden" name="_method" value="delete" />
+  <input type="submit" value="Delete" />
+</form>
