@@ -33,7 +33,7 @@ router.post('users.create', '/', async (ctx) => {
   try {
     if (values.password !== values.confirm_password) {
       throw new MyError('PasswordError', "The passwords doesn't match, please try again");
-    } else if (values.mail !== values.mail_confirm) {
+    } else if (values.mail !== values.confirm_mail) {
       throw new MyError('MailError', "The emails doesn't match, please try again");
     }
     await newUser.save({ fields: ['username', 'password', 'mail', 'number', 'region', 'profile_picture'] });

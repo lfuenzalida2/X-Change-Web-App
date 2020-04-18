@@ -1,19 +1,22 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('negotiations', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('messages', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    customer: {
+    sender: {
       type: Sequelize.INTEGER,
     },
-    seller: {
+    receiver: {
       type: Sequelize.INTEGER,
     },
-    state: {
-      type: Sequelize.STRING,
+    text: {
+      type: Sequelize.TEXT,
+    },
+    negotiation: {
+      type: Sequelize.INTEGER,
     },
     createdAt: {
       allowNull: false,
@@ -25,5 +28,5 @@ module.exports = {
     },
   }),
 
-  down: (queryInterface) => queryInterface.dropTable('negotiations'),
+  down: (queryInterface) => queryInterface.dropTable('messages'),
 };

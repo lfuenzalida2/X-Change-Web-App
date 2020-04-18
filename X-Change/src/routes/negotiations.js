@@ -9,7 +9,7 @@ async function loadNegotiation(ctx, next) {
 
 router.get('negotiations.list', '/', async (ctx) => {
   const negotiationsList = await ctx.orm.negotiation.findAll(); // Then find by logged user id
-  await ctx.render('negotiations/my-negotiations', {
+  await ctx.render('negotiations/index', {
     negotiationsList,
     createURL: ctx.router.url('negotiations.create'),
     showNegotiationPath: (negotiation) => ctx.router.url('negotiations.show', { id: negotiation.id }),
@@ -19,10 +19,14 @@ router.get('negotiations.list', '/', async (ctx) => {
 
 router.get('negotiations.show', '/:id', loadNegotiation, async (ctx) => {
   const { negotiation } = ctx.state;
+  const messagesList = await ctx.orm.message.findAll({ where: { negotiation: negotiation.id } });
   await ctx.render('negotiations/show', {
     negotiation,
     editNegotiationPath: ctx.router.url('negotiations.update', { id: negotiation.id }),
     deleteNegotiationPath: ctx.router.url('negotiations.delete', { id: negotiation.id }),
+    messagesList,
+    newMessagePath: ctx.router.url('messages.create'),
+    newReviewPath: ctx.router.url('reviews.new'),
   });
 });
 
@@ -44,11 +48,9 @@ router.patch('negotiations.update', '/:id', loadNegotiation, async (ctx) => {
   try {
     const { customer, seller, state } = ctx.request.body;
     await negotiation.update({ customer, seller, state });
-    ctx.redirect(ctx.router.url('negotiations.list'));
+    ctx.redirect('back');
   } catch (validationError) {
-    await ctx.render('negotiations/my-negotiations', {
-      errors: validationError.errors, // Not displaying errors
-    });
+    await ctx.redirect('back'); // Not displaying errors
   }
 });
 
