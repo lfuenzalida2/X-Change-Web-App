@@ -7,6 +7,15 @@ async function loadReview(ctx, next) {
   return next();
 }
 
+router.get('reviews.list', '/', async (ctx) => {
+  const reviewsList = await ctx.orm.review.findAll(); // Then find by a specific userId
+  await ctx.render('reviews/index', {
+    reviewsList,
+    deleteReviewPath: (review) => ctx.router.url('reviews.delete', { id: review.id }),
+    showNegotiationPath: (review) => ctx.router.url('negotiations.show', { id: review.negotiation }),
+  });
+});
+
 router.post('reviews.new', '/new', async (ctx) => {
   const { reviewer, reviewed, negotiation } = ctx.request.body;
   await ctx.render('reviews/new', {

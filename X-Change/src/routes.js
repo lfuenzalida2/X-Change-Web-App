@@ -5,11 +5,9 @@ const index = require('./routes/index');
 const negotiations = require('./routes/negotiations');
 const messages = require('./routes/messages');
 const reviews = require('./routes/reviews');
-
 const categories = require('./routes/categories');
 const objects = require('./routes/objects');
 const users = require('./routes/users');
-const negotiations = require('./routes/negotiations');
 
 
 const router = new KoaRouter();
