@@ -18,10 +18,13 @@ router.get('reviews.list', '/', async (ctx) => {
 
 router.post('reviews.new', '/new', async (ctx) => {
   const { reviewer, reviewed, negotiation } = ctx.request.body;
+  const review = await ctx.orm.review.findAll({ where: {reviewer, negotiation} });
   await ctx.render('reviews/new', {
+    review,
     reviewer,
     reviewed,
     negotiation,
+    showNegotiationPath: ctx.router.url('negotiations.show', { id: negotiation }),
     submitReviewPath: ctx.router.url('reviews.create'),
   });
 });

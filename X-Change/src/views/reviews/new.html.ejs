@@ -10,6 +10,7 @@
   </div>
 <% } %>
 
+<% if (!review.length) {%>
 <form action="<%= submitReviewPath %>" method="POST">
   <input type="hidden" name="reviewer" value=<%= reviewer %> />
   <input type="hidden" name="reviewed" value=<%= reviewed %> />
@@ -18,3 +19,10 @@
   <textarea type="text" name="text" placeholder="Añade un comentario..."></textarea>
   <input type="submit" value="Enviar la Valoración" />
 </form>
+
+<% } else {%>
+
+  <h1>Ya se hizo una review de la Negociación</h1>
+  <a href="<%= showNegotiationPath %>">Volver a la Negociación</a>
+
+<% } %>
