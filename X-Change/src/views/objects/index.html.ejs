@@ -1,0 +1,39 @@
+<h2> Objects </h2>
+<% if (!objectsList.length) { %>
+  <p>No results</p>
+<% } else { %>
+  <table>
+    <thead>
+      <tr>
+        <th>userId</th>
+        <th>CategoryId</th>
+        <th>Name</th>
+        <th>state</th>
+        <th>description</th>
+        <th colspan="2">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% objectsList.forEach((object) => { %>
+        <tr>
+          <td><%= object.userId %></td>
+          <td><%= object.categoryId %></td>
+          <td><%= object.name %></td>
+          <td><%= object.state %></td>
+          <td><%= object.description %></td>
+          <td><a href="<%= editObjectPath(object) %>">Edit</a></td>
+          <td>
+            <!-- única forma de hacer un metodo que no sea GET es a través de un formulario-->
+            <form action="<%= deleteObjectPath(object) %>" method="POST">
+              <input type="hidden" name="_method" value="delete"  />
+              <!-- para sobre escribir un método es necesatio unar _method-->
+              <input type="submit" value="Delete" />
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
+
+<a href="<%= newObjectPath %>">New Object</a>
