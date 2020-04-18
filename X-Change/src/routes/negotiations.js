@@ -26,6 +26,7 @@ router.get('negotiations.show', '/:id', loadNegotiation, async (ctx) => {
     deleteNegotiationPath: ctx.router.url('negotiations.delete', { id: negotiation.id }),
     messagesList,
     newMessagePath: ctx.router.url('messages.create'),
+    newReviewPath: ctx.router.url('reviews.new'),
   });
 });
 
@@ -47,11 +48,9 @@ router.patch('negotiations.update', '/:id', loadNegotiation, async (ctx) => {
   try {
     const { customer, seller, state } = ctx.request.body;
     await negotiation.update({ customer, seller, state });
-    ctx.redirect(ctx.router.url('negotiations.list'));
+    ctx.redirect('back');
   } catch (validationError) {
-    await ctx.render('negotiations/index', {
-      errors: validationError.errors, // Not displaying errors
-    });
+    await ctx.redirect('back'); // Not displaying errors
   }
 });
 

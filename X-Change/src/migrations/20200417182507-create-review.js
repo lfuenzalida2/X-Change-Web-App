@@ -6,27 +6,21 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-
     reviewer: {
       type: Sequelize.INTEGER,
-      allowNull: false,
     },
     reviewed: {
       type: Sequelize.INTEGER,
-      allowNull: false,
     },
     negotiation: {
       type: Sequelize.INTEGER,
-      allowNull: false,
     },
     rating: {
       type: Sequelize.INTEGER,
-      allowNull: false,
     },
     text: {
       type: Sequelize.TEXT,
     },
-
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,
@@ -34,6 +28,12 @@ module.exports = {
     updatedAt: {
       allowNull: false,
       type: Sequelize.DATE,
+    },
+  }, {
+    uniqueKeys: {
+      reviews_unique: {
+        fields: ['reviewer', 'negotiation'],
+      },
     },
   }),
 

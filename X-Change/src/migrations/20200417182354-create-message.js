@@ -6,22 +6,17 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-
     sender: {
       type: Sequelize.INTEGER,
-      allowNull: false,
     },
     receiver: {
       type: Sequelize.INTEGER,
-      allowNull: false,
     },
     text: {
       type: Sequelize.TEXT,
-      allowNull: false,
     },
     negotiation: {
       type: Sequelize.INTEGER,
-      allowNull: false,
     },
     createdAt: {
       allowNull: false,
