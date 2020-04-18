@@ -7,6 +7,12 @@ async function loadObject(ctx, next) {
   return next();
 }
 
+function MyError(name, message) {
+  this.name = name;
+  this.errors = [{ message }];
+  this.stack = (new Error()).stack;
+}
+
 router.get('objects.list', '/', async (ctx) => {
   const objectsList = await ctx.orm.object.findAll();
   await ctx.render('objects/index', {
@@ -28,7 +34,11 @@ router.get('objects.new', '/new', async (ctx) => {
 
 router.post('objects.create', '/', async (ctx) => {
   const object = ctx.orm.object.build(ctx.request.body);
+  const values = await ctx.orm.object.findAll({ where: {categoryId : object.categoryId} });
   try {
+    if (!values.length) {
+      throw new MyError('CategoryIdError', "The Id Category don't exist, please create one before adding an object to it");
+    }
     await object.save({ fields: ['userId', 'categoryId', 'name', 'state', 'description'] });
     ctx.redirect(ctx.router.url('objects.list'));
   } catch (validationError) {
@@ -53,14 +63,20 @@ router.get('objects.edit', '/:id/edit', loadObject, async (ctx) => {
 
 router.patch('objects.update', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
+  const { userId, categoryId, name, state, description } = ctx.request.body;
+  const values = await ctx.orm.object.findAll({ where: {categoryId} });
   try {
-    const { userId, categoryId, name, state, description } = ctx.request.body;
+    if (!values.length) {
+      throw new MyError('CategoryIdError', "The Id Category don't exist, please create one before adding an object to it");
+    }
     await object.update({ userId, categoryId, name, state, description });
     ctx.redirect(ctx.router.url('objects.list'));
   } catch (validationError) {
+    console.log(validationError);
     await ctx.render('objects/edit', {
       object,
       errors: validationError.errors,
+      home: ctx.router.url('objects.list'),
       submitObjectPath: ctx.router.url('objects.update', { id: object.id }),
     });
   }
