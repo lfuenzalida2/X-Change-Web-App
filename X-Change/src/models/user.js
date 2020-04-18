@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('user', {
+  const user = sequelize.define('user', {
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -35,9 +35,9 @@ module.exports = (sequelize, DataTypes) => {
     profile_picture: DataTypes.STRING,
   }, {});
 
-  User.associate = function associate() {
-    // associations can be defined here. This method receives a models parameter.
+  user.associate = function associate() {
+    
   };
 
-  return User;
+  return user;
 };
