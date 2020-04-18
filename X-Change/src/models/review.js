@@ -14,7 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     rating: {
       type: DataTypes.INTEGER,
-      notEmpty: true,
+      validate: {
+        notEmpty: true,
+      },
     },
     text: {
       type: DataTypes.TEXT,
