@@ -50,5 +50,5 @@ module.exports = {
     return queryInterface.bulkInsert('objects', objectsData);
   },
 
-  down: (queryInterface) => queryInterface.bulkDelete('categories', null, {}),
+  down: (queryInterface) => queryInterface.bulkDelete('objects', null, {}),
 };
