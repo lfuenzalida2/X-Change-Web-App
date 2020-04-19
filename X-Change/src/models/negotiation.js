@@ -16,7 +16,28 @@ module.exports = (sequelize, DataTypes) => {
 
   negotiation.associate = function associate(models) {
     negotiation.belongsToMany(models.object, { through: 'objectNegotiation' });
-  };
+    negotiation.belongsToMany(models.user, { 
+      through: 'reviews',
+      foreignKey: {
+        name: 'customer'
+      }});
+    negotiation.belongsToMany(models.user, { 
+      through: 'reviews',
+      foreignKey: {
+        name: 'seller'
+      }});
+      // through messages
+    negotiation.belongsToMany(models.user, { 
+      through: 'messages',
+      foreignKey: {
+        name: 'customer'
+      }});
+    negotiation.belongsToMany(models.user, { 
+      through: 'messages',
+      foreignKey: {
+        name: 'seller'
+      }});
+};
 
   return negotiation;
 };

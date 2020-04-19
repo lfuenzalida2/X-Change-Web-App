@@ -3,14 +3,29 @@ module.exports = (sequelize, DataTypes) => {
     reviewer: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: 'user',
+        key: 'id'
+      }
+   
     },
     reviewed: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: 'user',
+        key: 'id'
+      }
+   
     },
     negotiation: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: 'negotiation',
+        key: 'id'
+      }
+   
     },
     rating: {
       type: DataTypes.INTEGER,
