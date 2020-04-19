@@ -34,6 +34,12 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+    }, {
+      uniqueKeys: {
+        objectNegotiations_unique: {
+          fields: ['objectId', 'negotiationId'],
+        },
+      },
     },
   ),
   down: (queryInterface) => {
