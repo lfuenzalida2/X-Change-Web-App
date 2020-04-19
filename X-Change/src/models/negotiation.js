@@ -14,9 +14,30 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {});
 
-  negotiation.associate = function associate() {
-    // associations can be defined here. This method receives a models parameter.
-  };
+  negotiation.associate = function associate(models) {
+      // through reviews
+    negotiation.belongsToMany(models.user, { 
+      through: 'reviews',
+      foreignKey: {
+        name: 'customer'
+      }});
+    negotiation.belongsToMany(models.user, { 
+      through: 'reviews',
+      foreignKey: {
+        name: 'seller'
+      }});
+      // through messages
+    negotiation.belongsToMany(models.user, { 
+      through: 'messages',
+      foreignKey: {
+        name: 'customer'
+      }});
+    negotiation.belongsToMany(models.user, { 
+      through: 'messages',
+      foreignKey: {
+        name: 'seller'
+      }});
+};
 
   return negotiation;
 };

@@ -1,11 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const user = sequelize.define('user', {
-    userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true,
-    },
     username: {
       type: DataTypes.STRING,
       validate: {
@@ -35,7 +29,25 @@ module.exports = (sequelize, DataTypes) => {
     profile_picture: DataTypes.STRING,
   }, {});
 
-  user.associate = function associate() {
+  user.associate = function associate(models) {
+      // has many negotiations
+    user.hasMany(models.negotiation, {
+      foreignKey: {
+        name: 'customer'
+      }
+    });
+      // through reviews
+    user.belongsToMany(models.negotiation, { 
+      through: 'reviews',
+      foreignKey: {
+        name: 'id'
+      }});
+      // through messages
+    user.belongsToMany(models.negotiation, { 
+      through: 'messages',
+      foreignKey: {
+        name: 'id'
+      }});
     
   };
 

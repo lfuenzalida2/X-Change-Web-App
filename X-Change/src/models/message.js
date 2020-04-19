@@ -3,14 +3,29 @@ module.exports = (sequelize, DataTypes) => {
     sender: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: 'user',
+        key: 'id'
+      }
+   
     },
     receiver: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: 'user',
+        key: 'id'
+      }
+   
     },
     negotiation: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: 'negotiation',
+        key: 'id'
+      }
+   
     },
     text: {
       type: DataTypes.TEXT,
