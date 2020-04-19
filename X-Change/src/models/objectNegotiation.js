@@ -6,12 +6,18 @@ module.exports = (sequelize, DataTypes) => {
         model: 'negotiations',
         key: 'id',
       },
+      validate: {
+        notEmpty: true,
+      },
     },
     objectId: {
       type: DataTypes.INTEGER,
       references: {
         model: 'objects',
         key: 'id',
+      },
+      validate: {
+        notEmpty: true,
       },
     },
   });
