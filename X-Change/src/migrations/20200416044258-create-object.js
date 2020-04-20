@@ -7,10 +7,6 @@ module.exports = {
       type: Sequelize.INTEGER,
     },
 
-    userId: {
-      type: Sequelize.INTEGER,
-    },
-
     name: {
       type: Sequelize.STRING,
     },

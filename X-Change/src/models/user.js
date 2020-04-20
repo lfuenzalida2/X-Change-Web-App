@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       validate: {
-        len: [8, ],
+        len: [8,],
         isInt: true,
       },
     },
@@ -30,25 +30,27 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   user.associate = function associate(models) {
-      // has many negotiations
+    user.hasMany(models.object);
+    // has many negotiations
     user.hasMany(models.negotiation, {
       foreignKey: {
-        name: 'customer'
-      }
+        name: 'customer',
+      },
     });
-      // through reviews
-    user.belongsToMany(models.negotiation, { 
+    // through reviews
+    user.belongsToMany(models.negotiation, {
       through: 'reviews',
       foreignKey: {
-        name: 'id'
-      }});
-      // through messages
-    user.belongsToMany(models.negotiation, { 
+        name: 'id',
+      },
+    });
+    // through messages
+    user.belongsToMany(models.negotiation, {
       through: 'messages',
       foreignKey: {
-        name: 'id'
-      }});
-    
+        name: 'id',
+      },
+    });
   };
 
   return user;
