@@ -27,6 +27,8 @@ router.get('negotiations.show', '/:id', loadNegotiation, async (ctx) => {
     messagesList,
     newMessagePath: ctx.router.url('messages.create'),
     newReviewPath: ctx.router.url('reviews.new'),
+    objects: await ctx.state.negotiation.getObjects(),
+    addObjectPath: ctx.router.url('negotiations.add_object', { id: negotiation.id }),
   });
 });
 
@@ -40,6 +42,30 @@ router.post('negotiations.create', '/', async (ctx) => {
     ctx.redirect(ctx.router.url('negotiations.list'));
   } catch (validationError) {
     await ctx.redirect(ctx.router.url('negotiations.list')); // Not displaying errors
+  }
+});
+
+router.get('negotiations.add_object', '/:id/add_object', loadNegotiation, async (ctx) => {
+  const { negotiation } = ctx.state;
+  await ctx.render('negotiations/add_object', {
+    negotiation,
+    addObjectPath: ctx.router.url('negotiations.add', { id: negotiation.id }),
+    objects: await ctx.state.negotiation.getObjects(),
+  });
+});
+
+router.post('negotiations.add', '/:id', loadNegotiation, async (ctx) => {
+  const { negotiation } = ctx.state;
+  const objectNegotiation = ctx.orm.objectNegotiation.build(ctx.request.body);
+  try {
+    await objectNegotiation.save({ fields: ['negotiationId', 'objectId'] });
+    ctx.redirect('back');
+  } catch (validationError) {
+    await ctx.render('negotiations/add_object', {
+      objects: await ctx.state.negotiation.getObjects(),
+      errors: validationError.errors,
+      addObjectPath: ctx.router.url('negotiations.add', { id: negotiation.id }),
+    });
   }
 });
 

@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   negotiation.associate = function associate(models) {
-      // through reviews
+    negotiation.belongsToMany(models.object, { through: 'objectNegotiation' });
     negotiation.belongsToMany(models.user, { 
       through: 'reviews',
       foreignKey: {

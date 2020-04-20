@@ -42,3 +42,32 @@
     </form>
   <% } %>
 <div>
+<br>
+<br>
+<br>
+
+<h2>Objects List</h2>
+<% if (!objects.length) { %>
+  <p>No results</p>
+<% } else { %>
+  <table id="generic-list">
+    <thead>
+        <tr>
+          <th>N</th>
+          <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+      <% objects.forEach((object, index) => { %>
+        <tr>
+          <td><%- (index + 1) %></td>
+          <td><%- object.name %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
+
+<% if(negotiation.state == "In Progress") { %>
+  <a href="<%= addObjectPath %>">New Object</a>
+<% } %>
