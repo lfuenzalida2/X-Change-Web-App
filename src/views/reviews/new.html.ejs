@@ -1,0 +1,28 @@
+<h2>Valoración de la Negociación con <%= reviewed %> #reviewedName</h2>
+<% if (locals.errors) { %>
+  <div class="errors">
+    Tienes los siguientes errores:
+    <ul>
+      <% locals.errors.forEach(error => { %>
+        <li><%= error.message %></li>
+      <% }); %>
+    </ul>
+  </div>
+<% } %>
+
+<% if (!review.length) {%>
+<form action="<%= submitReviewPath %>" method="POST">
+  <input type="hidden" name="reviewer" value=<%= reviewer %> />
+  <input type="hidden" name="reviewed" value=<%= reviewed %> />
+  <input type="hidden" name="negotiation" value=<%= negotiation %> />
+  <input type="number" name="rating" min="1" max="5" placeholder="Valoración">
+  <textarea type="text" name="text" placeholder="Añade un comentario..."></textarea>
+  <input type="submit" value="Enviar la Valoración" />
+</form>
+
+<% } else {%>
+
+  <h1>Ya se hizo una review de la Negociación</h1>
+  <a href="<%= showNegotiationPath %>">Volver a la Negociación</a>
+
+<% } %>

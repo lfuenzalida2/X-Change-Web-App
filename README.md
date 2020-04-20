@@ -1,44 +1,53 @@
-# Not Apple
+# Template
 
-## Members
+Template built with [koa](http://koajs.com/) for IIC2513 - Tecnologías y Aplicaciones Web, Pontificia Universidad Católica de Chile.
 
-* Sebastián Torés - satores@uc.cl
-* Mathias Valdebenito - mlvaldebenito@uc.cl
-* Lukas Fuenzalida - lfuenzalida2@uc.cl
+## Prerequisites:
+* PostgreSQL
+  * you will need a database with name and user/password as configured in `src/config/database.js`
+* Node.js v12.16 or above
+* [Yarn](https://yarnpkg.com)
 
-## Some good practices
+## Project Setup
 
-### Commit naming convention
+* Clone repository
+* Install dependencies:
+  * `yarn install`
 
-For commits inside branches (other than `develop` and master `master`) , the use of [gitmoji](https://https://gitmoji.carloscuesta.me/) is recommended. For branches `develop` and `master`, only pull requests commits should be present.
+## Database Setup (development)
 
-### _Gitflow_
+### Install postgresql
+* On Mac OS X using Homebrew: `brew install postgresql`
+  * Start service: check [LaunchRocket](https://github.com/jimbojsb/launchrocket) or [lunchy](https://www.moncefbelyamani.com/how-to-install-postgresql-on-a-mac-with-homebrew-and-lunchy/) for postgresql service management
+* [Other platforms](https://www.postgresql.org/download/)
 
-This repository uses [_GitFlow_](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow). For any commit to be added to `master` or `develop`, a pull request has to be done. Exceptional _hot fixes_ fall out of this practice.
+### Create development database
 
-### Pull requests
-
-Pull request should have meaningful titles such as "Add home site to app". Descriptions should start with "This branch will" (and be followed by verbs such as "add", "create", "migrate" or any other).
-
-For merging branches, always use _Squash and merge_, with the exception of `develop` to `master`, where _Merge_ will be used.
-
-### Branch naming syntax
-
-All branches in this repository must follow the following syntax:
-
-```text
-branch-type/name-of-branch
+```sh
+createdb iic2513template_dev
 ```
 
-Where **branch-type** indicates what is the purpose of the branch. The possible values are:
+### Run migrations
+```sh
+./node_modules/.bin/sequelize db:migrate
+```
 
-| **`branch-type`** | **description**                                                                                                                                |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| feature           | Add a new feature to the main code. Features are client-oriented, this means, no features of code should be included here.                               |
-| bugfix            | Fix a non-critical part of the code.                                                                                                           |
-| improvement       | Improve an already implemented feature. Improvements are also client-oriented.                                                                 |
-| library           | Packages and packages versioning oriented. Fixes of code for updating dependencies should be included here.                                    |
-| prerelease        | For versioning a code almost ready for it's release. Code here shouldn't add new features, rather freeze new features. For testing pre-release |
-| release           | For freezing version these is a final version of the code prior to a release.                                                                  |
-| hotfix            | Fixing a critical part of the code or application.                                                                                             |
-| docs              | Documenting code or adding documenting files.
+## Run the app!
+
+```sh
+yarn start
+```
+
+or directly
+
+```sh
+node index.js
+```
+
+or, if you want automatic restart after any change in your files
+
+```sh
+yarn dev
+```
+
+Now go to http://localhost:3000 and start browsing :)

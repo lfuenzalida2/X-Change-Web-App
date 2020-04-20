@@ -1,0 +1,46 @@
+<h2>Add object</h2>
+
+<div>
+  <% if (locals.errors) { %>
+    <div class="errors">
+      You need to fix the following errors:
+      <ul>
+        <% errors.forEach(error => { %>
+          <li><%= error.message %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+ <form action="<%= addObjectPath %>" method="post">
+   <input type="hidden" name="negotiationId" value=<%= negotiation.id %>  />
+   <div class="field">
+     <label for="objectId">objectId</label>
+     <input type="text" name="objectId" value=""  />
+   </div>
+   <div class="field">
+       <input type="submit" name="add" value="Add"  />
+   </div>
+ </form>
+</div>
+
+<h2>Objects List</h2>
+<% if (!objects.length) { %>
+  <p>No results</p>
+<% } else { %>
+  <table id="generic-list">
+    <thead>
+        <tr>
+          <th>N</th>
+          <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+      <% objects.forEach((object, index) => { %>
+        <tr>
+          <td><%- (index + 1) %></td>
+          <td><%- object.name %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>

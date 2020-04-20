@@ -1,0 +1,31 @@
+<h2> Categories </h2>
+<% if (!categoriesList.length) { %>
+  <p>No results</p>
+<% } else { %>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th colspan="2">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% categoriesList.forEach((category) => { %>
+        <tr>
+          <td><%= category.name %></td>
+          <td><a href="<%= editCategoryPath(category) %>">Edit</a></td>
+          <td>
+            <!-- única forma de hacer un metodo que no sea GET es a través de un formulario-->
+            <form action="<%= deleteCategoryPath(category) %>" method="POST">
+              <input type="hidden" name="_method" value="delete"  />
+              <!-- para sobre escribir un método es necesatio unar _method-->
+              <input type="submit" value="Delete" />
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
+
+<a href="<%= newCategoryPath %>">New Category</a>
