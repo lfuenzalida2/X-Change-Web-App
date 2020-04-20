@@ -61,15 +61,19 @@ router.get('users.edit', '/:id/edit', async (ctx) => {
 router.patch('users.update', '/:id', async (ctx) => {
   const newUser = await ctx.orm.user.findByPk(ctx.params.id);
   try {
-    const { username, password, mail, number, region, profile_picture } = ctx.request.body;
-    await newUser.update({ username, password, mail, number, region, profile_picture });
+    const {
+      username, password, mail, number, region, profile_picture
+    } = ctx.request.body;
+    await newUser.update({
+      username, password, mail, number, region, profile_picture,
+    });
     ctx.redirect(ctx.router.url('users.list'));
   } catch (validationError) {
     await ctx.render('users/edit', {
       newUser,
       errors: validationError.errors,
       home: ctx.router.url('users.list'),
-      submitVariable: ctx.router.url('users.update', { id: newUser.id}),
+      submitVariable: ctx.router.url('users.update', { id: newUser.id }),
     });
   }
 });
