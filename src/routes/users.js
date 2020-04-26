@@ -8,6 +8,26 @@ function MyError(name, message) {
   this.stack = (new Error()).stack;
 }
 
+function Valid(string) {
+  if (string.length <= 8) {
+    return false;
+  }
+  let cap = false;
+  let num = false;
+  for (let i = 0; i < string.length; i++) {
+    const element = string[i];
+
+    if (element == element.toUpperCase()) {
+      cap = true;
+    } else if (typeof Number(element) === 'number') {
+      num = true;
+    }
+  }
+  if (cap && num) {
+    return true;
+  }
+}
+
 router.get('users.list', '/', async (ctx) => {
   const usersList = await ctx.orm.user.findAll();
   await ctx.render('users/index', {
@@ -35,6 +55,8 @@ router.post('users.create', '/', async (ctx) => {
       throw new MyError('PasswordError', "The passwords doesn't match, please try again");
     } else if (values.mail !== values.confirm_mail) {
       throw new MyError('MailError', "The emails doesn't match, please try again");
+    } else if (!Valid(values.password)) {
+      throw new MyError('PasswordError', "The password doesn't fit the requirements");
     }
     await newUser.save({ fields: ['username', 'password', 'mail', 'number', 'region', 'profile_picture'] });
     ctx.redirect(ctx.router.url('users.list'));
