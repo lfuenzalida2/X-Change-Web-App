@@ -9,7 +9,7 @@
       </ul>
     </div>
   <% } %>
-  <a href="<%= home %>">Volver a las listas</a>
+  <a href="<%= home %>">Back to the list</a>
  <form action="<%= submitObjectPath %>" method="post">
    <% if (!object.isNewRecord) { %>
      <input type="hidden" name="_method" value="patch" />
@@ -18,19 +18,25 @@
      <label for="userId">userId</label>
      <input type="text" name="userId" value="<%= object.userId %>"  />
    </div>
-   <select name="categoryId" value="<%= object.categoryId %>">
+   <div>
+      <label for="categoryId">category Id</label>
+      <select name="categoryId" value="<%= object.categoryId %>">
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
-   </select>
+      </select>
+   </div>
    <div class="field">
      <label for="name">Name</label>
      <input type="text" name="name" value="<%= object.name %>"  />
    </div>
-   <select name="state" value="<%= object.state %>">
-    <option value="true">true</option>
-    <option value="false">false</option>
-   </select>
+   <div>
+      <label for="state">State of Object</label>
+      <select name="state" value="<%= object.state %>">
+        <option value="true">true</option>
+        <option value="false">false</option>
+      </select>
+   </div>
    <div class="field">
      <label for="description">description</label>
      <input type="text" name="description" value="<%= object.description %>"  />

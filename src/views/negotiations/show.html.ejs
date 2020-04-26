@@ -3,12 +3,12 @@
   <form action="<%= editNegotiationPath %>" method="POST">
     <input type="hidden" name="_method" value="patch" />
     <input type="hidden" name="state" value="Accepted" />
-    <input type="submit" value="Aceptar Oferta" />
+    <input type="submit" value="Accept Offer" />
   </form>
   <form action="<%= editNegotiationPath %>" method="POST">
     <input type="hidden" name="_method" value="patch" />
     <input type="hidden" name="state" value="Cancelled" />
-    <input type="submit" value="Cancelar Negociación" />
+    <input type="submit" value="Cancel Negotiation" />
   </form>
 <% } else { %>
   <button type="button" name="button" disabled><%= negotiation.state %></button>
@@ -17,17 +17,17 @@
       <input type="hidden" name="reviewer" value="<%= negotiation.customer %>" />
       <input type="hidden" name="reviewed" value="<%= negotiation.seller %>" />
       <input type="hidden" name="negotiation" value="<%= negotiation.id %>" />
-      <input type="submit" value="Realizar una Valoración" />
+      <input type="submit" value="Do a Review" />
     </form>
   <% } %>
 <% } %>
 
 <form action="<%= deleteNegotiationPath %>" method="POST">
   <input type="hidden" name="_method" value="delete" />
-  <input type="submit" value="Eliminar" />
+  <input type="submit" value="Delete" />
 </form>
 <div id=chat>
-  <h3>Chat con <%= negotiation.customer %></h3>
+  <h3>Chat with <%= negotiation.customer %></h3>
   <% messagesList.forEach((message) => { %> %>
     <%= message.sender %>: <%= message.text %>
     <%= message.createdAt.toLocaleString("es-CL") %> <br>
@@ -38,7 +38,7 @@
       <input type="hidden" name="receiver" value=<%= negotiation.seller %> />
       <input type="hidden" name="negotiation" value=<%= negotiation.id %> />
       <textarea type="text" name="text" placeholder="Escribe un mensaje..."></textarea>
-      <input type="submit" value="Enviar" />
+      <input type="submit" value="Send" />
     </form>
   <% } %>
 <div>

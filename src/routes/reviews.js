@@ -37,7 +37,6 @@ router.post('reviews.create', '/', async (ctx) => {
   const review = ctx.orm.review.build({
     reviewer, reviewed, negotiation, rating, text,
   });
-  console.log(typeof rating);
   try {
     await review.save({ fields: ['reviewer', 'reviewed', 'negotiation', 'rating', 'text'] });
     ctx.redirect(ctx.router.url('negotiations.show', { id: negotiation }));

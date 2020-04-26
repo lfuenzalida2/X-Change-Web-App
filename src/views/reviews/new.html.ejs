@@ -15,7 +15,9 @@
   <input type="hidden" name="reviewer" value=<%= reviewer %> />
   <input type="hidden" name="reviewed" value=<%= reviewed %> />
   <input type="hidden" name="negotiation" value=<%= negotiation %> />
+  <label for="rating">Rating</label>
   <input type="number" name="rating" min="1" max="5" placeholder="Valoración" value="1">
+  <label for="text">Enter a message for the review</label>
   <textarea type="text" name="text" placeholder="Añade un comentario..."></textarea>
   <input type="submit" value="Enviar la Valoración" />
 </form>

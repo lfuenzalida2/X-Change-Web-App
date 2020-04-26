@@ -1,6 +1,6 @@
 <h2>My Negotiations</h2>
 <% if (!negotiationsList.length) { %>
-  <p>No tienes negociaciones aún.</p>
+  <p>You have no negotiations yet.</p>
   <form action="<%= createURL %>" method="POST">
     <input type="hidden" name="customer" value=1 />
     <input type="hidden" name="seller" value=1 />
@@ -23,7 +23,7 @@
           <td><%= negotiation.customer %></td>
           <td><%= negotiation.seller %></td>
           <td><%= negotiation.state %></td>
-          <td><a href="<%= showNegotiationPath(negotiation) %>">Ver más</a></td>
+          <td><a href="<%= showNegotiationPath(negotiation) %>">See Details</a></td>
           <td>
             <form action="<%= deleteNegotiationPath(negotiation) %>" method="POST">
               <input type="hidden" name="_method" value="delete" />

@@ -50,6 +50,7 @@ router.get('negotiations.add_object', '/:id/add_object', loadNegotiation, async 
   await ctx.render('negotiations/add_object', {
     negotiation,
     addObjectPath: ctx.router.url('negotiations.add', { id: negotiation.id }),
+    goToNegotiation: ctx.router.url('negotiations.show', { id: negotiation.id }),
     objects: await ctx.state.negotiation.getObjects(),
   });
 });
@@ -64,6 +65,7 @@ router.post('negotiations.add', '/:id', loadNegotiation, async (ctx) => {
     await ctx.render('negotiations/add_object', {
       objects: await ctx.state.negotiation.getObjects(),
       errors: validationError.errors,
+      goToNegotiation: ctx.router.url('negotiations.show', { id: negotiation.id }),
       addObjectPath: ctx.router.url('negotiations.add', { id: negotiation.id }),
     });
   }
