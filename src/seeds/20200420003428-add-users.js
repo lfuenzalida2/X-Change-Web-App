@@ -4,7 +4,7 @@ module.exports = {
       {
         username: 'Lukas Fuenzalida',
         mail: 'lukasafa@gmail.com',
-        password: 'asd',
+        password: 'Cacaca12',
         number: '999052260',
         region: 'temuco',
         profile_picture: 'asdasdsasda',

@@ -9,7 +9,7 @@ function MyError(name, message) {
 }
 
 function Valid(string) {
-  if (string.length <= 8) {
+  if (string.length < 8) {
     return false;
   }
   let cap = false;

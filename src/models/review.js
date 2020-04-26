@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: 'user',
-        key: 'id'
-      }
+        key: 'id',
+      },
    
     },
     reviewed: {
@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: 'user',
-        key: 'id'
-      }
+        key: 'id',
+      },
    
     },
     negotiation: {
@@ -23,14 +23,17 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: 'negotiation',
-        key: 'id'
-      }
+        key: 'id',
+      },
    
     },
     rating: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       validate: {
-        notEmpty: true,
+        isNumeric: true,
+        max: 5,
+        min: 1,
       },
     },
     text: {
