@@ -37,12 +37,6 @@ function sortByDateDesc(a, b) {
   return -(new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime());
 }
 
-router.use('/negotiations', (ctx) => {
-  if (!ctx.state.currentUser) {
-    ctx.redirect('/session/new');
-  }
-});
-
 router.get('negotiations.list', '/', async (ctx) => {
   const negotiationsStarted = await ctx.state.currentUser.getNegotiationsStarted();
   const negotiationsGotten = await ctx.state.currentUser.getNegotiationsGotten();
