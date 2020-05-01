@@ -17,7 +17,7 @@ function Valid(string) {
   for (let i = 0; i < string.length; i++) {
     const element = string[i];
 
-    if (element == element.toUpperCase()) {
+    if (element === element.toUpperCase()) {
       cap = true;
     } else if (typeof Number(element) === 'number') {
       num = true;
@@ -52,13 +52,13 @@ router.post('users.create', '/', async (ctx) => {
   const values = ctx.request.body;
   try {
     if (values.password !== values.confirm_password) {
-      throw new MyError('PasswordError', "The passwords doesn't match, please try again");
+      throw new MyError('PasswordError', 'Las contraseñas no coinciden. Inténtalo nuevamente.');
     } else if (values.mail !== values.confirm_mail) {
-      throw new MyError('MailError', "The emails doesn't match, please try again");
+      throw new MyError('MailError', 'Los correos no coinciden. Inténtalo nuevamente.');
     } else if (!Valid(values.password)) {
-      throw new MyError('PasswordError', "The password doesn't fit the requirements");
+      throw new MyError('PasswordError', 'La constraseña no cumple los requisitos.');
     }
-    await newUser.save({ fields: ['username', 'password', 'mail', 'number', 'region', 'profile_picture'] });
+    await newUser.save({ fields: ['username', 'password', 'mail', 'number', 'region', 'profilePicture'] });
     ctx.redirect(ctx.router.url('users.list'));
   } catch (validationError) {
     await ctx.render('users/new', {
@@ -84,10 +84,10 @@ router.patch('users.update', '/:id', async (ctx) => {
   const newUser = await ctx.orm.user.findByPk(ctx.params.id);
   try {
     const {
-      username, password, mail, number, region, profile_picture
+      username, password, mail, number, region, profilePicture,
     } = ctx.request.body;
     await newUser.update({
-      username, password, mail, number, region, profile_picture,
+      username, password, mail, number, region, profilePicture,
     });
     ctx.redirect(ctx.router.url('users.list'));
   } catch (validationError) {

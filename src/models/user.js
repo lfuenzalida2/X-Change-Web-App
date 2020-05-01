@@ -1,3 +1,14 @@
+const bcrypt = require('bcrypt');
+
+const PASSWORD_SALT = 10;
+
+async function buildPasswordHash(instance) {
+  if (instance.changed('password')) {
+    const hash = await bcrypt.hash(instance.password, PASSWORD_SALT);
+    instance.set('password', hash);
+  }
+}
+
 module.exports = (sequelize, DataTypes) => {
   const user = sequelize.define('user', {
     username: {
@@ -22,31 +33,59 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     region: DataTypes.STRING,
-    profile_picture: DataTypes.STRING,
+    profilePicture: DataTypes.STRING,
   }, {});
+
+  user.beforeCreate(buildPasswordHash);
+  user.beforeUpdate(buildPasswordHash);
 
   user.associate = function associate(models) {
     user.hasMany(models.object);
     // has many negotiations
     user.hasMany(models.negotiation, {
       foreignKey: {
-        name: 'customer',
+        name: 'customerId',
       },
+      as: 'negotiationsGotten',
+    });
+    user.hasMany(models.negotiation, {
+      foreignKey: {
+        name: 'sellerId',
+      },
+      as: 'negotiationsStarted',
     });
     // through reviews
-    user.belongsToMany(models.negotiation, {
-      through: 'reviews',
+    user.hasMany(models.review, {
       foreignKey: {
-        name: 'id',
+        name: 'reviewerId',
       },
+      as: 'reviewsDone',
+    });
+    user.hasMany(models.review, {
+      foreignKey: {
+        name: 'reviewedId',
+      },
+      as: 'reviewsGotten',
     });
     // through messages
-    user.belongsToMany(models.negotiation, {
-      through: 'messages',
+    user.hasMany(models.message, {
       foreignKey: {
-        name: 'id',
+        name: 'senderId',
       },
+      as: 'messagesSent',
     });
+    user.hasMany(models.message, {
+      foreignKey: {
+        name: 'receiverId',
+      },
+      as: 'messagesReceived',
+    });
+
+    user.hasOne(models.session);
+  };
+
+  user.prototype.checkPassword = function checkPassword(password) {
+    return bcrypt.compare(password, this.password);
   };
 
   return user;

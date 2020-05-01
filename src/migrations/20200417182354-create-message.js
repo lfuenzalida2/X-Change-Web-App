@@ -6,16 +6,16 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    sender: {
+    senderId: {
       type: Sequelize.INTEGER,
     },
-    receiver: {
+    receiverId: {
       type: Sequelize.INTEGER,
     },
     text: {
       type: Sequelize.TEXT,
     },
-    negotiation: {
+    negotiationId: {
       type: Sequelize.INTEGER,
     },
     createdAt: {

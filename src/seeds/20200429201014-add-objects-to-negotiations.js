@@ -9,25 +9,19 @@ module.exports = {
       },
       {
         negotiationId: 1,
-        objectId: 2,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        negotiationId: 1,
         objectId: 3,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         negotiationId: 2,
-        objectId: 4,
+        objectId: 2,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         negotiationId: 2,
-        objectId: 5,
+        objectId: 4,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
