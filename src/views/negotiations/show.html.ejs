@@ -12,18 +12,17 @@
   </form>
 <% } else { %>
   <button type="button" name="button" disabled><%= negotiation.state %></button>
-<% } %>
-
-<% if (currentReview) { %>
-  <button type="button" name="button" disabled>Ya realizaste una review</button>
-<% } else { %>
-  <form action="<%= newReviewPath %>" method="POST">
-    <input type="hidden" name="reviewerId" value="<%= currentRole.id %>" />
-    <input type="hidden" name="reviewedId" value="<%= otherRole.id %>" />
-    <input type="hidden" name="reviewedName" value="<%= otherRole.username %>" />
-    <input type="hidden" name="negotiationId" value="<%= negotiation.id %>" />
-    <input type="submit" value="Hacer una Review" />
-  </form>
+  <% if (currentReview) { %>
+    <button type="button" name="button" disabled>Ya realizaste una review</button>
+  <% } else { %>
+    <form action="<%= newReviewPath %>" method="POST">
+      <input type="hidden" name="reviewerId" value="<%= currentRole.id %>" />
+      <input type="hidden" name="reviewedId" value="<%= otherRole.id %>" />
+      <input type="hidden" name="reviewedName" value="<%= otherRole.username %>" />
+      <input type="hidden" name="negotiationId" value="<%= negotiation.id %>" />
+      <input type="submit" value="Hacer una Review" />
+    </form>
+  <% } %>
 <% } %>
 
 <form action="<%= deleteNegotiationPath %>" method="POST">
