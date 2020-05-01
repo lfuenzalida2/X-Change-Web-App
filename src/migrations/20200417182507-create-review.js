@@ -6,13 +6,13 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    reviewer: {
+    reviewerId: {
       type: Sequelize.INTEGER,
     },
-    reviewed: {
+    reviewedId: {
       type: Sequelize.INTEGER,
     },
-    negotiation: {
+    negotiationId: {
       type: Sequelize.INTEGER,
     },
     rating: {
@@ -32,7 +32,7 @@ module.exports = {
   }, {
     uniqueKeys: {
       reviews_unique: {
-        fields: ['reviewer', 'negotiation'],
+        fields: ['reviewerId', 'negotiationId'],
       },
     },
   }),

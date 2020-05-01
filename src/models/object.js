@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
 
   object.associate = function associate(models) {
     object.belongsTo(models.category);
+    object.belongsTo(models.user);
     object.belongsToMany(models.negotiation, { through: 'objectNegotiation' });
   };
 

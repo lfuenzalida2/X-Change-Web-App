@@ -9,5 +9,9 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {});
 
+  category.associate = function associate(models) {
+    category.hasMany(models.object);
+  };
+
   return category;
 };

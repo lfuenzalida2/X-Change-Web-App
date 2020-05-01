@@ -11,7 +11,18 @@
 
   <body style="background-color: gray;">
     <header>
-      <h1 style="background-color: greenyellow; padding:0;">Grupo 39, el mas bacan</h1>
+      <h1 style="background-color: greenyellow; padding:0;">X-Change</h1>
+      <div id="user-bar">
+          <% if (currentUser) { %>
+            <span class="name">Hola <%= currentUser.username %>!</span>
+            <form action="<%= destroySessionPath %>" method="post">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" value="Cerrar Sesión" />
+            </form>
+          <% } else { %>
+            <a href="<%= newSessionPath %>">Iniciar Sesión</a>
+          <% } %>
+        </div>
     </header>
     <%- body %>
     <script src="<%= assetPath('app.js') %>"></script>

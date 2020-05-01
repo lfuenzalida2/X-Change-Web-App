@@ -6,10 +6,10 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    customer: {
+    customerId: {
       type: Sequelize.INTEGER,
     },
-    seller: {
+    sellerId: {
       type: Sequelize.INTEGER,
     },
     state: {

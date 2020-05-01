@@ -1,25 +1,29 @@
-<h2>Negotiation between <%= negotiation.customer %> and <%= negotiation.seller %></h2>
+<h2>Negociacion entre <%= customer.username %> y <%= seller.username %></h2>
 <% if(negotiation.state == "In Progress") { %>
   <form action="<%= editNegotiationPath %>" method="POST">
     <input type="hidden" name="_method" value="patch" />
     <input type="hidden" name="state" value="Accepted" />
-    <input type="submit" value="Accept Offer" />
+    <input type="submit" value="Aceptar Oferta" />
   </form>
   <form action="<%= editNegotiationPath %>" method="POST">
     <input type="hidden" name="_method" value="patch" />
     <input type="hidden" name="state" value="Cancelled" />
-    <input type="submit" value="Cancel Negotiation" />
+    <input type="submit" value="Cancelar Negociacion" />
   </form>
 <% } else { %>
   <button type="button" name="button" disabled><%= negotiation.state %></button>
-  <% if (true) { %> <!-- Add condition if current.user haven't reviewed yet -->
-    <form action="<%= newReviewPath %>" method="POST">
-      <input type="hidden" name="reviewer" value="<%= negotiation.customer %>" />
-      <input type="hidden" name="reviewed" value="<%= negotiation.seller %>" />
-      <input type="hidden" name="negotiation" value="<%= negotiation.id %>" />
-      <input type="submit" value="Do a Review" />
-    </form>
-  <% } %>
+<% } %>
+
+<% if (currentReview) { %>
+  <button type="button" name="button" disabled>Ya realizaste una review</button>
+<% } else { %>
+  <form action="<%= newReviewPath %>" method="POST">
+    <input type="hidden" name="reviewerId" value="<%= currentRole.id %>" />
+    <input type="hidden" name="reviewedId" value="<%= otherRole.id %>" />
+    <input type="hidden" name="reviewedName" value="<%= otherRole.username %>" />
+    <input type="hidden" name="negotiationId" value="<%= negotiation.id %>" />
+    <input type="submit" value="Hacer una Review" />
+  </form>
 <% } %>
 
 <form action="<%= deleteNegotiationPath %>" method="POST">
@@ -27,18 +31,22 @@
   <input type="submit" value="Delete" />
 </form>
 <div id=chat>
-  <h3>Chat with <%= negotiation.customer %></h3>
+  <h3>Chat con <%= otherRole.username %></h3>
   <% messagesList.forEach((message) => { %> %>
-    <%= message.sender %>: <%= message.text %>
-    <%= message.createdAt.toLocaleString("es-CL") %> <br>
+    <% if (customer.id == message.senderId){ %>
+      <%= customer.username %>
+    <% } else { %>
+      <%= seller.username %>
+    <% } %>
+    : <%= message.text %> (<%= message.createdAt.toLocaleString("es-CL") %>) <br>
   <% }) %>
   <% if(negotiation.state == "In Progress") { %>
     <form action="<%= newMessagePath  %>" method="POST">
-      <input type="hidden" name="sender" value=<%= negotiation.customer %> />
-      <input type="hidden" name="receiver" value=<%= negotiation.seller %> />
-      <input type="hidden" name="negotiation" value=<%= negotiation.id %> />
+      <input type="hidden" name="senderId" value=<%= currentRole.id %> />
+      <input type="hidden" name="receiverId" value=<%= otherRole.id %> />
+      <input type="hidden" name="negotiationId" value=<%= negotiation.id %> />
       <textarea type="text" name="text" placeholder="Escribe un mensaje..."></textarea>
-      <input type="submit" value="Send" />
+      <input type="submit" value="Enviar" />
     </form>
   <% } %>
 <div>
@@ -46,15 +54,15 @@
 <br>
 <br>
 
-<h2>Objects List</h2>
+<h2>Lista de Objetos</h2>
 <% if (!objects.length) { %>
-  <p>No results</p>
+  <p>No hay objetos aún.</p>
 <% } else { %>
   <table id="generic-list">
     <thead>
         <tr>
           <th>N</th>
-          <th>Name</th>
+          <th>Nombre</th>
         </tr>
     </thead>
     <tbody>
@@ -69,5 +77,5 @@
 <% } %>
 
 <% if(negotiation.state == "In Progress") { %>
-  <a href="<%= addObjectPath %>">New Object</a>
+  <a href="<%= addObjectPath %>">Añadir Objeto</a>
 <% } %>

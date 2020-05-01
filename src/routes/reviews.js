@@ -12,39 +12,41 @@ router.get('reviews.list', '/', async (ctx) => {
   await ctx.render('reviews/index', {
     reviewsList,
     deleteReviewPath: (review) => ctx.router.url('reviews.delete', { id: review.id }),
-    showNegotiationPath: (review) => ctx.router.url('negotiations.show', { id: review.negotiation }),
+    showNegotiationPath: (review) => ctx.router.url('negotiations.show', { id: review.negotiationId }),
   });
 });
 
 router.post('reviews.new', '/new', async (ctx) => {
-  const { reviewer, reviewed, negotiation } = ctx.request.body;
-  const review = await ctx.orm.review.findAll({ where: {reviewer, negotiation} });
+  const {
+    reviewerId, reviewedId, reviewedName, negotiationId,
+  } = ctx.request.body;
+  console.log(reviewedName);
   await ctx.render('reviews/new', {
-    review,
-    reviewer,
-    reviewed,
-    negotiation,
-    showNegotiationPath: ctx.router.url('negotiations.show', { id: negotiation }),
+    reviewerId,
+    reviewedId,
+    reviewedName,
+    negotiationId,
+    showNegotiationPath: ctx.router.url('negotiations.show', { id: negotiationId }),
     submitReviewPath: ctx.router.url('reviews.create'),
   });
 });
 
 router.post('reviews.create', '/', async (ctx) => {
-  const reviewer = +ctx.request.body.reviewer;
-  const reviewed = +ctx.request.body.reviewed;
-  const negotiation = +ctx.request.body.negotiation;
+  const reviewerId = +ctx.request.body.reviewerId;
+  const reviewedId = +ctx.request.body.reviewedId;
+  const negotiationId = +ctx.request.body.negotiationId;
   const { text, rating } = ctx.request.body;
   const review = ctx.orm.review.build({
-    reviewer, reviewed, negotiation, rating, text,
+    reviewerId, reviewedId, negotiationId, rating, text,
   });
   try {
-    await review.save({ fields: ['reviewer', 'reviewed', 'negotiation', 'rating', 'text'] });
-    ctx.redirect(ctx.router.url('negotiations.show', { id: negotiation }));
+    await review.save({ fields: ['reviewerId', 'reviewedId', 'negotiationId', 'rating', 'text'] });
+    ctx.redirect(ctx.router.url('negotiations.show', { id: negotiationId }));
   } catch (validationError) {
     await ctx.render('reviews/new', {
-      reviewer,
-      reviewed,
-      negotiation,
+      reviewerId,
+      reviewedId,
+      negotiationId,
       errors: validationError.errors,
       submitReviewPath: ctx.router.url('reviews.create'),
     });
