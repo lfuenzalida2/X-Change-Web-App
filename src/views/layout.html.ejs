@@ -9,9 +9,37 @@
     <% } %>
   </head>
 
-  <body style="background-color: gray;">
-    <header>
-      <h1 style="background-color: greenyellow; padding:0;">Grupo 39, el mas bacan</h1>
+  <body>
+    <header class="flexbox-container">
+      <div class="flexbox-item home">
+        <a href="/">Home</a>
+        <a href="#">Search</a>
+      </div>
+
+      <div class="flexbox-item title">
+        <h1>Grupo 39, el mas bacan</h1>
+      </div>
+
+      <!-- if not logged in -->
+      <div class="flexbox-item session flexbox-container">
+        <div>
+          <a href="#">Log In</a>
+        </div>
+        <div>
+          <a href="#">Register</a>
+        </div>
+      </div>
+
+      <!-- if logged in -->
+      <div class="hidden">
+        <div>
+          <a href="#">Messages</a>
+        </div>
+        <div>
+          <a href="#">Account</a>
+        </div>
+      </div>
+
     </header>
     <%- body %>
     <script src="<%= assetPath('app.js') %>"></script>
