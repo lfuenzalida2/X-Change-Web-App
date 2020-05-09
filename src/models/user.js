@@ -34,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     region: DataTypes.STRING,
     profilePicture: DataTypes.STRING,
+    isModerator: DataTypes.BOOLEAN,
   }, {});
 
   user.beforeCreate(buildPasswordHash);
