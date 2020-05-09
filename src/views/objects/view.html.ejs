@@ -22,12 +22,13 @@
         </div>
     </div>
 </div>
-
-<% if (currentUser.id !== object.userId) { %>
-    <form action="<%= createNegotiation  %>" method="POST">
-        <input type="hidden" name="customerId" value=<%= object.userId %>>
-        <input type="hidden" name="state" value=<%= object.state %>>
-        <input type="hidden" name="sellerId" value=<%= currentUser.id %>>
-        <input type="submit" value="Crear negociación" />
-    </form>
+<% if (currentUser) {%>
+    <% if (currentUser.id !== object.userId) { %>
+        <form action="<%= createNegotiation  %>" method="POST">
+            <input type="hidden" name="customerId" value=<%= object.userId %>>
+            <input type="hidden" name="state" value=<%= object.state %>>
+            <input type="hidden" name="sellerId" value=<%= currentUser.id %>>
+            <input type="submit" value="Crear negociación" />
+        </form>
+    <% } %>
 <% } %>

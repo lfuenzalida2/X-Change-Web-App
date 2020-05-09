@@ -40,8 +40,9 @@ function sortByDateDesc(a, b) {
 router.get('negotiations.list', '/', async (ctx) => {
   const negotiationsStarted = await ctx.state.currentUser.getNegotiationsStarted();
   const negotiationsGotten = await ctx.state.currentUser.getNegotiationsGotten();
+  const negotiationsList = negotiationsStarted.concat(negotiationsGotten).sort(sortByDateDesc);
   await ctx.render('negotiations/index', {
-    negotiationsList: negotiationsStarted.concat(negotiationsGotten).sort(sortByDateDesc),
+    negotiationsList,
     showNegotiationPath: (negotiation) => ctx.router.url('negotiations.show', { id: negotiation.id }),
     deleteNegotiationPath: (negotiation) => ctx.router.url('negotiations.delete', { id: negotiation.id }),
   });
@@ -126,5 +127,6 @@ router.del('negotiations.delete', '/:id', loadNegotiation, async (ctx) => {
   await negotiation.destroy();
   ctx.redirect(ctx.router.url('negotiations.list'));
 });
+
 
 module.exports = router;
