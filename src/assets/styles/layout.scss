@@ -22,7 +22,9 @@ html, body {
   }
 
   .home{
+    justify-content: space-between;
     margin-left: 1%;
+
   }
   
   .session{
@@ -48,4 +50,9 @@ h1 {
 
 .hidden {
   display: none;
+}
+
+.separate{
+  display: flex;
+  margin: 2px;
 }

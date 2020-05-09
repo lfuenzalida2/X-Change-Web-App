@@ -64,7 +64,7 @@ router.get('objects.edit', '/:id/edit', loadObject, async (ctx) => {
 router.patch('objects.update', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
   const { userId, categoryId, name, state, description } = ctx.request.body;
-  const values = await ctx.orm.category.findAll({ where: {id: categoryId} });
+  const values = await ctx.orm.category.findAll({ where: { id: categoryId } });
   try {
     if (!values.length) {
       throw new MyError('CategoryIdError', "The Id Category doesn't exist, please create one before adding an object to it");
@@ -86,5 +86,14 @@ router.del('objects.delete', '/:id', loadObject, async (ctx) => {
   await object.destroy();
   ctx.redirect(ctx.router.url('objects.list'));
 });
+
+router.get('objects.view', '/:id', loadObject, async (ctx) => {
+  const { object } = ctx.state;
+  await ctx.render('objects/view', {
+    object,
+    createNegotiation: ctx.router.url('negotiations.create'),
+  });
+});
+
 
 module.exports = router;

@@ -9,20 +9,52 @@
     <% } %>
   </head>
 
-  <body style="background-color: gray;">
-    <header>
-      <h1 style="background-color: greenyellow; padding:0;">X-Change</h1>
-      <div id="user-bar">
-          <% if (currentUser) { %>
-            <span class="name">Hola <%= currentUser.username %>!</span>
-            <form action="<%= destroySessionPath %>" method="post">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Cerrar Sesión" />
-            </form>
-          <% } else { %>
-            <a href="<%= newSessionPath %>">Iniciar Sesión</a>
-          <% } %>
+  <body>
+    <header class="flexbox-container">
+      <div class="flexbox-item home flexbox-container">
+        <div class="separate">
+          <a href="/">Home</a>
         </div>
+        <div class="separate">
+          <a href="<%= explore %>">Search</a>
+        </div>
+      </div>
+
+      <div class="flexbox-item title">
+        <h1>Grupo 39, el mas bacan</h1>
+      </div>
+
+      <!-- if not logged in -->
+      <div class="flexbox-item session flexbox-container" id="user-bar">
+          <% if (currentUser) { %>
+            <div class="separate">
+              <a href="<%= profile(currentUser) %>">Profile</a>
+            </div>
+            <div class="separate">
+              <a href="<%= inventory(currentUser) %>">Inventory</a>
+            </div>
+            <div class="separate">
+              <a href="#">Messages</a>
+            </div>
+            <div class="separate">
+              <a href="#">Account</a>
+            </div>
+            <div class="separate">
+              <form action="<%= destroySessionPath %>" method="post">
+                <input type="hidden" name="_method" value="delete" />
+                <input type="submit" value="Cerrar Sesión" />
+              </form>
+            </div>
+          <% } else { %>
+            <div class="separate">
+              <a href="<%= newSessionPath %>">Iniciar Sesión</a>
+            </div>
+            <div class="separate">
+              <a href="<%= newSessionPath %>">Register</a>
+            </div>
+          <% } %>
+      </div>
+
     </header>
     <%- body %>
     <script src="<%= assetPath('app.js') %>"></script>

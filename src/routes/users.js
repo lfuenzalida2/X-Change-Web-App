@@ -106,4 +106,8 @@ router.del('users.delete', '/:id', async (ctx) => {
   ctx.redirect(ctx.router.url('users.list'));
 });
 
+router.get('users.index', '/:id', async (ctx) => {
+  await ctx.render('account/index');
+});
+
 module.exports = router;

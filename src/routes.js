@@ -9,7 +9,7 @@ const categories = require('./routes/categories');
 const objects = require('./routes/objects');
 const users = require('./routes/users');
 const session = require('./routes/session');
-
+const inventory = require('./routes/inventory');
 
 const router = new KoaRouter();
 
@@ -25,6 +25,9 @@ router.use(async (ctx, next) => {
     newSessionPath: ctx.router.url('session.new'),
     destroySessionPath: ctx.router.url('session.destroy'),
     negotiationsPath: ctx.router.url('negotiations.list'),
+    explore: ctx.router.url('explore.list'),
+    inventory: (user) => ctx.router.url('inventory.list', { id: user.id }),
+    profile: (user) => ctx.router.url('users.index', { id: user.id }),
   });
   return next();
 });
@@ -39,6 +42,7 @@ router.use('/negotiations', async (ctx, next) => {
 
 router.use('/', index.routes());
 router.use('/explore', explore.routes());
+router.use('/inventory', inventory.routes());
 router.use('/categories', categories.routes());
 router.use('/objects', objects.routes());
 router.use('/users', users.routes());
