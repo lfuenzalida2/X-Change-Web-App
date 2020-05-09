@@ -36,7 +36,6 @@ router.post('objects.create', '/', async (ctx) => {
   const object = ctx.orm.object.build(ctx.request.body);
   const values = await ctx.orm.category.findAll({ where: {id : parseInt(object.categoryId)} });
   try {
-    console.log(values);
     if (!values.length) {
       throw new MyError('CategoryIdError', "The Id Category doesn't exist, please create one before adding an object to it");
     }
@@ -73,7 +72,6 @@ router.patch('objects.update', '/:id', loadObject, async (ctx) => {
     await object.update({ userId, categoryId, name, state, description });
     ctx.redirect(ctx.router.url('objects.list'));
   } catch (validationError) {
-    console.log(validationError);
     await ctx.render('objects/edit', {
       object,
       errors: validationError.errors,
