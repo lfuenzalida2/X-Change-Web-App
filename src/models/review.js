@@ -1,31 +1,28 @@
 module.exports = (sequelize, DataTypes) => {
   const review = sequelize.define('review', {
-    reviewer: {
+    reviewerId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'user',
         key: 'id',
       },
-   
     },
-    reviewed: {
+    reviewedId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'user',
         key: 'id',
       },
-   
     },
-    negotiation: {
+    negotiationId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'negotiation',
         key: 'id',
       },
-   
     },
     rating: {
       type: DataTypes.INTEGER,
@@ -41,8 +38,11 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {});
 
-  review.associate = function associate() {
+  review.associate = function associate(models) {
     // associations can be defined here. This method receives a models parameter.
+    review.belongsTo(models.user, { as: 'reviewer' });
+    review.belongsTo(models.user, { as: 'reviewed' });
+    review.belongsTo(models.negotiation);
   };
 
   return review;

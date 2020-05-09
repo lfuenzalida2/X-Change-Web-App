@@ -8,15 +8,18 @@ async function loadMessage(ctx, next) {
 }
 
 router.post('messages.create', '/', async (ctx) => {
-  const sender = +ctx.request.body.sender;
-  const receiver = +ctx.request.body.receiver;
-  const negotiation = +ctx.request.body.negotiation;
+  const senderId = +ctx.request.body.senderId;
+  const receiverId = +ctx.request.body.receiverId;
+  const negotiationId = +ctx.request.body.negotiationId;
   const { text } = ctx.request.body;
   const message = ctx.orm.message.build({
-    sender, receiver, text, negotiation,
+    senderId, receiverId, text, negotiationId,
   });
   try {
-    await message.save({ fields: ['sender', 'receiver', 'text', 'negotiation'] });
+    await message.save({ fields: ['senderId', 'receiverId', 'text', 'negotiationId'] });
+    const negotiation = await message.getNegotiation();
+    negotiation.changed('updatedAt', true);
+    await negotiation.save();
     ctx.redirect('back');
   } catch (validationError) {
     await ctx.redirect('back');

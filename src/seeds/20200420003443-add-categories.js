@@ -2,12 +2,7 @@ module.exports = {
   up: (queryInterface) => {
     const categoriesData = [
       {
-        name: 'musica',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        name: 'deporte',
+        name: 'música',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -17,7 +12,12 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        name: 'tecnologia',
+        name: 'deportes',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'tecnología',
         createdAt: new Date(),
         updatedAt: new Date(),
       },

@@ -1,23 +1,28 @@
+const bcrypt = require('bcrypt');
+const faker = require('faker');
+
+const PASSWORD_SALT = 10;
+
 module.exports = {
   up: (queryInterface) => {
     const users = [
       {
-        username: 'Lukas Fuenzalida',
-        mail: 'lukasafa@gmail.com',
-        password: 'Cacaca12',
+        username: 'Soy Admin',
+        mail: 'admin@xchange.com',
+        password: bcrypt.hashSync('12345678', PASSWORD_SALT),
         number: '999052260',
-        region: 'temuco',
-        profile_picture: 'asdasdsasda',
+        region: 'santiago',
+        profilePicture: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        username: 'Rafael Fuenzalida',
-        mail: 'lukasaf@gmail.com',
-        password: 'Holaaaa123',
-        number: '999052260',
+        username: faker.name.findName(),
+        mail: 'user@example.com',
+        password: bcrypt.hashSync('12345678', PASSWORD_SALT),
+        number: '999052261',
         region: 'temuco',
-        profile_picture: 'asdasdsasda',
+        profilePicture: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

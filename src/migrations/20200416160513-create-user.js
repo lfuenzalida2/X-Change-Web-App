@@ -23,7 +23,7 @@ module.exports = {
     region: {
       type: Sequelize.STRING,
     },
-    profile_picture: {
+    profilePicture: {
       type: Sequelize.STRING,
     },
     createdAt: {

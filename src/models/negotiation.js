@@ -1,10 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
   const negotiation = sequelize.define('negotiation', {
-    customer: {
+    customerId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    seller: {
+    sellerId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -16,28 +16,13 @@ module.exports = (sequelize, DataTypes) => {
 
   negotiation.associate = function associate(models) {
     negotiation.belongsToMany(models.object, { through: 'objectNegotiation' });
-    negotiation.belongsToMany(models.user, { 
-      through: 'reviews',
-      foreignKey: {
-        name: 'customer'
-      }});
-    negotiation.belongsToMany(models.user, { 
-      through: 'reviews',
-      foreignKey: {
-        name: 'seller'
-      }});
-      // through messages
-    negotiation.belongsToMany(models.user, { 
-      through: 'messages',
-      foreignKey: {
-        name: 'customer'
-      }});
-    negotiation.belongsToMany(models.user, { 
-      through: 'messages',
-      foreignKey: {
-        name: 'seller'
-      }});
-};
+
+    negotiation.belongsTo(models.user, { as: 'customer' });
+    negotiation.belongsTo(models.user, { as: 'seller' });
+
+    negotiation.hasMany(models.message);
+    negotiation.hasMany(models.review);
+  };
 
   return negotiation;
 };
