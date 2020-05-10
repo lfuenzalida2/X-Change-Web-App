@@ -14,9 +14,9 @@
       <% negotiationsList.forEach((negotiation) => { %>
         <tr>
           <% if(negotiation.customerId != currentUser.id){ %>
-            <td><%= negotiation.customerId %></td>
+            <td><%= negotiation.customer %></td>
           <% } else {%>
-          <td><%= negotiation.sellerId %></td>
+          <td><%= negotiation.seller %></td>
           <% } %>
           <td><%= negotiation.state %></td>
           <td><a href="<%= showNegotiationPath(negotiation) %>">Ver Detalles</a></td>
