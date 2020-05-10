@@ -9,11 +9,7 @@
       </ul>
     </div>
   <% } %>
-<<<<<<< HEAD
-  <a href="<%= inventory(currentUser) %>">Back to the list</a>
-=======
-  <a href="<%= home %>">Back to the list</a>
->>>>>>> c12511cef8f951269568dfd70e95d568b0045ebc
+  <a href="<%= inventory(currentUser) %>">Vuelve a la lista</a>
  <form action="<%= submitObjectPath %>" method="post">
    <% if (!object.isNewRecord) { %>
      <input type="hidden" name="_method" value="patch" />
@@ -31,7 +27,6 @@
         <option value="3">3</option>
       </select>
    </div>
-<<<<<<< HEAD
    <div>
       <label for="state">State of Object</label>
       <select name="state" value="<%= object.state %>">
@@ -39,19 +34,6 @@
         <option value="false">false</option>
       </select>
    </div>
-=======
-   <div class="field">
-     <label for="name">Name</label>
-     <input type="text" name="name" value="<%= object.name %>"  />
-   </div>
-   <div>
-      <label for="state">State of Object</label>
-      <select name="state" value="<%= object.state %>">
-        <option value="true">true</option>
-        <option value="false">false</option>
-      </select>
-   </div>
->>>>>>> c12511cef8f951269568dfd70e95d568b0045ebc
    <div class="field">
      <label for="description">description</label>
      <input type="text" name="description" value="<%= object.description %>"  />

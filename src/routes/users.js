@@ -14,6 +14,7 @@ function Valid(string) {
   }
   let cap = false;
   let num = false;
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < string.length; i++) {
     const element = string[i];
 
@@ -107,7 +108,9 @@ router.del('users.delete', '/:id', async (ctx) => {
 });
 
 router.get('users.index', '/:id', async (ctx) => {
-  await ctx.render('account/index');
+  const reviews = await ctx.orm.review.findAll();
+  console.log(reviews);
+  await ctx.render('account/index', {});
 });
 
 module.exports = router;

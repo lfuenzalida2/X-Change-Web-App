@@ -26,11 +26,7 @@
     <% if (currentUser.id !== object.userId) { %>
         <form action="<%= createNegotiation  %>" method="POST">
             <input type="hidden" name="customerId" value=<%= object.userId %>>
-<<<<<<< HEAD
             <input type="hidden" name="state" value="In Progress">
-=======
-            <input type="hidden" name="state" value=<%= object.state %>>
->>>>>>> c12511cef8f951269568dfd70e95d568b0045ebc
             <input type="hidden" name="sellerId" value=<%= currentUser.id %>>
             <input type="submit" value="Crear negociación" />
         </form>
