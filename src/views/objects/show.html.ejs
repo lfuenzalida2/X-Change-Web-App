@@ -2,7 +2,15 @@
 <h1> <%= object.name %> </h1>
 
 <br>
+<% if (!photos.length) { %>
+  <p>No hay fotos de este objeto aún</p>
+<% } else { %>
 
+  <% photos.forEach((photo) => { %>
+    <img src=<%=`https://storage.cloud.google.com/xchange_storage/${photo.fileName}`%>>
+    <br>
+  <% }) %>
+<% } %>
 <form action="<%= submitObjectPath %>" enctype="multipart/form-data" method="post">
   <div class="field">
     <label for="list">Select file</label>

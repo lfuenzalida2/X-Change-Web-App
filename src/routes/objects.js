@@ -99,7 +99,7 @@ router.get('objects.show', '/:id/show', loadObject, async (ctx) => {
     object,
     home: ctx.router.url('objects.list'),
     submitObjectPath: ctx.router.url('objects.load', { id: object.id }),
-    // load photos
+    photos: await ctx.state.object.getPhotos(),
   });
 });
 
