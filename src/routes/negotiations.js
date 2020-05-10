@@ -41,14 +41,13 @@ router.get('negotiations.list', '/', async (ctx) => {
   const negotiationsStarted = await ctx.state.currentUser.getNegotiationsStarted();
   const negotiationsGotten = await ctx.state.currentUser.getNegotiationsGotten();
   const negotiationsList = negotiationsStarted.concat(negotiationsGotten).sort(sortByDateDesc);
-  const newList = [];
+  /* ver include https://sequelize.org/master/manual/eager-loading.html */
   for (let i = 0; i < negotiationsList.length; i++) {
     const element = negotiationsList[i];
     const customer = await element.getCustomer();
     const seller = await element.getSeller();
-    element.customer = customer.username;
-    element.seller = seller.username;
-    newList.push(element);
+    element.customer = customer;
+    element.seller = seller;
   }
   await ctx.render('negotiations/index', {
     negotiationsList,
