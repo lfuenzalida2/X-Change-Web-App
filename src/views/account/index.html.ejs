@@ -17,6 +17,32 @@
         </div>
     </div>
 </div>
+
+<% if (currentUser.id == reviews[0].reviewedId) {%>
 <div class="flex-container border">
-    Hola
+    <table>
+        <thead>
+            <tr>
+                <td>Nombre</td>
+                <td>Descripcion</td>
+                <td>Rating</td>
+            </tr>
+        </thead>
+        <tbody>
+            <% reviews.forEach(review => { %>
+                <tr>
+                    <td>
+                        <a href="<%= otherProfile(review.reviewer) %>"><%= review.reviewer.username %></a>
+                    </td>
+                    <td>
+                        <%= review.text %>
+                    </td>
+                    <td>
+                        <%= review.rating %>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
 </div>
+<% }%>

@@ -108,9 +108,21 @@ router.del('users.delete', '/:id', async (ctx) => {
 });
 
 router.get('users.index', '/:id', async (ctx) => {
-  const reviews = await ctx.orm.review.findAll();
+  const currentUser = await ctx.state.currentUser;
+  const user = await ctx.orm.user;
+  const reviews = await ctx.orm.review.findAll({
+    where: { reviewedId: currentUser.id },
+    include: [{ model: user, as: 'reviewed' }, { model: user, as: 'reviewer' }],
+  });
   console.log(reviews);
-  await ctx.render('account/index', {});
+  reviews.forEach(element => {
+    console.log(element.reviewer);
+    console.log(element.reviewed);
+  });
+  await ctx.render('account/index', {
+    reviews,
+    otherProfile: (other) => ctx.router.url('users.index', { id: other.id }),
+  });
 });
 
 module.exports = router;
