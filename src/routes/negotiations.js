@@ -39,7 +39,6 @@ function sortByDateDesc(a, b) {
 }
 
 router.get('negotiations.list', '/', async (ctx) => {
-<<<<<<< HEAD
   const users = await ctx.orm.user;
   const currentUser = await ctx.state.currentUser;
   const negotiationsList = await ctx.orm.negotiation.findAll({
@@ -47,19 +46,6 @@ router.get('negotiations.list', '/', async (ctx) => {
     include: [{ model: users, as: 'customer' }, { model: users, as: 'seller' }],
   });
 
-=======
-  const negotiationsStarted = await ctx.state.currentUser.getNegotiationsStarted();
-  const negotiationsGotten = await ctx.state.currentUser.getNegotiationsGotten();
-  const negotiationsList = negotiationsStarted.concat(negotiationsGotten).sort(sortByDateDesc);
-  /* ver include https://sequelize.org/master/manual/eager-loading.html */
-  for (let i = 0; i < negotiationsList.length; i++) {
-    const element = negotiationsList[i];
-    const customer = await element.getCustomer();
-    const seller = await element.getSeller();
-    element.customer = customer;
-    element.seller = seller;
-  }
->>>>>>> c12511cef8f951269568dfd70e95d568b0045ebc
   await ctx.render('negotiations/index', {
     negotiationsList,
     showNegotiationPath: (negotiation) => ctx.router.url('negotiations.show', { id: negotiation.id }),
@@ -76,10 +62,7 @@ router.get('negotiations.show', '/:id', loadNegotiation, async (ctx) => {
     negotiation,
     customer,
     seller,
-<<<<<<< HEAD
     deleteObject: ctx.router.url('negotiations.object_del', { id: negotiation.id }),
-=======
->>>>>>> c12511cef8f951269568dfd70e95d568b0045ebc
     editNegotiationPath: ctx.router.url('negotiations.update', { id: negotiation.id }),
     deleteNegotiationPath: ctx.router.url('negotiations.delete', { id: negotiation.id }),
     messagesList: await negotiation.getMessages(),
@@ -143,11 +126,7 @@ router.post('negotiations.add', '/:id', loadNegotiation, async (ctx) => {
     await objectNegotiation.save({ fields: ['negotiationId', 'objectId'] });
     negotiation.changed('updatedAt', true);
     await negotiation.save();
-<<<<<<< HEAD
     ctx.router.url('negotiations.add_object');
-=======
-    ctx.redirect('back');
->>>>>>> c12511cef8f951269568dfd70e95d568b0045ebc
   } catch (validationError) {
     await ctx.render('negotiations/add_object', {
       objectList,
