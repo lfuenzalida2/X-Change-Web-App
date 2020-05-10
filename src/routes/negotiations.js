@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const { Op } = require('sequelize');
 
 const router = new KoaRouter();
 
@@ -38,6 +39,15 @@ function sortByDateDesc(a, b) {
 }
 
 router.get('negotiations.list', '/', async (ctx) => {
+<<<<<<< HEAD
+  const users = await ctx.orm.user;
+  const currentUser = await ctx.state.currentUser;
+  const negotiationsList = await ctx.orm.negotiation.findAll({
+    where: { [Op.or]: [{ sellerId: { [Op.eq]: currentUser.id } }, { customerId: { [Op.eq]: currentUser.id } }] },
+    include: [{ model: users, as: 'customer' }, { model: users, as: 'seller' }],
+  });
+
+=======
   const negotiationsStarted = await ctx.state.currentUser.getNegotiationsStarted();
   const negotiationsGotten = await ctx.state.currentUser.getNegotiationsGotten();
   const negotiationsList = negotiationsStarted.concat(negotiationsGotten).sort(sortByDateDesc);
@@ -49,6 +59,7 @@ router.get('negotiations.list', '/', async (ctx) => {
     element.customer = customer;
     element.seller = seller;
   }
+>>>>>>> c12511cef8f951269568dfd70e95d568b0045ebc
   await ctx.render('negotiations/index', {
     negotiationsList,
     showNegotiationPath: (negotiation) => ctx.router.url('negotiations.show', { id: negotiation.id }),
@@ -65,6 +76,10 @@ router.get('negotiations.show', '/:id', loadNegotiation, async (ctx) => {
     negotiation,
     customer,
     seller,
+<<<<<<< HEAD
+    deleteObject: ctx.router.url('negotiations.object_del', { id: negotiation.id }),
+=======
+>>>>>>> c12511cef8f951269568dfd70e95d568b0045ebc
     editNegotiationPath: ctx.router.url('negotiations.update', { id: negotiation.id }),
     deleteNegotiationPath: ctx.router.url('negotiations.delete', { id: negotiation.id }),
     messagesList: await negotiation.getMessages(),
@@ -76,6 +91,12 @@ router.get('negotiations.show', '/:id', loadNegotiation, async (ctx) => {
     currentRole: currentRole(ctx, customer, seller),
     otherRole: otherRole(ctx, customer, seller),
   });
+});
+
+router.del('negotiations.object_del', '/:id', loadNegotiation, async (ctx) => {
+  const objectNegotiation = ctx.orm.objectNegotiation.build(ctx.request.body);
+  await objectNegotiation.destroy();
+  await ctx.redirect('back');
 });
 
 router.post('negotiations.create', '/', async (ctx) => {
@@ -93,8 +114,16 @@ router.post('negotiations.create', '/', async (ctx) => {
 
 router.get('negotiations.add_object', '/:id/add_object', loadNegotiation, async (ctx) => {
   const { negotiation } = ctx.state;
+  const categories = ctx.orm.category;
+  const currentUser = await ctx.state.currentUser;
+  const objectList = await ctx.orm.object.findAll({
+    where: { userId: currentUser.id },
+    include: { model: categories },
+  });
   await ctx.render('negotiations/add_object', {
     negotiation,
+    objectList,
+    deleteObject: ctx.router.url('negotiations.object_del', { id: negotiation.id }),
     addObjectPath: ctx.router.url('negotiations.add', { id: negotiation.id }),
     goToNegotiation: ctx.router.url('negotiations.show', { id: negotiation.id }),
     objects: await ctx.state.negotiation.getObjects(),
@@ -103,14 +132,26 @@ router.get('negotiations.add_object', '/:id/add_object', loadNegotiation, async 
 
 router.post('negotiations.add', '/:id', loadNegotiation, async (ctx) => {
   const { negotiation } = ctx.state;
+  const categories = ctx.orm.category;
+  const currentUser = await ctx.state.currentUser;
+  const objectList = await ctx.orm.object.findAll({
+    where: { userId: currentUser.id },
+    include: { model: categories },
+  });
   const objectNegotiation = ctx.orm.objectNegotiation.build(ctx.request.body);
   try {
     await objectNegotiation.save({ fields: ['negotiationId', 'objectId'] });
     negotiation.changed('updatedAt', true);
     await negotiation.save();
+<<<<<<< HEAD
+    ctx.router.url('negotiations.add_object');
+=======
     ctx.redirect('back');
+>>>>>>> c12511cef8f951269568dfd70e95d568b0045ebc
   } catch (validationError) {
     await ctx.render('negotiations/add_object', {
+      objectList,
+      deleteObject: ctx.router.url('negotiations.object_del', { id: negotiation.id }),
       objects: await ctx.state.negotiation.getObjects(),
       errors: validationError.errors,
       goToNegotiation: ctx.router.url('negotiations.show', { id: negotiation.id }),

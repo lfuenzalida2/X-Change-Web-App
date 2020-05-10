@@ -62,6 +62,10 @@
         <tr>
           <th>N</th>
           <th>Nombre</th>
+<<<<<<< HEAD
+          <th>Quitar</th>
+=======
+>>>>>>> c12511cef8f951269568dfd70e95d568b0045ebc
         </tr>
     </thead>
     <tbody>
@@ -69,6 +73,14 @@
         <tr>
           <td><%- (index + 1) %></td>
           <td><%- object.name %></td>
+          <td>
+            <form action="<%= deleteObject %>" method="POST">
+              <input type="hidden" name="_method" value="delete">
+              <input type="hidden" name="negotiationId" value="<%= negotiation.id %>">
+              <input type="hidden" name="objectId" value="<%= object.id %>">
+              <input type="submit" value="Quitar">
+            </form>
+          </td>
         </tr>
       <% }) %>
     </tbody>

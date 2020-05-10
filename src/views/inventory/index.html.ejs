@@ -7,10 +7,16 @@
         <table>
           <thead>
             <tr>
+<<<<<<< HEAD
+              <th>Name</th>
+              <th>State</th>
+              <th>CategoryId</th>
+=======
               <th>UserId</th>
               <th>CategoryId</th>
               <th>Name</th>
               <th>State</th>
+>>>>>>> c12511cef8f951269568dfd70e95d568b0045ebc
               <th>Description</th>
               <th>View</th>
             </tr>
@@ -18,10 +24,16 @@
           <tbody>
             <% objectsList.forEach((object) => { %>
               <tr>
+<<<<<<< HEAD
+                <td><%= object.name %></td>
+                <td><%= object.state %></td>
+                <td><%= object.categoryId %></td>
+=======
                 <td><%= object.userId %></td>
                 <td><%= object.categoryId %></td>
                 <td><%= object.name %></td>
                 <td><%= object.state %></td>
+>>>>>>> c12511cef8f951269568dfd70e95d568b0045ebc
                 <td><%= object.description %></td>
                 <td><a href="<%= objectView(object) %>">View</a></td>
               </tr>
@@ -30,4 +42,12 @@
         </table>
       <% } %>
     </div>
+<<<<<<< HEAD
   </div>
+
+<div class="flex-container">
+  <a href="<%= newObject %>">Agregar un nuevo objeto</a>
+</div>
+=======
+  </div>
+>>>>>>> c12511cef8f951269568dfd70e95d568b0045ebc

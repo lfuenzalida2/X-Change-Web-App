@@ -1,4 +1,6 @@
-<h2>Add object</h2>
+<h2>Añadir objeto</h2>
+
+<h3><a href="<%= goToNegotiation %>">Volver a la Negociación</a></h3>
 
 <h3><a href="<%= goToNegotiation %>">Go Back</a></h3>
 
@@ -13,27 +15,51 @@
       </ul>
     </div>
   <% } %>
- <form action="<%= addObjectPath %>" method="post">
-   <input type="hidden" name="negotiationId" value=<%= negotiation.id %>  />
-   <div class="field">
-     <label for="objectId">objectId</label>
-     <input type="text" name="objectId" value=""  />
-   </div>
-   <div class="field">
-       <input type="submit" name="add" value="Add"  />
-   </div>
- </form>
+   <table>
+    <div class="flex-container border">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Estado</th>
+          <th>Categoria</th>
+          <th>Descripción</th>
+          <th>Añadir a la Negociación</th>
+        </tr>
+      </thead>
+    </div>
+
+     <div class="flex-container border">
+       <tbody>
+         <% objectList.forEach(object => { %>
+             <tr>
+              <td><%= object.name %></td>
+              <td><%= object.state %></td>
+              <td><%= object.category.name %></td>
+              <td><%= object.description %></td>
+              <td>
+              <form action="<%= addObjectPath %>" method="post">
+                <input type="hidden" name="negotiationId" value=<%= negotiation.id %>  />
+                <input type="hidden" name="objectId" value="<%= object.id %>" />
+                <input type="submit" name="add" value="Add" />
+              </form>
+            </td>
+             </tr>
+         <% }) %>
+       </tbody>
+     </div>
+   </table>
 </div>
 
-<h2>Objects List</h2>
+<h2>Lista de Objetos</h2>
 <% if (!objects.length) { %>
-  <p>No results</p>
+  <p>Sin resultados</p>
 <% } else { %>
   <table id="generic-list">
     <thead>
         <tr>
-          <th>N</th>
-          <th>Name</th>
+          <th>N°</th>
+          <th>Nombre</th>
+          <th>Quitar</th>
         </tr>
     </thead>
     <tbody>
@@ -41,6 +67,14 @@
         <tr>
           <td><%- (index + 1) %></td>
           <td><%- object.name %></td>
+          <td>
+            <form action="<%= deleteObject %>" method="POST">
+              <input type="hidden" name="_method" value="delete">
+              <input type="hidden" name="negotiationId" value="<%= negotiation.id %>">
+              <input type="hidden" name="objectId" value="<%= object.id %>">
+              <input type="submit" value="Quitar">
+            </form>
+          </td>
         </tr>
       <% }) %>
     </tbody>

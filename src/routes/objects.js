@@ -28,13 +28,12 @@ router.get('objects.new', '/new', async (ctx) => {
   await ctx.render('objects/new', {
     object,
     submitObjectPath: ctx.router.url('objects.create'),
-    home: ctx.router.url('objects.list'),
   });
 });
 
 router.post('objects.create', '/', async (ctx) => {
   const object = ctx.orm.object.build(ctx.request.body);
-  const values = await ctx.orm.category.findAll({ where: {id : parseInt(object.categoryId)} });
+  const values = await ctx.orm.category.findAll({ where: { id: parseInt(object.categoryId) } });
   try {
     if (!values.length) {
       throw new MyError('CategoryIdError', "The Id Category doesn't exist, please create one before adding an object to it");
@@ -44,7 +43,6 @@ router.post('objects.create', '/', async (ctx) => {
   } catch (validationError) {
     await ctx.render('objects/new', {
       object,
-      home: ctx.router.url('objects.list'),
       errors: validationError.errors,
       submitObjectPath: ctx.router.url('objects.create'),
     });
