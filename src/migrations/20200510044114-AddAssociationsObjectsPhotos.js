@@ -10,6 +10,12 @@ module.exports = {
       },
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
+    }, {
+      uniqueKeys: {
+        objectNegotiations_unique: {
+          fields: ['objectId', 'fileName'],
+        },
+      },
     },
   ),
 

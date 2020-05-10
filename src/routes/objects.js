@@ -1,6 +1,9 @@
 const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
+const parse = require('imagemagick');
+const fs = require('fs');
+const fileStorage = require('../services/file-storage');
 
 async function loadObject(ctx, next) {
   ctx.state.object = await ctx.orm.object.findByPk(ctx.params.id);
@@ -20,6 +23,7 @@ router.get('objects.list', '/', async (ctx) => {
     newObjectPath: ctx.router.url('objects.new'),
     editObjectPath: (object) => ctx.router.url('objects.edit', { id: object.id }),
     deleteObjectPath: (object) => ctx.router.url('objects.delete', { id: object.id }),
+    showObjectPath: (object) => ctx.router.url('objects.show', { id: object.id }),
   });
 });
 
@@ -87,6 +91,37 @@ router.del('objects.delete', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
   await object.destroy();
   ctx.redirect(ctx.router.url('objects.list'));
+});
+
+router.get('objects.show', '/:id/show', loadObject, async (ctx) => {
+  const { object } = ctx.state;
+  await ctx.render('objects/show', {
+    object,
+    home: ctx.router.url('objects.list'),
+    submitObjectPath: ctx.router.url('objects.load', { id: object.id }),
+    // load photos
+  });
+});
+
+router.post('objects.load', '/:id', loadObject, async (ctx) => {
+  const { object } = ctx.state;
+  const { list } = ctx.request.files;
+  const fileName = list.name;
+  const objectId = object.id;
+  const photo = ctx.orm.photo.build({ fileName, objectId });
+  try {
+    await photo.save({ fields: ['fileName', 'objectId'] });
+    ctx.redirect('objects/show');
+  } catch (validationError) {
+    await ctx.render('objects/show', {
+      object,
+      home: ctx.router.url('objects.list'),
+      errors: validationError.errors,
+      submitObjectPath: ctx.router.url('objects.load', { id: object.id }),
+    });
+  }
+  await fileStorage.upload(list);
+  ctx.redirect(ctx.router.url('objects.show', { id: object.id }));
 });
 
 module.exports = router;

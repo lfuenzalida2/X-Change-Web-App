@@ -7,7 +7,7 @@ module.exports = {
       type: Sequelize.INTEGER,
     },
 
-    photoIdentificator: {
+    fileName: {
       type: Sequelize.STRING,
       unique: true,
     },

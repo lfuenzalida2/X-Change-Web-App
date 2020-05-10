@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const photo = sequelize.define('photo', {
-    photoIdentificator: DataTypes.STRING,
+    fileName: DataTypes.STRING,
   }, {});
 
   photo.associate = function associate(models) {

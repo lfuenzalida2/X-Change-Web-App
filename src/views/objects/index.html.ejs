@@ -21,6 +21,7 @@
           <td><%= object.name %></td>
           <td><%= object.state %></td>
           <td><%= object.description %></td>
+          <td><a href="<%= showObjectPath(object) %>">Ver</a></td>
           <td><a href="<%= editObjectPath(object) %>">Edit</a></td>
           <td>
             <!-- única forma de hacer un metodo que no sea GET es a través de un formulario-->
