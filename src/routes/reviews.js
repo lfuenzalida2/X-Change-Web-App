@@ -39,7 +39,9 @@ router.post('reviews.create', '/', async (ctx) => {
     reviewerId, reviewedId, negotiationId, rating, text,
   });
   try {
+    console.log("asd");
     await review.save({ fields: ['reviewerId', 'reviewedId', 'negotiationId', 'rating', 'text'] });
+    console.log('review correctamente hecha');
     ctx.redirect(ctx.router.url('negotiations.show', { id: negotiationId }));
   } catch (validationError) {
     await ctx.render('reviews/new', {

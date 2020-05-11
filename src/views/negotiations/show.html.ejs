@@ -14,7 +14,10 @@
   <button type="button" name="button" disabled><%= negotiation.state %></button>
   <% if (currentReview) { %>
     <button type="button" name="button" disabled>Ya realizaste una review</button>
-  <% } else { %>
+    <% } else { %>
+        <h1>
+          <%= currentReview %>
+        </h1>
     <form action="<%= newReviewPath %>" method="POST">
       <input type="hidden" name="reviewerId" value="<%= currentRole.id %>" />
       <input type="hidden" name="reviewedId" value="<%= otherRole.id %>" />

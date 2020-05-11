@@ -27,7 +27,7 @@ function otherRole(ctx, customer, seller) {
 function didReview(ctx, reviews) {
   const { currentUser } = ctx.state;
   for (let i = 0; i < reviews.length; i += 1) {
-    if (reviews[i].id === currentUser.id) {
+    if (reviews[i].reviewedId === currentUser.id || reviews[i].reviewerId === currentUser.id) {
       return true;
     }
   }
@@ -45,7 +45,6 @@ router.get('negotiations.list', '/', async (ctx) => {
     where: { [Op.or]: [{ sellerId: { [Op.eq]: currentUser.id } }, { customerId: { [Op.eq]: currentUser.id } }] },
     include: [{ model: users, as: 'customer' }, { model: users, as: 'seller' }],
   });
-
   await ctx.render('negotiations/index', {
     negotiationsList,
     showNegotiationPath: (negotiation) => ctx.router.url('negotiations.show', { id: negotiation.id }),
@@ -74,12 +73,6 @@ router.get('negotiations.show', '/:id', loadNegotiation, async (ctx) => {
     currentRole: currentRole(ctx, customer, seller),
     otherRole: otherRole(ctx, customer, seller),
   });
-});
-
-router.del('negotiations.object_del', '/:id', loadNegotiation, async (ctx) => {
-  const objectNegotiation = ctx.orm.objectNegotiation.build(ctx.request.body);
-  await objectNegotiation.destroy();
-  await ctx.redirect('back');
 });
 
 router.post('negotiations.create', '/', async (ctx) => {
@@ -154,6 +147,12 @@ router.del('negotiations.delete', '/:id', loadNegotiation, async (ctx) => {
   const { negotiation } = ctx.state;
   await negotiation.destroy();
   ctx.redirect(ctx.router.url('negotiations.list'));
+});
+
+router.del('negotiations.object_del', '/:id/object', loadNegotiation, async (ctx) => {
+  const objectNegotiation = ctx.orm.objectNegotiation.build(ctx.request.body);
+  await objectNegotiation.destroy();
+  await ctx.redirect('back');
 });
 
 
