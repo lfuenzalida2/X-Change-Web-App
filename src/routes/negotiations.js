@@ -61,6 +61,7 @@ router.get('negotiations.show', '/:id', loadNegotiation, async (ctx) => {
     negotiation,
     customer,
     seller,
+    reviews,
     deleteObject: ctx.router.url('negotiations.object_del', { id: negotiation.id }),
     editNegotiationPath: ctx.router.url('negotiations.update', { id: negotiation.id }),
     deleteNegotiationPath: ctx.router.url('negotiations.delete', { id: negotiation.id }),
