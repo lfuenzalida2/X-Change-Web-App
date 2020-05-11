@@ -1,5 +1,15 @@
+const fs = require('fs');
+const path = require('path');
+
+const gTokenPath = path.join(`${__dirname}/gToken.json`);
+if (!fs.existsSync(gTokenPath)) {
+  fs.writeFileSync(gTokenPath, process.env.STORAGE_KEY);
+}
+
+const gcsKeyFile = JSON.parse(process.env.STORAGE_KEY);
+
 module.exports = {
   provider: 'google',
-  keyFilename: 'silicon-pattern-276801-1889f2e90590.json', // path to a JSON key file
-  projectId: 'silicon-pattern-276801', // project id
+  keyFilename: gTokenPath, // path to a JSON key file
+  projectId: gcsKeyFile.project_id, // project id
 };
