@@ -21,11 +21,13 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
+    views: DataTypes.INTEGER,
   }, {});
 
   object.associate = function associate(models) {
     object.belongsTo(models.category);
     object.belongsTo(models.user);
+    object.hasMany(models.photo);
     object.belongsToMany(models.negotiation, { through: 'objectNegotiation' });
   };
 
