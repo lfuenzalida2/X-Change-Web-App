@@ -114,14 +114,18 @@ router.get('users.index', '/:id', async (ctx) => {
     where: { reviewedId: currentUser.id },
     include: [{ model: user, as: 'reviewed' }, { model: user, as: 'reviewer' }],
   });
-  console.log(reviews);
-  reviews.forEach(element => {
-    console.log(element.reviewer);
-    console.log(element.reviewed);
-  });
   await ctx.render('account/index', {
     reviews,
-    otherProfile: (other) => ctx.router.url('users.index', { id: other.id }),
+    otherProfile: (other) => ctx.router.url('users.view', { id: other.id }),
+  });
+});
+
+router.post('users.view', '/:id/profile', async (ctx) => {
+  const { reviewerId } = ctx.request.body;
+  const reviewer = await ctx.orm.user.findByPk(reviewerId);
+  console.log(reviewer);
+  await ctx.render('account/other', {
+    reviewer,
   });
 });
 
