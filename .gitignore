@@ -79,6 +79,8 @@ jspm_packages/
 
 # dotenv environment variables file
 .env
+silicon-pattern-276801-1889f2e90590.json
+gToken.json
 
 # direnv environment variables file
 .envrc
