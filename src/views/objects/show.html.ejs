@@ -1,16 +1,11 @@
 
 <h1> <%= object.name %> </h1>
+<ul>
+  <li><span><%= object.categoryId %></span></li>
+  <li><span> <%= object.description %> </span></li>
+  <li><span> <%= object.state %> </span></li>
+</ul>
 
-<br>
-<% if (!photos.length) { %>
-  <p>No hay fotos de este objeto aún</p>
-<% } else { %>
-
-  <% photos.forEach((photo) => { %>
-    <img src=<%=`https://storage.cloud.google.com/xchange_storage/${photo.fileName}`%>>
-    <br>
-  <% }) %>
-<% } %>
 <form action="<%= submitObjectPath %>" enctype="multipart/form-data" method="post">
   <div class="field">
     <label for="list">Select file</label>
@@ -20,3 +15,15 @@
     <input type="submit" name="upload" value="Upload" />
   </div>
 </form>
+
+<h2>Fotos!</h2>
+
+<% if (!photos.length) { %>
+  <p>No hay fotos de este objeto aún</p>
+<% } else { %>
+
+  <% photos.forEach((photo) => { %>
+    <img src=<%=`https://storage.cloud.google.com/xchange_storage/${photo.fileName}`%>>
+    <br>
+  <% }) %>
+<% } %>
