@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const { Op } = require('sequelize');
 
 const router = new KoaRouter();
 
@@ -26,7 +27,7 @@ function otherRole(ctx, customer, seller) {
 function didReview(ctx, reviews) {
   const { currentUser } = ctx.state;
   for (let i = 0; i < reviews.length; i += 1) {
-    if (reviews[i].id === currentUser.id) {
+    if (reviews[i].reviewedId === currentUser.id || reviews[i].reviewerId === currentUser.id) {
       return true;
     }
   }
@@ -38,10 +39,14 @@ function sortByDateDesc(a, b) {
 }
 
 router.get('negotiations.list', '/', async (ctx) => {
-  const negotiationsStarted = await ctx.state.currentUser.getNegotiationsStarted();
-  const negotiationsGotten = await ctx.state.currentUser.getNegotiationsGotten();
+  const users = await ctx.orm.user;
+  const currentUser = await ctx.state.currentUser;
+  const negotiationsList = await ctx.orm.negotiation.findAll({
+    where: { [Op.or]: [{ sellerId: { [Op.eq]: currentUser.id } }, { customerId: { [Op.eq]: currentUser.id } }] },
+    include: [{ model: users, as: 'customer' }, { model: users, as: 'seller' }],
+  });
   await ctx.render('negotiations/index', {
-    negotiationsList: negotiationsStarted.concat(negotiationsGotten).sort(sortByDateDesc),
+    negotiationsList,
     showNegotiationPath: (negotiation) => ctx.router.url('negotiations.show', { id: negotiation.id }),
     deleteNegotiationPath: (negotiation) => ctx.router.url('negotiations.delete', { id: negotiation.id }),
   });
@@ -56,6 +61,8 @@ router.get('negotiations.show', '/:id', loadNegotiation, async (ctx) => {
     negotiation,
     customer,
     seller,
+    reviews,
+    deleteObject: ctx.router.url('negotiations.object_del', { id: negotiation.id }),
     editNegotiationPath: ctx.router.url('negotiations.update', { id: negotiation.id }),
     deleteNegotiationPath: ctx.router.url('negotiations.delete', { id: negotiation.id }),
     messagesList: await negotiation.getMessages(),
@@ -84,8 +91,16 @@ router.post('negotiations.create', '/', async (ctx) => {
 
 router.get('negotiations.add_object', '/:id/add_object', loadNegotiation, async (ctx) => {
   const { negotiation } = ctx.state;
+  const categories = ctx.orm.category;
+  const currentUser = await ctx.state.currentUser;
+  const objectList = await ctx.orm.object.findAll({
+    where: { userId: currentUser.id },
+    include: { model: categories },
+  });
   await ctx.render('negotiations/add_object', {
     negotiation,
+    objectList,
+    deleteObject: ctx.router.url('negotiations.object_del', { id: negotiation.id }),
     addObjectPath: ctx.router.url('negotiations.add', { id: negotiation.id }),
     goToNegotiation: ctx.router.url('negotiations.show', { id: negotiation.id }),
     objects: await ctx.state.negotiation.getObjects(),
@@ -94,14 +109,22 @@ router.get('negotiations.add_object', '/:id/add_object', loadNegotiation, async 
 
 router.post('negotiations.add', '/:id', loadNegotiation, async (ctx) => {
   const { negotiation } = ctx.state;
+  const categories = ctx.orm.category;
+  const currentUser = await ctx.state.currentUser;
+  const objectList = await ctx.orm.object.findAll({
+    where: { userId: currentUser.id },
+    include: { model: categories },
+  });
   const objectNegotiation = ctx.orm.objectNegotiation.build(ctx.request.body);
   try {
     await objectNegotiation.save({ fields: ['negotiationId', 'objectId'] });
     negotiation.changed('updatedAt', true);
     await negotiation.save();
-    ctx.redirect('back');
+    ctx.router.url('negotiations.add_object');
   } catch (validationError) {
     await ctx.render('negotiations/add_object', {
+      objectList,
+      deleteObject: ctx.router.url('negotiations.object_del', { id: negotiation.id }),
       objects: await ctx.state.negotiation.getObjects(),
       errors: validationError.errors,
       goToNegotiation: ctx.router.url('negotiations.show', { id: negotiation.id }),
@@ -126,5 +149,12 @@ router.del('negotiations.delete', '/:id', loadNegotiation, async (ctx) => {
   await negotiation.destroy();
   ctx.redirect(ctx.router.url('negotiations.list'));
 });
+
+router.del('negotiations.object_del', '/:id/object', loadNegotiation, async (ctx) => {
+  const objectNegotiation = ctx.orm.objectNegotiation.build(ctx.request.body);
+  await objectNegotiation.destroy();
+  await ctx.redirect('back');
+});
+
 
 module.exports = router;

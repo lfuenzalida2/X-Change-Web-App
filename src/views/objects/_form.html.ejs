@@ -9,14 +9,15 @@
       </ul>
     </div>
   <% } %>
-  <a href="<%= home %>">Back to the list</a>
+  <a href="<%= inventory(currentUser) %>">Vuelve a la lista</a>
  <form action="<%= submitObjectPath %>" method="post">
    <% if (!object.isNewRecord) { %>
      <input type="hidden" name="_method" value="patch" />
    <% } %>
+     <input type="hidden" name="userId" value="<%= currentUser.id %>"  />
    <div class="field">
-     <label for="userId">userId</label>
-     <input type="text" name="userId" value="<%= object.userId %>"  />
+      <label for="name">Name</label>
+      <input type="text" name="name" value="<%= object.name %>"  />
    </div>
    <div>
       <label for="categoryId">category Id</label>
@@ -25,10 +26,6 @@
         <option value="2">2</option>
         <option value="3">3</option>
       </select>
-   </div>
-   <div class="field">
-     <label for="name">Name</label>
-     <input type="text" name="name" value="<%= object.name %>"  />
    </div>
    <div>
       <label for="state">State of Object</label>

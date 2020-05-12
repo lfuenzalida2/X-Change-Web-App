@@ -5,8 +5,7 @@
   <table>
     <thead>
       <tr>
-        <th>CustomerId</th>
-        <th>SellerId</th>
+        <th>With</th>
         <th>State</th>
         <th colspan="2">Acciones</th>
       </tr>
@@ -14,8 +13,11 @@
     <tbody>
       <% negotiationsList.forEach((negotiation) => { %>
         <tr>
-          <td><%= negotiation.customerId %></td>
-          <td><%= negotiation.sellerId %></td>
+          <% if(negotiation.customerId != currentUser.id){ %>
+            <td><%= negotiation.customer.username %></td>
+          <% } else {%>
+            <td><%= negotiation.seller.username %></td>
+          <% } %>
           <td><%= negotiation.state %></td>
           <td><a href="<%= showNegotiationPath(negotiation) %>">Ver Detalles</a></td>
           <td>

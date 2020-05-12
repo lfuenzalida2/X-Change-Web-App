@@ -1,4 +1,4 @@
-<h2>Negociacion entre <%= customer.username %> y <%= seller.username %></h2>
+<h2>Negociacion con <%= otherRole.username %></h2>
 <% if(negotiation.state == "In Progress") { %>
   <form action="<%= editNegotiationPath %>" method="POST">
     <input type="hidden" name="_method" value="patch" />
@@ -12,9 +12,39 @@
   </form>
 <% } else { %>
   <button type="button" name="button" disabled><%= negotiation.state %></button>
+<% if (negotiation.state == "Accepted") { %>
+  <div class="flexbox-item border">
+    Felicidades, han podido realizar un X-Change exitoso!
+    <br>
+    Aquí está el email y telefono de <%= otherRole.username %>
+    <br>
+    mail: <%= otherRole.mail %>
+    <br>
+    telefono: <%= otherRole.number %>
+  </div>
+<% } else if (negotiation.state == "Cancelled") { %>
+  <div class="flexbox-item border">
+    Es una pena que no haya funcionado el X-Change ;(
+  </div>
+<% } %>
+  <% if (currentReview) { %>
+    <div class="flex-item border">
+      <h3>Tu review fue</h3>
+      <% reviews.forEach(review => { %>
+        <% if(review.reviewerId == currentUser.id){ %>
+          <label for="rating">Rating:</label>
+          <span name="rating"><%= review.rating %></span>
+          |
+          <label for="text">Texto:</label>
+          <span name="text"><%= review.text %></span>
+        <% } %>
+      <% }); %> 
+    <% } %>
+    </div>
   <% if (currentReview) { %>
     <button type="button" name="button" disabled>Ya realizaste una review</button>
-  <% } else { %>
+    <% } else { %>
+
     <form action="<%= newReviewPath %>" method="POST">
       <input type="hidden" name="reviewerId" value="<%= currentRole.id %>" />
       <input type="hidden" name="reviewedId" value="<%= otherRole.id %>" />
@@ -62,6 +92,7 @@
         <tr>
           <th>N</th>
           <th>Nombre</th>
+          <th>Quitar</th>
         </tr>
     </thead>
     <tbody>
@@ -69,6 +100,14 @@
         <tr>
           <td><%- (index + 1) %></td>
           <td><%- object.name %></td>
+          <td>
+            <form action="<%= deleteObject %>" method="POST">
+              <input type="hidden" name="_method" value="delete">
+              <input type="hidden" name="negotiationId" value="<%= negotiation.id %>">
+              <input type="hidden" name="objectId" value="<%= object.id %>">
+              <input type="submit" value="Quitar">
+            </form>
+          </td>
         </tr>
       <% }) %>
     </tbody>

@@ -1,0 +1,34 @@
+<div class="flex-container">
+    <div class="flexbox-item border">
+        Image
+    </div>
+    <div class="flexbox-item">
+        <div class="flex-container">
+            <div class="flexbox-item">
+                <h1><%= object.name %></h1>
+            </div>
+            <div class="flexbox-item">
+                <%= object.state %>
+            </div>
+            <div class="flexbox-item">
+                <%= object.userId %>
+            </div>
+            <div class="flexbox-item">
+                <%= object.categoryId %>
+            </div>
+            <div class="flexbox-item">
+                <%= object.description %>
+            </div>
+        </div>
+    </div>
+</div>
+<% if (currentUser) {%>
+    <% if (currentUser.id !== object.userId) { %>
+        <form action="<%= createNegotiation  %>" method="POST">
+            <input type="hidden" name="customerId" value=<%= object.userId %>>
+            <input type="hidden" name="state" value="In Progress">
+            <input type="hidden" name="sellerId" value=<%= currentUser.id %>>
+            <input type="submit" value="Crear negociación" />
+        </form>
+    <% } %>
+<% } %>

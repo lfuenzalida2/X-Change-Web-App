@@ -20,7 +20,6 @@ router.post('reviews.new', '/new', async (ctx) => {
   const {
     reviewerId, reviewedId, reviewedName, negotiationId,
   } = ctx.request.body;
-  console.log(reviewedName);
   await ctx.render('reviews/new', {
     reviewerId,
     reviewedId,

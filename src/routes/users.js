@@ -15,6 +15,7 @@ function Valid(string) {
   }
   let cap = false;
   let num = false;
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < string.length; i++) {
     const element = string[i];
 
@@ -106,6 +107,28 @@ router.del('users.delete', '/:id', async (ctx) => {
   const newUser = await ctx.orm.user.findByPk(ctx.params.id);
   await newUser.destroy();
   ctx.redirect(ctx.router.url('users.list'));
+});
+
+router.get('users.index', '/:id', async (ctx) => {
+  const currentUser = await ctx.state.currentUser;
+  const user = await ctx.orm.user;
+  const reviews = await ctx.orm.review.findAll({
+    where: { reviewedId: currentUser.id },
+    include: [{ model: user, as: 'reviewed' }, { model: user, as: 'reviewer' }],
+  });
+  await ctx.render('account/index', {
+    reviews,
+    otherProfile: (other) => ctx.router.url('users.view', { id: other.id }),
+  });
+});
+
+router.post('users.view', '/:id/profile', async (ctx) => {
+  const { reviewerId } = ctx.request.body;
+  const reviewer = await ctx.orm.user.findByPk(reviewerId);
+  console.log(reviewer);
+  await ctx.render('account/other', {
+    reviewer,
+  });
 });
 
 module.exports = router;

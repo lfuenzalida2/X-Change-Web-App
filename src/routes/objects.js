@@ -28,15 +28,13 @@ router.get('objects.new', '/new', async (ctx) => {
   await ctx.render('objects/new', {
     object,
     submitObjectPath: ctx.router.url('objects.create'),
-    home: ctx.router.url('objects.list'),
   });
 });
 
 router.post('objects.create', '/', async (ctx) => {
   const object = ctx.orm.object.build(ctx.request.body);
-  const values = await ctx.orm.category.findAll({ where: {id : parseInt(object.categoryId)} });
+  const values = await ctx.orm.category.findAll({ where: { id: parseInt(object.categoryId) } });
   try {
-    console.log(values);
     if (!values.length) {
       throw new MyError('CategoryIdError', "The Id Category doesn't exist, please create one before adding an object to it");
     }
@@ -45,7 +43,6 @@ router.post('objects.create', '/', async (ctx) => {
   } catch (validationError) {
     await ctx.render('objects/new', {
       object,
-      home: ctx.router.url('objects.list'),
       errors: validationError.errors,
       submitObjectPath: ctx.router.url('objects.create'),
     });
@@ -65,7 +62,7 @@ router.get('objects.edit', '/:id/edit', loadObject, async (ctx) => {
 router.patch('objects.update', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
   const { userId, categoryId, name, state, description } = ctx.request.body;
-  const values = await ctx.orm.category.findAll({ where: {id: categoryId} });
+  const values = await ctx.orm.category.findAll({ where: { id: categoryId } });
   try {
     if (!values.length) {
       throw new MyError('CategoryIdError', "The Id Category doesn't exist, please create one before adding an object to it");
@@ -73,7 +70,6 @@ router.patch('objects.update', '/:id', loadObject, async (ctx) => {
     await object.update({ userId, categoryId, name, state, description });
     ctx.redirect(ctx.router.url('objects.list'));
   } catch (validationError) {
-    console.log(validationError);
     await ctx.render('objects/edit', {
       object,
       errors: validationError.errors,
@@ -88,5 +84,20 @@ router.del('objects.delete', '/:id', loadObject, async (ctx) => {
   await object.destroy();
   ctx.redirect(ctx.router.url('objects.list'));
 });
+
+router.get('objects.view', '/:id', loadObject, async (ctx) => {
+  const { object } = ctx.state;
+  try {
+    await ctx.render('objects/view', {
+      object,
+      createNegotiation: ctx.router.url('negotiations.create'),
+    });
+  } catch (error) {
+    await ctx.render('objects/view', {
+      object,
+    });
+  }
+});
+
 
 module.exports = router;

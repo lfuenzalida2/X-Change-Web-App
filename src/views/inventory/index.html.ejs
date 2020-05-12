@@ -1,0 +1,35 @@
+<h2> Objects </h2>
+<div class="flex-container">
+    <div class="flexbox-item objects border">
+      <% if (!objectsList.length) { %>
+        <p>No results</p>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>State</th>
+              <th>CategoryId</th>
+              <th>Description</th>
+              <th>View</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% objectsList.forEach((object) => { %>
+              <tr>
+                <td><%= object.name %></td>
+                <td><%= object.state %></td>
+                <td><%= object.categoryId %></td>
+                <td><%= object.description %></td>
+                <td><a href="<%= objectView(object) %>">View</a></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </div>
+
+<div class="flex-container">
+  <a href="<%= newObject %>">Agregar un nuevo objeto</a>
+</div>
