@@ -29,6 +29,7 @@ router.use(async (ctx, next) => {
     explore: ctx.router.url('explore.list'),
     inventory: (user) => ctx.router.url('inventory.list', { id: user.id }),
     profile: (user) => ctx.router.url('users.index', { id: user.id }),
+    registerSession: ctx.router.url('users.new'),
     negotiations: ctx.router.url('negotiations.list'),
   });
   return next();

@@ -118,6 +118,7 @@ router.get('users.index', '/:id', async (ctx) => {
   });
   await ctx.render('account/index', {
     reviews,
+    editProfile: ctx.router.url('users.edit', { id: currentUser.id }),
     otherProfile: (other) => ctx.router.url('users.view', { id: other.id }),
   });
 });
@@ -125,7 +126,6 @@ router.get('users.index', '/:id', async (ctx) => {
 router.post('users.view', '/:id/profile', async (ctx) => {
   const { reviewerId } = ctx.request.body;
   const reviewer = await ctx.orm.user.findByPk(reviewerId);
-  console.log(reviewer);
   await ctx.render('account/other', {
     reviewer,
   });
