@@ -1,9 +1,9 @@
 <div class="flex-container">
   <div class="flexbox-item border">
-    Search
+    Buscar
     <form action="#">
       <div>
-        <label for="keywords">Keywords: </label>
+        <label for="keywords">Palabras Clave: </label>
         <input type="text" name="keywords">
       </div>
       <div>
@@ -22,17 +22,20 @@
         </select>
       </div>
       <div>
-        <label for="category">Category: </label>
+        <label for="category">Categoria: </label>
         <select name="category" id="category">
-          <option value="sport">Sport</option>
-          <option value="electronics">Electronics</option>
+          <option value="sport">Deporte</option>
+          <option value="electronics">Tecnologia</option>
         </select>
+      </div>
+      <div>
+        <input type="submit" name="Submit"  value="Buscar">
       </div>
     </form>
   </div>
 
   <div class="flexbox-item objects border">
-    <h2> Objects </h2>
+    <h2> Objetos </h2>
     <% if (!objectsList.length) { %>
       <p>No results</p>
     <% } else { %>
@@ -41,10 +44,10 @@
           <tr>
             <th>UserId</th>
             <th>CategoryId</th>
-            <th>Name</th>
-            <th>State</th>
-            <th>Description</th>
-            <th>View</th>
+            <th>Nombre</th>
+            <th>Estado</th>
+            <th>Descripcion</th>
+            <th>Ver</th>
           </tr>
         </thead>
         <tbody>
@@ -55,7 +58,7 @@
               <td><%= object.name %></td>
               <td><%= object.state %></td>
               <td><%= object.description %></td>
-              <td><a href="<%= view(object) %>">View</a></td>
+              <td><a href="<%= view(object) %>">Ver</a></td>
             </tr>
           <% }) %>
         </tbody>

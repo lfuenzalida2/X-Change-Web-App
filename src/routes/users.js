@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const sendRegistrationEmail = require('../mailers/registration');
 
 const router = new KoaRouter();
 
@@ -60,6 +61,7 @@ router.post('users.create', '/', async (ctx) => {
       throw new MyError('PasswordError', 'La constraseña no cumple los requisitos.');
     }
     await newUser.save({ fields: ['username', 'password', 'mail', 'number', 'region', 'profilePicture'] });
+    await sendRegistrationEmail(ctx, { user: newUser });
     ctx.redirect(ctx.router.url('users.list'));
   } catch (validationError) {
     await ctx.render('users/new', {
@@ -114,14 +116,18 @@ router.get('users.index', '/:id', async (ctx) => {
     where: { reviewedId: currentUser.id },
     include: [{ model: user, as: 'reviewed' }, { model: user, as: 'reviewer' }],
   });
-  console.log(reviews);
-  reviews.forEach(element => {
-    console.log(element.reviewer);
-    console.log(element.reviewed);
-  });
   await ctx.render('account/index', {
     reviews,
-    otherProfile: (other) => ctx.router.url('users.index', { id: other.id }),
+    otherProfile: (other) => ctx.router.url('users.view', { id: other.id }),
+  });
+});
+
+router.post('users.view', '/:id/profile', async (ctx) => {
+  const { reviewerId } = ctx.request.body;
+  const reviewer = await ctx.orm.user.findByPk(reviewerId);
+  console.log(reviewer);
+  await ctx.render('account/other', {
+    reviewer,
   });
 });
 
