@@ -20,7 +20,7 @@
 editar perfil 
 <a href="<%= editProfile %>">editar</a>
 
-<% if (reviews.lenght) { %>
+<% if (!reviews.lenght) { %>
     <% if (currentUser.id == reviews[0].reviewedId) {%>
     <div>
         <h3 class="flexbox-item">Ratings</h1>
