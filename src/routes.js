@@ -11,7 +11,6 @@ const users = require('./routes/users');
 const session = require('./routes/session');
 const inventory = require('./routes/inventory');
 
-
 const router = new KoaRouter();
 
 router.use(async (ctx, next) => {

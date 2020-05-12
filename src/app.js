@@ -50,6 +50,7 @@ if (developmentMode) {
 }
 
 app.use(koaStatic(path.join(__dirname, '..', 'build'), {}));
+app.use(koaStatic(__dirname));
 
 // expose a session hash to store information across requests from same client
 app.use(session({

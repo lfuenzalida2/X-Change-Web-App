@@ -13,8 +13,11 @@
  <form action="<%= submitObjectPath %>" method="post">
    <% if (!object.isNewRecord) { %>
      <input type="hidden" name="_method" value="patch" />
-   <% } %>
-     <input type="hidden" name="userId" value="<%= currentUser.id %>"  />
+     <input type="hidden" name="views" value="<%= object.views %>"  />
+   <% } else { %>
+     <input type="hidden" name="views" value="0"  />
+    <% } %>
+   <input type="hidden" name="userId" value="<%= currentUser.id %>"  />
    <div class="field">
       <label for="name">Name</label>
       <input type="text" name="name" value="<%= object.name %>"  />

@@ -79,6 +79,7 @@ jspm_packages/
 
 # dotenv environment variables file
 .env
+gToken.json
 
 # direnv environment variables file
 .envrc

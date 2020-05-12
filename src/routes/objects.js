@@ -1,6 +1,7 @@
 const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
+const fileStorage = require('../services/file-storage');
 
 async function loadObject(ctx, next) {
   ctx.state.object = await ctx.orm.object.findByPk(ctx.params.id);
@@ -20,6 +21,7 @@ router.get('objects.list', '/', async (ctx) => {
     newObjectPath: ctx.router.url('objects.new'),
     editObjectPath: (object) => ctx.router.url('objects.edit', { id: object.id }),
     deleteObjectPath: (object) => ctx.router.url('objects.delete', { id: object.id }),
+    showObjectPath: (object) => ctx.router.url('objects.view', { id: object.id }),
   });
 });
 
@@ -38,7 +40,7 @@ router.post('objects.create', '/', async (ctx) => {
     if (!values.length) {
       throw new MyError('CategoryIdError', "The Id Category doesn't exist, please create one before adding an object to it");
     }
-    await object.save({ fields: ['userId', 'categoryId', 'name', 'state', 'description'] });
+    await object.save({ fields: ['views', 'userId', 'categoryId', 'name', 'state', 'description'] });
     ctx.redirect(ctx.router.url('objects.list'));
   } catch (validationError) {
     await ctx.render('objects/new', {
@@ -61,7 +63,7 @@ router.get('objects.edit', '/:id/edit', loadObject, async (ctx) => {
 
 router.patch('objects.update', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
-  const { userId, categoryId, name, state, description } = ctx.request.body;
+  const { views, userId, categoryId, name, state, description } = ctx.request.body;
   const values = await ctx.orm.category.findAll({ where: { id: categoryId } });
   try {
     if (!values.length) {
@@ -87,17 +89,33 @@ router.del('objects.delete', '/:id', loadObject, async (ctx) => {
 
 router.get('objects.view', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
-  try {
-    await ctx.render('objects/view', {
-      object,
-      createNegotiation: ctx.router.url('negotiations.create'),
-    });
-  } catch (error) {
-    await ctx.render('objects/view', {
-      object,
-    });
-  }
+  await ctx.render('objects/view', {
+    object,
+    createNegotiation: ctx.router.url('negotiations.create'),
+    submitObjectPath: ctx.router.url('objects.load', { id: object.id }),
+    photos: await ctx.state.object.getPhotos(),
+  });
 });
 
+router.post('objects.load', '/:id', loadObject, async (ctx) => {
+  const { object } = ctx.state;
+  const { list } = ctx.request.files;
+  const fileName = list.name;
+  const objectId = object.id;
+  const photo = ctx.orm.photo.build({ fileName, objectId });
+  try {
+    await photo.save({ fields: ['fileName', 'objectId'] });
+    ctx.redirect('objects/view');
+  } catch (validationError) {
+    await ctx.render('objects/view', {
+      object,
+      home: ctx.router.url('objects.list'),
+      errors: validationError.errors,
+      submitObjectPath: ctx.router.url('objects.load', { id: object.id }),
+    });
+  }
+  await fileStorage.upload(list);
+  ctx.redirect(ctx.router.url('objects.view', { id: object.id }));
+});
 
 module.exports = router;
