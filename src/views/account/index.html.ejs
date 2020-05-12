@@ -18,37 +18,43 @@
     </div>
 </div>
 
-<% if (currentUser.id == reviews[0].reviewedId) {%>
-<div>
-    <h3 class="flexbox-item">Ratings</h1>
-</div>
-<div class="flex-container border">
-    <table>
-        <thead>
-            <tr>
-                <td>Nombre</td>
-                <td>Descripcion</td>
-                <td>Rating</td>
-            </tr>
-        </thead>
-        <tbody>
-            <% reviews.forEach(review => { %>
+<% if (reviews.lenght) { %>
+    <% if (currentUser.id == reviews[0].reviewedId) {%>
+    <div>
+        <h3 class="flexbox-item">Ratings</h1>
+    </div>
+    <div class="flex-container border">
+        <table>
+            <thead>
                 <tr>
-                    <td>
-                        <form action="<%= otherProfile(review.reviewer) %>" method="POST">
-                            <input type="hidden" name="reviewerId" value="<%= review.reviewerId %>">
-                            <input type="submit" value="<%= review.reviewer.username %>">
-                        </form>
-                    </td>
-                    <td>
-                        <%= review.text %>
-                    </td>
-                    <td>
-                        <%= review.rating %>
-                    </td>
+                    <td>Nombre</td>
+                    <td>Descripcion</td>
+                    <td>Rating</td>
                 </tr>
-            <% }); %>
-        </tbody>
-    </table>
-</div>
-<% }%>
+            </thead>
+            <tbody>
+                <% reviews.forEach(review => { %>
+                    <tr>
+                        <td>
+                            <form action="<%= otherProfile(review.reviewer) %>" method="POST">
+                                <input type="hidden" name="reviewerId" value="<%= review.reviewerId %>">
+                                <input type="submit" value="<%= review.reviewer.username %>">
+                            </form>
+                        </td>
+                        <td>
+                            <%= review.text %>
+                        </td>
+                        <td>
+                            <%= review.rating %>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+    <% }%>
+<% } else { %>
+    <div class="flexbox-item border">
+        Actualmente no tienes ninguna review
+    </div> 
+<% } %>
