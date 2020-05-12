@@ -77,12 +77,6 @@ router.get('negotiations.show', '/:id', loadNegotiation, async (ctx) => {
   });
 });
 
-router.del('negotiations.object_del', '/:id', loadNegotiation, async (ctx) => {
-  const objectNegotiation = ctx.orm.objectNegotiation.build(ctx.request.body);
-  await objectNegotiation.destroy();
-  await ctx.redirect('back');
-});
-
 router.post('negotiations.create', '/', async (ctx) => {
   const customerId = +ctx.request.body.customerId;
   const sellerId = +ctx.request.body.sellerId;
