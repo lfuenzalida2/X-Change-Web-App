@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const sendRegistrationEmail = require('../mailers/registration');
 
 const router = new KoaRouter();
 
@@ -60,6 +61,7 @@ router.post('users.create', '/', async (ctx) => {
       throw new MyError('PasswordError', 'La constraseña no cumple los requisitos.');
     }
     await newUser.save({ fields: ['username', 'password', 'mail', 'number', 'region', 'profilePicture'] });
+    await sendRegistrationEmail(ctx, { user: newUser });
     ctx.redirect(ctx.router.url('users.list'));
   } catch (validationError) {
     await ctx.render('users/new', {

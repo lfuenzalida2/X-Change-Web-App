@@ -44,6 +44,7 @@
   <% if (currentReview) { %>
     <button type="button" name="button" disabled>Ya realizaste una review</button>
     <% } else { %>
+
     <form action="<%= newReviewPath %>" method="POST">
       <input type="hidden" name="reviewerId" value="<%= currentRole.id %>" />
       <input type="hidden" name="reviewedId" value="<%= otherRole.id %>" />
