@@ -1,5 +1,3 @@
-import './assets';
-import '../styles/index.scss';
 
 console.log('HOLOALAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
 
@@ -7,8 +5,8 @@ let slideIndex = 1;
 
 function showSlides(n) {
   let i;
-  const slides = document.getElementsByClassName('mySlides');
-  const dots = document.getElementsByClassName('dot');
+  let slides = document.getElementsByClassName('mySlides');
+  let dots = document.getElementsByClassName('dot');
   if (n > slides.length) { slideIndex = 1; }
   if (n < 1) { slideIndex = slides.lengt; }
   for (i = 0; i < slides.length; i++) {

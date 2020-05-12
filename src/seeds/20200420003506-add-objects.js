@@ -17,7 +17,7 @@ module.exports = {
         name: 'The Last Of Us',
         state: true,
         description: 'Juego Original para PS4',
-        views: 0,
+        views: 7,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
