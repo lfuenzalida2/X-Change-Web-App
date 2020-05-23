@@ -7,10 +7,13 @@ const koaStatic = require('koa-static');
 const render = require('koa-ejs');
 const session = require('koa-session');
 const override = require('koa-override-method');
+const http = require('http');
+const socket = require('socket.io');
 const assets = require('./assets');
 const mailer = require('./mailers');
 const routes = require('./routes');
 const orm = require('./models');
+
 
 // App constructor
 const app = new Koa();
@@ -50,7 +53,6 @@ if (developmentMode) {
 }
 
 app.use(koaStatic(path.join(__dirname, '..', 'build'), {}));
-app.use(koaStatic(__dirname));
 
 // expose a session hash to store information across requests from same client
 app.use(session({
@@ -83,5 +85,20 @@ mailer(app);
 
 // Routing middleware
 app.use(routes.routes());
+
+app.server = http.createServer(app.callback());
+const io = socket(app.server);
+
+// Patch `app.listen()` to call `app.server.listen()`
+app.listen = function listen() {
+  app.server.listen.apply( app.server, arguments );
+  return app.server;
+};
+
+io.on('connection', (sock) => {
+  sock.on('chat message', (msg) => {
+    io.emit('chat message', msg);
+  });
+});
 
 module.exports = app;

@@ -45,7 +45,7 @@ router.get('negotiations.list', '/', async (ctx) => {
     where: { [Op.or]: [{ sellerId: { [Op.eq]: currentUser.id } }, { customerId: { [Op.eq]: currentUser.id } }] },
     include: [{ model: users, as: 'customer' }, { model: users, as: 'seller' }],
   });
-
+  negotiationsList.sort(sortByDateDesc);
   await ctx.render('negotiations/index', {
     negotiationsList,
     showNegotiationPath: (negotiation) => ctx.router.url('negotiations.show', { id: negotiation.id }),

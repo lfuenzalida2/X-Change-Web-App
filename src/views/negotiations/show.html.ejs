@@ -39,7 +39,7 @@
           <label for="text">Texto:</label>
           <span name="text"><%= review.text %></span>
         <% } %>
-      <% }); %> 
+      <% }); %>
     <% } %>
     </div>
   <% if (currentReview) { %>
@@ -61,24 +61,26 @@
 </form>
 <div id=chat>
   <h3>Chat con <%= otherRole.username %></h3>
+  <ul id=messages>
   <% messagesList.forEach((message) => { %> %>
-    <% if (customer.id == message.senderId){ %>
+    <li><% if (customer.id == message.senderId){ %>
       <%= customer.username %>
     <% } else { %>
       <%= seller.username %>
     <% } %>
     : <%= message.text %> (<%= message.createdAt.toLocaleString("es-CL") %>) <br>
-  <% }) %>
+  <% }) %></li>
+  </ul>
   <% if(negotiation.state == "In Progress") { %>
-    <form action="<%= newMessagePath  %>" method="POST">
+    <form id="send-message" action="<%= newMessagePath  %>" method="POST">
       <input type="hidden" name="senderId" value=<%= currentRole.id %> />
       <input type="hidden" name="receiverId" value=<%= otherRole.id %> />
       <input type="hidden" name="negotiationId" value=<%= negotiation.id %> />
-      <textarea type="text" name="text" placeholder="Escribe un mensaje..."></textarea>
+      <textarea id="m" type="text" name="text" placeholder="Escribe un mensaje..."></textarea>
       <input type="submit" value="Enviar" />
     </form>
   <% } %>
-<div>
+</div>
 <br>
 <br>
 <br>
