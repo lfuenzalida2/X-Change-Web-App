@@ -20,9 +20,12 @@ router.post('messages.create', '/', async (ctx) => {
     const negotiation = await message.getNegotiation();
     negotiation.changed('updatedAt', true);
     await negotiation.save();
-    ctx.redirect('back');
+    const sender = await ctx.orm.user.findByPk(senderId);
+    const parsedMessage = `${sender.username} : ${message.text} (${message.createdAt.toLocaleString('es-CL')})`;
+    ctx.response.body = parsedMessage;
+    // ctx.redirect('back');
   } catch (validationError) {
-    await ctx.redirect('back');
+    // await ctx.redirect('back');
   }
 });
 

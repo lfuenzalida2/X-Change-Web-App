@@ -1,2 +1,3 @@
-import './assets';
 import '../styles/index.scss';
+import './code/chat-socket';
+import './code/carousel';
