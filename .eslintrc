@@ -1,4 +1,6 @@
 {
   "extends": "airbnb-base",
-  'no-plusplus': [2, { allowForLoopAfterthoughts: true }],
+  "rules": {
+      "no-plusplus": [2, { allowForLoopAfterthoughts: true }],
+    }
 }
