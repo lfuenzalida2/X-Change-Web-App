@@ -89,6 +89,8 @@ router.del('objects.delete', '/:id', loadObject, async (ctx) => {
 
 router.get('objects.view', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
+  const views = object.views + 1;
+  await object.update({ views });
   await ctx.render('objects/view', {
     object,
     createNegotiation: ctx.router.url('negotiations.create'),
