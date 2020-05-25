@@ -107,17 +107,17 @@ router.post('objects.load', '/:id', loadObject, async (ctx) => {
   const photo = ctx.orm.photo.build({ fileName, objectId });
   try {
     await photo.save({ fields: ['fileName', 'objectId'] });
-    ctx.redirect('objects/view');
+    await fileStorage.upload(list);
+    ctx.redirect(ctx.router.url('objects.view', { id: object.id }));
   } catch (validationError) {
     await ctx.render('objects/view', {
       object,
-      home: ctx.router.url('objects.list'),
       errors: validationError.errors,
+      createNegotiation: ctx.router.url('negotiations.create'),
       submitObjectPath: ctx.router.url('objects.load', { id: object.id }),
+      photos: await ctx.state.object.getPhotos(),
     });
   }
-  await fileStorage.upload(list);
-  ctx.redirect(ctx.router.url('objects.view', { id: object.id }));
 });
 
 module.exports = router;
