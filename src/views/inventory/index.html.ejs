@@ -1,37 +1,28 @@
-<h2> Objects </h2>
-<div class="flex-container">
-    <div class="flexbox-item objects border">
-      <% if (!objectsList.length) { %>
-        <p>No results</p>
-      <% } else { %>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>State</th>
-              <th>CategoryId</th>
-              <th>Description</th>
-              <th>Amount of Views</th>
-              <th>View</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% objectsList.forEach((object) => { %>
-              <tr>
-                <td><%= object.name %></td>
-                <td><%= object.state %></td>
-                <td><%= object.categoryId %></td>
-                <td><%= object.description %></td>
-                <td><%= object.views %></td>
-                <td><a href="<%= objectView(object) %>">View</a></td>
-              </tr>
-            <% }) %>
-          </tbody>
-        </table>
-      <% } %>
+<div class="grid-container">
+  <div class="inventory-title">Mi inventario</div>
+<% objectsList.forEach((object) => { %>
+  <a class="grid-item" href="<%= objectView(object) %>">
+  <% if (object.photos.length > 0) { %>
+    <img src="https://storage.cloud.google.com/xchange_storage/<%=object.photos[0].fileName%>">
+  <% } else { %>
+    <img src="https://storage.cloud.google.com/xchange_storage/no_disponible.jpg">
+  <% }%>
+    <div class="object-info">
+      <div class="object-name"> <%= object.name %> </div>
+      <div class="object-description"> <%= object.description %> </div>
+      <div class="object-category"> Categoría: <%= object.category.name %> </div>
+      <div class="object-views"> Vistas: <%= object.views %> </div>
+      <div class="object-state"> Estado: <%= object.state %> </div>
     </div>
-  </div>
+  </a>
+<% }) %>
+<% if (objectsList.length < 9) { %>
+  <% for (var i = 0; i < 9 - objectsList.length; i++) { %>
+    <div class="grid-item"></div>
+  <% } %>
+<% } %>
+</div>
 
-<div class="flex-container">
-  <a href="<%= newObject %>">Agregar un nuevo objeto</a>
+<div class="center">
+  <a class="newObject" href="<%= newObject %>">Agregar objeto</a>
 </div>
