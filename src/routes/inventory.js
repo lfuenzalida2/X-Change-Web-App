@@ -4,7 +4,11 @@ const router = new KoaRouter();
 
 router.get('inventory.list', '/:id', async (ctx) => {
   const { currentUser } = ctx.state;
-  const objectsList = await ctx.orm.object.findAll({ where: { userId: currentUser.id } });
+  const photos = await ctx.orm.photo;
+  const categories = await ctx.orm.category;
+  const objectsList = await ctx.orm.object.findAll(
+    { where: { userId: currentUser.id }, include: [{ model: photos }, { model: categories }] },
+  );
   await ctx.render('inventory/index', {
     objectsList,
     newObject: ctx.router.url('objects.new'),

@@ -1,0 +1,89 @@
+.grid-container {
+  display: grid;
+  grid-gap: 7px;
+  width: 478px;
+  grid-template-columns: 150px 150px 150px;
+  grid-template-rows: 75px;
+  grid-auto-rows: 150px;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: #D3D3D3;
+  border-radius: 10px;
+  padding: 7px;
+  margin-top: 25px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+.inventory-title {
+  grid-column: 1 / span 3;
+  height: 50px;
+  margin-top: 8.7px;
+  margin-bottom: 8.7px;
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+}
+.grid-item {
+  background-color: #A9A9A9;
+  border-radius: 10px;
+  border: 1px solid black;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+}
+
+.grid-item img {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 10px;
+  background-color: #DDDDDD;
+  flex-shrink: 0;
+}
+
+.object-info {
+  display: none;
+  position: relative;
+  flex-shrink: 0;
+  width: 225px;
+  z-index: 100;
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
+  margin-left: 4px;
+  color: black;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.object-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.object-description {
+  font-style: oblique;
+}
+
+.grid-item :hover + .object-info {
+  display: block;
+}
+
+.newObject {
+  border: none;
+  color: white;
+  padding: 14px 14px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  font-weight: bold;
+  margin: 25px 2px;
+  transition-duration: 0.4s;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #008CBA;
+  opacity: 0.6;
+}
+
+.newObject:hover {
+  opacity: 1;
+}
