@@ -3,9 +3,9 @@
 <% objectsList.forEach((object) => { %>
   <a class="grid-item" href="<%= objectView(object) %>">
   <% if (object.photos.length > 0) { %>
-    <img src="https://storage.cloud.google.com/xchange_storage/<%=object.photos[0].fileName%>">
+    <img src="https://xchangestorage.s3.us-east-2.amazonaws.com/<%=object.photos[0].fileName%>">
   <% } else { %>
-    <img src="https://storage.cloud.google.com/xchange_storage/no_disponible.jpg">
+    <img src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg">
   <% }%>
     <div class="object-info">
       <div class="object-name"> <%= object.name %> </div>
