@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const sequelize = require('sequelize');
 
 const router = new KoaRouter();
 const fileStorage = require('../services/file-storage');
@@ -101,11 +102,16 @@ router.get('objects.view', '/:id', loadObject, async (ctx) => {
 
 router.post('objects.load', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
-  const { list } = ctx.request.files;
-  const fileName = list.name;
-  const objectId = object.id;
-  const photo = ctx.orm.photo.build({ fileName, objectId });
   try {
+    const { list } = ctx.request.files;
+    if (!list.name) {
+      throw new MyError('NoFile', "There's no file to upload");
+    }
+    const maxId = await ctx.orm.photo.max('id');
+    list.name = `${maxId}${list.name.slice(list.name.lastIndexOf('.'), list.name.length)}`;
+    const fileName = list.name;
+    const objectId = object.id;
+    const photo = ctx.orm.photo.build({ fileName, objectId });
     await photo.save({ fields: ['fileName', 'objectId'] });
     await fileStorage.upload(list);
     ctx.redirect(ctx.router.url('objects.view', { id: object.id }));
