@@ -16,9 +16,9 @@
   <a class="mySlides fade" href="<%= showObjectPath(mostViewed[i]) %>">
   <div class="numbertext"><%= i+1 %> / <%= mostViewed.length %></div>
      <% if (mostViewed[i].photos.length > 0) { %>
-       <img src="https://storage.cloud.google.com/xchange_storage/<%=mostViewed[i].photos[0].fileName%>?authuser=1">
+       <img src="https://xchangestorage.s3.us-east-2.amazonaws.com/<%=mostViewed[i].photos[0].fileName%>">
      <% } else { %>
-       <img src="https://storage.cloud.google.com/xchange_storage/no_disponible.jpg?authuser=1">
+       <img src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg">
      <% }%>
   </a>
 <% } %>
