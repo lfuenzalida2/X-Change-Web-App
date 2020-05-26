@@ -2,7 +2,7 @@ const fs = require('fs');
 const { storage } = require('pkgcloud');
 const storageConfig = require('../config/storage');
 
-const CONTAINER_NAME = 'xchange_storage';
+const CONTAINER_NAME = 'xchangestorage';
 
 class FileStorage {
   constructor() {

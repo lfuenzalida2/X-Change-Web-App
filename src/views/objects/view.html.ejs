@@ -29,7 +29,7 @@
           <p>No hay fotos de este objeto aún</p>
         <% } else { %>
             <% photos.forEach((photo) => { %>
-              <img src=<%=`https://storage.cloud.google.com/xchange_storage/${photo.fileName}`%>>
+              <img src=<%=`https://xchangestorage.s3.us-east-2.amazonaws.com/${photo.fileName}`%>>
               <br>
             <% }) %>
         <% } %>
@@ -65,4 +65,3 @@
         </form>
     <% } %>
 <% } %>
-
