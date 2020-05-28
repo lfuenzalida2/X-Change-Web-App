@@ -7,7 +7,7 @@
       <tr>
         <th>With</th>
         <th>State</th>
-        <th colspan="2">Acciones</th>
+        <th>View</th>
       </tr>
     </thead>
     <tbody>
@@ -20,12 +20,6 @@
           <% } %>
           <td><%= negotiation.state %></td>
           <td><a href="<%= showNegotiationPath(negotiation) %>">Ver Detalles</a></td>
-          <td>
-            <form action="<%= deleteNegotiationPath(negotiation) %>" method="POST">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Delete" />
-            </form>
-          </td>
         </tr>
       <% }) %>
     </tbody>

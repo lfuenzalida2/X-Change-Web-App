@@ -55,10 +55,6 @@
   <% } %>
 <% } %>
 
-<form action="<%= deleteNegotiationPath %>" method="POST">
-  <input type="hidden" name="_method" value="delete" />
-  <input type="submit" value="Delete" />
-</form>
 <div id=chat>
   <h3>Chat con <%= otherRole.username %></h3>
   <ul id=messages>
@@ -94,7 +90,9 @@
         <tr>
           <th>N</th>
           <th>Nombre</th>
-          <th>Quitar</th>
+          <% if (negotiation.state == "In Progress") { %>
+            <th>Quitar</th>
+          <% } %>
         </tr>
     </thead>
     <tbody>
@@ -107,7 +105,9 @@
               <input type="hidden" name="_method" value="delete">
               <input type="hidden" name="negotiationId" value="<%= negotiation.id %>">
               <input type="hidden" name="objectId" value="<%= object.id %>">
-              <input type="submit" value="Quitar">
+              <% if (negotiation.state == "In Progress") { %>
+                <input type="submit" value="Quitar">
+              <% } %>
             </form>
           </td>
         </tr>
