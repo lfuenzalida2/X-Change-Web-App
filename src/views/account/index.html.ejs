@@ -61,3 +61,6 @@ editar perfil
         Actualmente no tienes ninguna review
     </div> 
 <% } %>
+<% if (currentUser.isModerator){ %>
+    <a href="<%= viewObjects %>">Objects</a>
+<% } %>

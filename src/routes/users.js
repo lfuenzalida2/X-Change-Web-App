@@ -120,6 +120,8 @@ router.get('users.index', '/:id', async (ctx) => {
     reviews,
     editProfile: ctx.router.url('users.edit', { id: currentUser.id }),
     otherProfile: (other) => ctx.router.url('users.view', { id: other.id }),
+    viewObjects: ctx.router.url('objects.list'),
+    viewNegotiations: ctx.router.url('negotiations.list'),
   });
 });
 
