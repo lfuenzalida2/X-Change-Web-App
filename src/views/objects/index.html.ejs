@@ -1,7 +1,13 @@
-<h2> Objects </h2>
-<% if (!objectsList.length) { %>
+<% if (!currentUser.isModerator){ %>
+  <h1>Error</h1>
+  <p>Acceso restringido</p>
+<% } %>
+
+<% if (!objectsList.length){ %>
+  <h2> Objects </h2>
   <p>No results</p>
-<% } else { %>
+<% } else if (currentUser.isModerator){ %>
+<h2> Objects </h2>
   <table>
     <thead>
       <tr>
@@ -38,5 +44,3 @@
     </tbody>
   </table>
 <% } %>
-
-<a href="<%= newObjectPath %>">New Object</a>
