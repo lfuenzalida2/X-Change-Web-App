@@ -74,7 +74,6 @@
     "sequelize-cli": "^5.5.1",
     "smart-time-ago": "^0.1.5",
     "socket.io": "^2.3.0",
-    "timeago.js": "^4.0.2"
   },
   "engines": {
     "node": "^12.16.0",
