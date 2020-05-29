@@ -60,6 +60,5 @@ $(document).ready(() => {
         return false;
       });
     }
-    $('.timeago').timeago('refresh');
   });
 });
