@@ -58,7 +58,7 @@ router.post('users.create', '/', async (ctx) => {
     } else if (values.mail !== values.confirm_mail) {
       throw new MyError('MailError', 'Los correos no coinciden. Inténtalo nuevamente.');
     } else if (!Valid(values.password)) {
-      throw new MyError('PasswordError', 'La constraseña no cumple los requisitos.');
+      throw new MyError('PasswordError', 'La constraseña debe tener al menos 1 letra en mayuscula, 1 número y largo de 8 caracteres.');
     }
     await newUser.save({ fields: ['username', 'password', 'mail', 'number', 'region', 'profilePicture'] });
     await sendRegistrationEmail(ctx, { user: newUser });
@@ -120,6 +120,8 @@ router.get('users.index', '/:id', async (ctx) => {
     reviews,
     editProfile: ctx.router.url('users.edit', { id: currentUser.id }),
     otherProfile: (other) => ctx.router.url('users.view', { id: other.id }),
+    viewObjects: ctx.router.url('objects.list'),
+    viewNegotiations: ctx.router.url('negotiations.list'),
   });
 });
 

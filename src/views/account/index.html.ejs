@@ -20,7 +20,8 @@
 editar perfil 
 <a href="<%= editProfile %>">editar</a>
 
-<% if (!reviews.lenght) { %>
+<% if (reviews.length > 0) { %>
+    <% console.log(reviews.length); %>
     <% if (currentUser.id == reviews[0].reviewedId) {%>
     <div>
         <h3 class="flexbox-item">Ratings</h1>
@@ -59,4 +60,7 @@ editar perfil
     <div class="flexbox-item border">
         Actualmente no tienes ninguna review
     </div> 
+<% } %>
+<% if (currentUser.isModerator){ %>
+    <a href="<%= viewObjects %>">Objects</a>
 <% } %>

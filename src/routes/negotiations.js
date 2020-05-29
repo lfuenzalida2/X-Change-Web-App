@@ -52,7 +52,6 @@ router.get('negotiations.list', '/', async (ctx) => {
   await ctx.render('negotiations/index', {
     negotiationsList,
     showNegotiationPath: (negotiation) => ctx.router.url('negotiations.show', { id: negotiation.id }),
-    deleteNegotiationPath: (negotiation) => ctx.router.url('negotiations.delete', { id: negotiation.id }),
   });
 });
 
@@ -68,7 +67,6 @@ router.get('negotiations.show', '/:id', loadNegotiation, async (ctx) => {
     reviews,
     deleteObject: ctx.router.url('negotiations.object_del', { id: negotiation.id }),
     editNegotiationPath: ctx.router.url('negotiations.update', { id: negotiation.id }),
-    deleteNegotiationPath: ctx.router.url('negotiations.delete', { id: negotiation.id }),
     messagesList: await negotiation.getMessages(),
     newMessagePath: ctx.router.url('messages.create'),
     newReviewPath: ctx.router.url('reviews.new'),

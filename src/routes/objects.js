@@ -18,7 +18,6 @@ router.get('objects.list', '/', async (ctx) => {
   const objectsList = await ctx.orm.object.findAll();
   await ctx.render('objects/index', {
     objectsList,
-    newObjectPath: ctx.router.url('objects.new'),
     editObjectPath: (object) => ctx.router.url('objects.edit', { id: object.id }),
     deleteObjectPath: (object) => ctx.router.url('objects.delete', { id: object.id }),
     showObjectPath: (object) => ctx.router.url('objects.view', { id: object.id }),
@@ -36,12 +35,13 @@ router.get('objects.new', '/new', async (ctx) => {
 router.post('objects.create', '/', async (ctx) => {
   const object = ctx.orm.object.build(ctx.request.body);
   const values = await ctx.orm.category.findAll({ where: { id: parseInt(object.categoryId, 10) } });
+  const user = ctx.state.currentUser;
   try {
     if (!values.length) {
       throw new MyError('CategoryIdError', 'Esta categoría no existe, inténtalo nuevamente.');
     }
     await object.save({ fields: ['views', 'userId', 'categoryId', 'name', 'state', 'description'] });
-    ctx.redirect(ctx.router.url('objects.list'));
+    ctx.redirect(ctx.router.url('inventory.list', { id: user.id }));
   } catch (validationError) {
     await ctx.render('objects/new', {
       object,
