@@ -84,6 +84,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     user.hasOne(models.session);
+    user.hasMany(models.notification);
   };
 
   user.prototype.checkPassword = function checkPassword(password) {

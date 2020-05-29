@@ -1,5 +1,4 @@
 const KoaRouter = require('koa-router');
-const sequelize = require('sequelize');
 
 const router = new KoaRouter();
 const fileStorage = require('../services/file-storage');
@@ -36,10 +35,10 @@ router.get('objects.new', '/new', async (ctx) => {
 
 router.post('objects.create', '/', async (ctx) => {
   const object = ctx.orm.object.build(ctx.request.body);
-  const values = await ctx.orm.category.findAll({ where: { id: parseInt(object.categoryId) } });
+  const values = await ctx.orm.category.findAll({ where: { id: parseInt(object.categoryId, 10) } });
   try {
     if (!values.length) {
-      throw new MyError('CategoryIdError', "The Id Category doesn't exist, please create one before adding an object to it");
+      throw new MyError('CategoryIdError', 'Esta categoría no existe, inténtalo nuevamente.');
     }
     await object.save({ fields: ['views', 'userId', 'categoryId', 'name', 'state', 'description'] });
     ctx.redirect(ctx.router.url('objects.list'));
@@ -64,13 +63,17 @@ router.get('objects.edit', '/:id/edit', loadObject, async (ctx) => {
 
 router.patch('objects.update', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
-  const { views, userId, categoryId, name, state, description } = ctx.request.body;
+  const {
+    userId, categoryId, name, state, description, views,
+  } = ctx.request.body;
   const values = await ctx.orm.category.findAll({ where: { id: categoryId } });
   try {
     if (!values.length) {
-      throw new MyError('CategoryIdError', "The Id Category doesn't exist, please create one before adding an object to it");
+      throw new MyError('CategoryIdError', 'Esta categoría no existe, inténtalo nuevamente.');
     }
-    await object.update({ userId, categoryId, name, state, description });
+    await object.update({
+      userId, categoryId, name, state, description, views,
+    });
     ctx.redirect(ctx.router.url('objects.list'));
   } catch (validationError) {
     await ctx.render('objects/edit', {
@@ -105,7 +108,7 @@ router.post('objects.load', '/:id', loadObject, async (ctx) => {
   try {
     const { list } = ctx.request.files;
     if (!list.name) {
-      throw new MyError('NoFile', "There's no file to upload");
+      throw new MyError('NoFile', 'No hay archivos para subir.');
     }
     const maxId = await ctx.orm.photo.max('id');
     list.name = `${maxId}${list.name.slice(list.name.lastIndexOf('.'), list.name.length)}`;
