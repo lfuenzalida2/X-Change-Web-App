@@ -45,6 +45,10 @@
               <a href="<%= negotiations %>">Negotiations</a>
             </div>
             <div class="separate">
+              <div class="notifications" data-badge=<%= newNotifications %>>Notifications</div>
+              <div class="notifications-container"></div>
+            </div>
+            <div class="separate">
               <form action="<%= destroySessionPath %>" method="post">
                 <input type="hidden" name="_method" value="delete" />
                 <input type="submit" value="Cerrar Sesión" />

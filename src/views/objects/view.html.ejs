@@ -57,7 +57,7 @@
 
 <% if (currentUser) {%>
     <% if (currentUser.id !== object.userId) { %>
-        <form action="<%= createNegotiation  %>" method="POST">
+        <form id="create-negotiation" action="<%= createNegotiation  %>" method="POST">
             <input type="hidden" name="customerId" value=<%= object.userId %>>
             <input type="hidden" name="state" value="In Progress">
             <input type="hidden" name="sellerId" value=<%= currentUser.id %>>

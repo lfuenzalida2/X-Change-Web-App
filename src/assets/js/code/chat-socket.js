@@ -4,13 +4,20 @@ if ($('#chat').length > 0) {
   $(document).ready(() => {
     $(() => {
       const socket = io();
+      socket.on('connect', () => {
+        const url = window.location.pathname;
+        const id = url.substring(url.lastIndexOf('/') + 1);
+        socket.emit('join chat', { chatId: id });
+      });
       $('#send-message').submit(function (e) {
         e.preventDefault(); // prevents page reloading
         $.post(
           $(this).attr('action'), // The URL to send form data to
           $(this).serialize(),
           (data) => {
-            socket.emit('chat message', data);
+            const url = window.location.pathname;
+            const id = url.substring(url.lastIndexOf('/') + 1);
+            socket.emit('chat message', { chatId: id, msg: data });
             $('#m').val('');
           },
         );

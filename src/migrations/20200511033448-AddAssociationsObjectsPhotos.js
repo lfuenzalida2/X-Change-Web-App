@@ -20,7 +20,7 @@ module.exports = {
   ),
 
   down: (queryInterface) => queryInterface.removeColumn(
-    'photo', // name of Source modelqueryInterface.removeColumn(
+    'photos', // name of Source modelqueryInterface.removeColumn(
     'objectId', // key we want to remove
   ),
 };

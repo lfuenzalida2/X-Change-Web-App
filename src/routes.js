@@ -10,15 +10,22 @@ const objects = require('./routes/objects');
 const users = require('./routes/users');
 const session = require('./routes/session');
 const inventory = require('./routes/inventory');
+const notifications = require('./routes/notifications');
 
 const router = new KoaRouter();
 
 router.use(async (ctx, next) => {
   let currentSession;
+  let newNotifications;
   if (ctx.session.sessionToken) {
     currentSession = await ctx.orm.session.findOne(
       { where: { token: ctx.session.sessionToken } },
     );
+    if (currentSession) {
+      newNotifications = await ctx.orm.notification.count(
+        { where: { userId: currentSession.userId, seen: false } },
+      );
+    }
   }
   Object.assign(ctx.state, {
     currentUser: currentSession && await currentSession.getUser(),
@@ -31,6 +38,7 @@ router.use(async (ctx, next) => {
     registerSession: ctx.router.url('users.new'),
     negotiations: ctx.router.url('negotiations.list'),
     submitSearchPath: ctx.router.url('objects.search'),
+    newNotifications,
   });
   return next();
 });
@@ -53,5 +61,6 @@ router.use('/negotiations', negotiations.routes());
 router.use('/messages', messages.routes());
 router.use('/reviews', reviews.routes());
 router.use('/session', session.routes());
+router.use('/notifications', notifications.routes());
 
 module.exports = router;
