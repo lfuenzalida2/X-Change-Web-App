@@ -16,7 +16,15 @@
           <a href="/">Home</a>
         </div>
         <div class="separate">
-          <a href="<%= explore %>">Search</a>
+          <div class="search-container">
+            <form action="<%= submitSearchPath %>" method="post">
+              <input  type="text" name="keywords" placeholder="Buscar..">
+              <input type="hidden" name="region" value="todas"  />
+              <input type="hidden" name="categoryId" value="todas"  />
+              <input type="hidden" name="state" value="true"  />
+              <button type="submit">Buscar</button>
+            </form>
+          </div>
         </div>
       </div>
 

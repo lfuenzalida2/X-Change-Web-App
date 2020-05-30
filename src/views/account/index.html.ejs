@@ -17,13 +17,13 @@
         </div>
     </div>
 </div>
-editar perfil 
+editar perfil
 <a href="<%= editProfile %>">editar</a>
 
 <% if (!reviews.lenght) { %>
     <% if (currentUser.id == reviews[0].reviewedId) {%>
     <div>
-        <h3 class="flexbox-item">Ratings</h1>
+        <h3 class="flexbox-item">Ratings</h3>
     </div>
     <div class="flex-container border">
         <table>
@@ -58,5 +58,5 @@ editar perfil
 <% } else { %>
     <div class="flexbox-item border">
         Actualmente no tienes ninguna review
-    </div> 
+    </div>
 <% } %>

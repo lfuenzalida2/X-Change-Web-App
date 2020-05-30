@@ -1,7 +1,7 @@
 <div class="flex-container">
   <div class="flexbox-item border">
     Buscar
-    <form action="#">
+    <form action="<%= submitSearchPath %>" method="post">
       <div>
         <label for="keywords">Palabras Clave: </label>
         <input type="text" name="keywords">
@@ -9,23 +9,38 @@
       <div>
         <label for="state">State: </label>
         <select name="state" id="state">
-          <option value="true">True</option>
-          <option value="false">False</option>
-          <option value="proccess">Proccess</option>
+          <option value="true">Disponible</option>
+          <option value="false">Se está intercambiando</option>
         </select>
       </div>
       <div>
         <label for="region">Region: </label>
         <select name="region" id="region">
-          <option value="Santiago">Santiago</option>
-          <option value="Temuco">Temuco</option>
+          <option value="todas">Todas</option>
+          <option value="Aisen del G. Carlos Ibáñez del Campo">Aisén del G. Carlos Ibáñez del Campo</option>
+          <option value="Antofagasta">Antofagasta</option>
+          <option value="Arica y Parinacota">Arica y Parinacota</option>
+          <option value="Atacama">Atacama</option>
+          <option value="Biobio">Biobío</option>
+          <option value="Coquimbo">Coquimbo</option>
+          <option value="La Araucania">La Araucanía</option>
+          <option value="Libertador General Bernardo O'Higgins">Libertador General Bernardo O'Higgins</option>
+          <option value="Los Lagos">Los Lagos</option>
+          <option value="Los Rios">Los Ríos</option>
+          <option value="Magallanes y de la Antartica Chilena">Magallanes y de la Antártica Chilena</option>
+          <option value="Metropolitana de Santiago">Metropolitana de Santiago</option>
+          <option value="Nuble">Ñuble</option>
+          <option value="Tarapaca">Tarapacá</option>
+          <option value="Valparaiso">Valparaíso</option>
         </select>
       </div>
       <div>
-        <label for="category">Categoria: </label>
-        <select name="category" id="category">
-          <option value="sport">Deporte</option>
-          <option value="electronics">Tecnologia</option>
+        <label for="categoryId">Categoria: </label>
+        <select name="categoryId" id="categoryId">
+          <option value="todas">Todas</option>
+          <% categoryList.forEach((category)=> { %>
+            <option value="<%= category.id %>"><%= category.name %></option>
+          <% }) %>
         </select>
       </div>
       <div>
@@ -33,36 +48,34 @@
       </div>
     </form>
   </div>
-
-  <div class="flexbox-item objects border">
-    <h2> Objetos </h2>
-    <% if (!objectsList.length) { %>
-      <p>No results</p>
-    <% } else { %>
-      <table>
-        <thead>
-          <tr>
-            <th>UserId</th>
-            <th>CategoryId</th>
-            <th>Nombre</th>
-            <th>Estado</th>
-            <th>Descripcion</th>
-            <th>Ver</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% objectsList.forEach((object) => { %>
-            <tr>
-              <td><%= object.userId %></td>
-              <td><%= object.categoryId %></td>
-              <td><%= object.name %></td>
-              <td><%= object.state %></td>
-              <td><%= object.description %></td>
-              <td><a href="<%= view(object) %>">Ver</a></td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    <% } %>
-  </div>
 </div>
+
+<% if (!result.length) { %>
+  <p>Lo siento, no se encontraron resultados de lo que estas buscando.</p>
+<% } else { %>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>State</th>
+        <th>CategoryId</th>
+        <th>Description</th>
+        <th>Owner</th>
+        <th>Región</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% result.forEach((element) => { %>
+      <% object = element.item.dataValues; %>
+        <tr>
+            <td><%= object.name %></td>
+            <td><%= object.state %></td>
+            <td><%= object.categoryId %></td>
+            <td><%= object.description %></td>
+            <td><%= object.user.username %></td>
+            <td><%= object.user.region %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
