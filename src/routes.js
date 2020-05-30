@@ -50,6 +50,22 @@ router.use('/negotiations', async (ctx, next) => {
   await next(); // go to next middleware
 });
 
+router.use('/notifications', async (ctx, next) => {
+  if (!ctx.state.currentUser) {
+    ctx.redirect('/session/new');
+    return;
+  }
+  await next(); // go to next middleware
+});
+
+router.use('/objects', async (ctx, next) => {
+  if (!ctx.state.currentUser) {
+    ctx.redirect('/session/new');
+    return;
+  }
+  await next(); // go to next middleware
+});
+
 router.use('/', index.routes());
 router.use('/explore', explore.routes());
 router.use('/inventory', inventory.routes());

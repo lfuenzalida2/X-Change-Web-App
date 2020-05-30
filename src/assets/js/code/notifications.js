@@ -3,7 +3,7 @@ import '../../../../node_modules/smart-time-ago';
 
 function loadNotifications() {
   $('.notifications-container').empty();
-  $.get('/notifications', (data) => {
+  $.get('/notifications/load', (data) => {
     for (let i = 0; i < data.length; i++) {
       let seen;
       if (data[i].seen) {
@@ -21,6 +21,7 @@ function loadNotifications() {
       );
       $('.timeago').timeago('refresh');
     }
+    $('.notifications-container').append('<a class="see-all-notifications" href="/notifications" >Ver todas</a>');
   });
 }
 
