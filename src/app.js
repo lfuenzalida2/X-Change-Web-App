@@ -8,7 +8,7 @@ const render = require('koa-ejs');
 const session = require('koa-session');
 const override = require('koa-override-method');
 const http = require('http');
-const socket = require('socket.io');
+const socketIO = require('socket.io');
 const assets = require('./assets');
 const mailer = require('./mailers');
 const routes = require('./routes');
@@ -87,17 +87,48 @@ mailer(app);
 app.use(routes.routes());
 
 app.server = http.createServer(app.callback());
-const io = socket(app.server);
+app.io = socketIO(app.server);
 
 // Patch `app.listen()` to call `app.server.listen()`
-app.listen = function listen() {
-  app.server.listen.apply( app.server, arguments );
+app.listen = (...args) => {
+  app.server.listen.call(app.server, ...args);
   return app.server;
 };
 
-io.on('connection', (sock) => {
-  sock.on('chat message', (msg) => {
-    io.emit('chat message', msg);
+app.io.use((socket, next) => {
+  let error = null;
+  try {
+    // create a new (fake) Koa context to decrypt the session cookie
+    const ctx = app.createContext(socket.request, new http.OutgoingMessage());
+    socket.session = ctx.session;
+  } catch (err) {
+    error = err;
+  }
+  return next(error);
+});
+
+app.io.on('connection', async (socket) => {
+  socket.auth = false;
+  // check the auth data sent by the client
+  const { sessionToken } = socket.session;
+  const currentSession = await app.context.orm.session.findOne(
+    { where: { token: sessionToken } },
+  );
+  if (currentSession) {
+    socket.auth = true;
+    socket.join(`userRoom-${currentSession.userId}`);
+  }
+  if (!socket.auth) {
+    socket.disconnect('unauthorized');
+  }
+  socket.on('join chat', (data) => {
+    socket.join(`chatRoom-${data.chatId}`);
+  });
+  socket.on('chat message', (data) => {
+    app.io.to(`chatRoom-${data.chatId}`).emit('chat message', data.msg);
+  });
+  socket.on('notification', (data) => {
+    app.io.to(`userRoom-${data}`).emit('notification');
   });
 });
 
