@@ -97,6 +97,7 @@ app.listen = function listen() {
 
 io.on('connection', (sock) => {
   sock.on('chat message', (msg) => {
+    console.log(msg);
     io.emit('chat message', msg);
   });
 });

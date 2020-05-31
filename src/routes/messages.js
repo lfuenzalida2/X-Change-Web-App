@@ -7,9 +7,23 @@ async function loadMessage(ctx, next) {
   return next();
 }
 
+function addZero(i) {
+  if (i < 10) {
+    i = "0" + i;
+  }
+  return i;
+}
+
+function myFunction(d) {
+  const h = addZero(d.getHours());
+  const m = addZero(d.getMinutes());
+  return h + ":" + m;
+}
+
 router.post('messages.create', '/', async (ctx) => {
   const senderId = +ctx.request.body.senderId;
   const receiverId = +ctx.request.body.receiverId;
+  const currentUserId = ctx.state.currentUser.id;
   const negotiationId = +ctx.request.body.negotiationId;
   const { text } = ctx.request.body;
   const message = ctx.orm.message.build({
@@ -20,8 +34,14 @@ router.post('messages.create', '/', async (ctx) => {
     const negotiation = await message.getNegotiation();
     negotiation.changed('updatedAt', true);
     await negotiation.save();
-    const sender = await ctx.orm.user.findByPk(senderId);
-    const parsedMessage = `${sender.username} : ${message.text} (${message.createdAt.toLocaleString('es-CL')})`;
+    const time = myFunction(message.createdAt);
+    const parsedMessage = {
+      senderId,
+      receiverId,
+      currentUserId,
+      message: message.text,
+      time,
+    };
     ctx.response.body = parsedMessage;
     // ctx.redirect('back');
   } catch (validationError) {

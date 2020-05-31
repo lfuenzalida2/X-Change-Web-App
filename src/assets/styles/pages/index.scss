@@ -1,32 +1,3 @@
-@import './layout';
-@import './inventory-grid';
-
-.center{
-    text-align: center;
-}
-
-.flex-container {
-    margin: 20px;
-    padding: 0;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-
-    .flexbox-item{
-      color: white;
-      display: flex;
-    }
-
-    .objects{
-        margin-right: 50px;
-    }
-  }
-
-.border{
-
-    border: solid;
-}
-
 // Carrusel
 * {box-sizing:border-box}
 

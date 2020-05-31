@@ -1,23 +1,30 @@
-<h2>Valoración de la Negociación con <%= reviewedName %></h2>
-<% if (locals.errors) { %>
-  <div class="errors">
-    Tienes los siguientes errores:
-    <ul>
-      <% locals.errors.forEach(error => { %>
-        <li><%= error.message %></li>
-      <% }); %>
-    </ul>
+<div class="fixed-width">
+  <h2>Valoración de la Negociación con <%= reviewedName %></h2>
+  <% if (locals.errors) { %>
+    <div class="errors">
+      Tienes los siguientes errores:
+      <ul>
+        <% locals.errors.forEach(error => { %>
+          <li><%= error.message %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+  
+  <div class="form">
+    <form action="<%= submitReviewPath %>" method="POST">
+      <input type="hidden" name="reviewerId" value=<%= reviewerId %> />
+      <input type="hidden" name="reviewedId" value=<%= reviewedId %> />
+      <input type="hidden" name="negotiationId" value=<%= negotiationId %> />
+      <div>
+        <label for="rating">Rating</label>
+        <input type="number" name="rating" min="1" max="5" placeholder="Valoración" value="1">
+        <textarea type="text" name="text" placeholder="Añade un comentario..."></textarea>
+      </div>
+      <br>
+      <input type="submit" value="Enviar la Valoración" class="btn"/>
+    </form>
   </div>
-<% } %>
-
-<form action="<%= submitReviewPath %>" method="POST">
-  <input type="hidden" name="reviewerId" value=<%= reviewerId %> />
-  <input type="hidden" name="reviewedId" value=<%= reviewedId %> />
-  <input type="hidden" name="negotiationId" value=<%= negotiationId %> />
-  <label for="rating">Rating</label>
-  <input type="number" name="rating" min="1" max="5" placeholder="Valoración" value="1">
-  <textarea type="text" name="text" placeholder="Añade un comentario..."></textarea>
-  <input type="submit" value="Enviar la Valoración" />
-</form>
-
-<a href="<%= showNegotiationPath %>">Volver atrás</a>
+  
+  <a href="<%= showNegotiationPath %>">Volver atrás</a>
+</div>

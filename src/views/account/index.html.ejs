@@ -1,66 +1,68 @@
-<div class="flex-container border">
-    <div>
-        <div class="flexbox-item">
-            Imagen
-        </div>
+<div class="fixed-width-lg">
+    imagen
+    <%= currentUser.profilePicture %>
+    <h1 class="center"><%= currentUser.username %></h1>
+    <div class="form">
+        Información sobre <%= currentUser.username %>
+        <br>
+        <br>
         <div>
-            <%= currentUser.username %>
-        </div>
-        <div>
-            <%= currentUser.region %>
-        </div>
-        <div>
-            Cantidad de X-Changes
-        </div>
-        <div>
-            Promedio de Reseñas
+            <div>
+                Región: <%= currentUser.region %>
+            </div>
+            <div>
+                Cantidad de X-Changes: 0
+            </div>
+            <div>
+                Promedio de Reseñas
+            </div>
         </div>
     </div>
+    <br>
+    <a href="<%= editProfile %>">Editar perfil</a>
+    
+    <div class="form">
+        <% if (reviews.length > 0) { %>
+            <% console.log(reviews.length); %>
+            <% if (currentUser.id == reviews[0].reviewedId) {%>
+            <div>
+                <h3 class="flexbox-item">Ratings</h1>
+            </div>
+            <div class="flex-container border">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Nombre</td>
+                            <td>Descripcion</td>
+                            <td>Rating</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% reviews.forEach(review => { %>
+                            <tr>
+                                <td>
+                                    <form action="<%= otherProfile(review.reviewer) %>" method="POST">
+                                        <input type="hidden" name="reviewerId" value="<%= review.reviewerId %>">
+                                        <input type="submit" value="<%= review.reviewer.username %>">
+                                    </form>
+                                </td>
+                                <td>
+                                    <%= review.text %>
+                                </td>
+                                <td>
+                                    <%= review.rating %>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+            <% }%>
+        <% } else { %>
+            Actualmente no tienes ninguna review
+        <% } %>
+    </div>
+    <% if (currentUser.isModerator){ %>
+        <a href="<%= viewObjects %>">Ver todos los objetos</a>
+    <% } %>
 </div>
-editar perfil 
-<a href="<%= editProfile %>">editar</a>
-
-<% if (reviews.length > 0) { %>
-    <% console.log(reviews.length); %>
-    <% if (currentUser.id == reviews[0].reviewedId) {%>
-    <div>
-        <h3 class="flexbox-item">Ratings</h1>
-    </div>
-    <div class="flex-container border">
-        <table>
-            <thead>
-                <tr>
-                    <td>Nombre</td>
-                    <td>Descripcion</td>
-                    <td>Rating</td>
-                </tr>
-            </thead>
-            <tbody>
-                <% reviews.forEach(review => { %>
-                    <tr>
-                        <td>
-                            <form action="<%= otherProfile(review.reviewer) %>" method="POST">
-                                <input type="hidden" name="reviewerId" value="<%= review.reviewerId %>">
-                                <input type="submit" value="<%= review.reviewer.username %>">
-                            </form>
-                        </td>
-                        <td>
-                            <%= review.text %>
-                        </td>
-                        <td>
-                            <%= review.rating %>
-                        </td>
-                    </tr>
-                <% }); %>
-            </tbody>
-        </table>
-    </div>
-    <% }%>
-<% } else { %>
-    <div class="flexbox-item border">
-        Actualmente no tienes ninguna review
-    </div> 
-<% } %>
-<% if (currentUser.isModerator){ %>
-    <a href="<%= viewObjects %>">Objects</a>
-<% } %>

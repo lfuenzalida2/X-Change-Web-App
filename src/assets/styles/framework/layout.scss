@@ -1,0 +1,189 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.flexbox-container {
+  position: relative;
+  margin: 10px;
+  padding: 0;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+
+  .flexbox-item{
+    color: black;
+    display: flex;
+  }
+
+  .title{
+    text-align: top;
+  }
+
+  .home{
+    justify-content: space-between;
+    margin-left: 1%;
+  }
+
+  .session{
+    margin-right: 1%;
+    justify-content: space-between;
+  } 
+
+  hr{
+    color: black;
+    border: none;
+    border-left: solid 1px;
+    height: 25px;
+    margin: auto;
+    margin-left: .2rem;
+    margin-right: .2rem;
+  }
+}
+
+a {
+  color: inherit;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:hover{
+  background-color: rgb(242, 242, 242);
+}
+
+h1 {
+  margin: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.separate{
+  display: flex;
+  margin: 2px;
+}
+
+img {
+    max-width:20%;
+    max-width:20%;
+    height:auto;
+}
+
+.item{
+  margin: auto;
+}
+
+.float-r{
+  float: right;
+}
+
+.form{
+  border-radius: 15px;
+  padding: 10px;
+  background-color: lightgray;
+}
+
+.center{
+  text-align: center;
+}
+
+.border{
+  border: solid 1px;
+  border-radius: 5px;
+}
+
+input{
+  border-radius: 5px;
+}
+
+.fixed-width-form{
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 400px;
+}
+
+.fixed-width{
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 400px;
+}
+
+td{
+  padding: .2rem;
+}
+
+#chat{
+  display: block;
+  border: solid 1px gray;
+  padding: 10px;
+  padding-top: 0;
+  border-radius: 5px;
+  background-color: rgb(242, 242, 242);
+  min-height: 30px;
+  width: 400px;
+
+  h3{
+    margin-top: .2rem;
+  }
+}
+
+textarea{
+  height: 30px;
+  vertical-align: bottom;
+}
+
+.fixed-width-lg{
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 500px;
+}
+
+li{
+  list-style: none;
+}
+
+#search{
+  width: 70%;
+  max-width: 1000px;
+}
+
+#review{
+  padding: 10px;
+  padding-top: 0;
+}
+
+.me{
+  background-color: lightgreen;
+  border-radius: 5px;
+  float: right;
+  padding-left: .2rem;
+  padding-right: .2rem;
+}
+
+.other{
+  background-color: lightgray;
+  border-radius: 5px;
+  float: left;
+  padding-left: .2rem;
+  padding-right: .2rem;
+}
+
+.time{
+  font-size: 10px;
+  float: right;
+}
+
+.time-other{
+  font-size: 10px;
+  float: left;
+}
+
+#messages{
+  padding: 0;
+}

@@ -1,68 +1,73 @@
-<div class="flex-container">
-  <div class="flexbox-item border">
+<div class="fixed-width-lg flexbox-container" id="search">
+  <div class="form">
     Buscar
+    <br>
+    <br>
     <form action="#">
       <div>
         <label for="keywords">Palabras Clave: </label>
-        <input type="text" name="keywords">
+        <input type="text" name="keywords"  class="float-r">
       </div>
+      <br>
       <div>
         <label for="state">State: </label>
-        <select name="state" id="state">
+        <select name="state" id="state" class="float-r">
           <option value="true">True</option>
           <option value="false">False</option>
           <option value="proccess">Proccess</option>
         </select>
       </div>
+      <br>
       <div>
         <label for="region">Region: </label>
-        <select name="region" id="region">
+        <select name="region" id="region" class="float-r">
           <option value="Santiago">Santiago</option>
           <option value="Temuco">Temuco</option>
         </select>
       </div>
+      <br>
       <div>
         <label for="category">Categoria: </label>
-        <select name="category" id="category">
+        <select name="category" id="category" class="float-r">
           <option value="sport">Deporte</option>
           <option value="electronics">Tecnologia</option>
         </select>
       </div>
+      <br>
       <div>
         <input type="submit" name="Submit"  value="Buscar">
       </div>
     </form>
   </div>
-
-  <div class="flexbox-item objects border">
+  <div class="form">
     <h2> Objetos </h2>
-    <% if (!objectsList.length) { %>
-      <p>No results</p>
-    <% } else { %>
-      <table>
-        <thead>
-          <tr>
-            <th>UserId</th>
-            <th>CategoryId</th>
-            <th>Nombre</th>
-            <th>Estado</th>
-            <th>Descripcion</th>
-            <th>Ver</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% objectsList.forEach((object) => { %>
+    <div class="flexbox-item objects border">
+      <% if (!objectsList.length) { %>
+        <p>No results</p>
+      <% } else { %>
+        <table>
+          <thead>
             <tr>
-              <td><%= object.userId %></td>
-              <td><%= object.categoryId %></td>
-              <td><%= object.name %></td>
-              <td><%= object.state %></td>
-              <td><%= object.description %></td>
-              <td><a href="<%= view(object) %>">Ver</a></td>
+              <th>Nombre</th>
+              <th>Categoria</th>
+              <th>Dueño</th>
+              <th>Estado</th>
+              <th>Ver</th>
             </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    <% } %>
+          </thead>
+          <tbody>
+            <% objectsList.forEach((object) => { %>
+              <tr>
+                <td><%= object.name %></td>
+                <td><%= object.category.name %></td>
+                <td><%= object.user.username %></td>
+                <td><%= object.state %></td>
+                <td><a href="<%= view(object) %>">Ver</a></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
   </div>
 </div>

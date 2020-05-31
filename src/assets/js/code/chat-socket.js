@@ -17,7 +17,15 @@ if ($('#chat').length > 0) {
         return false;
       });
       socket.on('chat message', (msg) => {
-        $('#messages').append($('<li>').text(msg));
+        if (msg.senderId === msg.currentUserId && msg.currentUserId !== msg.receiverId) {
+          $('#messages').append($('<span>').text(msg.time).addClass('time'));
+          $('#messages').append($('<span>').text(msg.message).addClass('me'));
+        } else {
+          $('#messages').append($('<span>').text(msg.time).addClass('time-other'));
+          $('#messages').append($('<span>').text(msg.message).addClass('other'));
+        }
+        $('#messages').append($('<br>'));
+        $('#messages').append($('<br>'));
       });
     });
   });
