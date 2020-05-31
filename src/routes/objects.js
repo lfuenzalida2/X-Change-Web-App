@@ -26,14 +26,17 @@ router.get('objects.list', '/', async (ctx) => {
 
 router.get('objects.new', '/new', async (ctx) => {
   const object = ctx.orm.object.build();
+  const categoryList = await ctx.orm.category.findAll();
   await ctx.render('objects/new', {
     object,
+    categoryList,
     submitObjectPath: ctx.router.url('objects.create'),
   });
 });
 
 router.post('objects.create', '/', async (ctx) => {
   const object = ctx.orm.object.build(ctx.request.body);
+  const categoryList = await ctx.orm.category.findAll();
   const values = await ctx.orm.category.findAll({ where: { id: parseInt(object.categoryId, 10) } });
   const user = ctx.state.currentUser;
   try {
@@ -45,6 +48,7 @@ router.post('objects.create', '/', async (ctx) => {
   } catch (validationError) {
     await ctx.render('objects/new', {
       object,
+      categoryList,
       errors: validationError.errors,
       submitObjectPath: ctx.router.url('objects.create'),
     });
@@ -54,8 +58,10 @@ router.post('objects.create', '/', async (ctx) => {
 // operaciones a la base de datos son asincronas: await ctx.<something>
 router.get('objects.edit', '/:id/edit', loadObject, async (ctx) => {
   const { object } = ctx.state;
+  const categoryList = await ctx.orm.category.findAll();
   await ctx.render('objects/edit', {
     object,
+    categoryList,
     home: ctx.router.url('objects.list'),
     submitObjectPath: ctx.router.url('objects.update', { id: object.id }),
   });
@@ -63,6 +69,7 @@ router.get('objects.edit', '/:id/edit', loadObject, async (ctx) => {
 
 router.patch('objects.update', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
+  const categoryList = await ctx.orm.category.findAll();
   const {
     userId, categoryId, name, state, description, views,
   } = ctx.request.body;
@@ -78,6 +85,7 @@ router.patch('objects.update', '/:id', loadObject, async (ctx) => {
   } catch (validationError) {
     await ctx.render('objects/edit', {
       object,
+      categoryList,
       errors: validationError.errors,
       home: ctx.router.url('objects.list'),
       submitObjectPath: ctx.router.url('objects.update', { id: object.id }),
