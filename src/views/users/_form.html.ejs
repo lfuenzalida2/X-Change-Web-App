@@ -5,6 +5,7 @@
         <h1>Agregar un nuevo usuario</h1>
         <% } else { %>
         <h1>Actualiza al usuario <%= newUser.username %></h1>
+<<<<<<< Updated upstream
         <% } %>
     </div>
     <br>
@@ -20,6 +21,23 @@
             </ul>
             </div>
         <% } %>
+=======
+        <% } %>
+    </div>
+    <br>
+    
+    <div class="flex-item bg-gray">
+        <% if (locals.errors) { %>
+            <div class="errors">
+                You need to fix the following errors:
+            <ul>
+                <% locals.errors.forEach(error => { %>
+                    <li><%= error.message %></li>
+                <% }); %>
+            </ul>
+            </div>
+        <% } %>
+>>>>>>> Stashed changes
         <form action="<%= submitVariable %>" method="post" class="border form">
             <% if (!newUser.isNewRecord) { %>
                 <input type="hidden" name="_method" value="patch"/>
@@ -57,9 +75,27 @@
             <div>
                 <label for="region">Region</label>
                 <select name="region" value="<%= newUser.region %>" class="float-r">
+<<<<<<< Updated upstream
                     <option value="temuco">Temuco</option>
                     <option value="santiago">Santiago</option>
                     <option value="concepcion">Concepcion</option>
+=======
+                    <option value="Aisen del G. Carlos Ibáñez del Campo">Aisén del G. Carlos Ibáñez del Campo</option>
+                    <option value="Antofagasta">Antofagasta</option>
+                    <option value="Arica y Parinacota">Arica y Parinacota</option>
+                    <option value="Atacama">Atacama</option>
+                    <option value="Biobio">Biobío</option>
+                    <option value="Coquimbo">Coquimbo</option>
+                    <option value="La Araucania">La Araucanía</option>
+                    <option value="Libertador General Bernardo O'Higgins">Libertador General Bernardo O'Higgins</option>
+                    <option value="Los Lagos">Los Lagos</option>
+                    <option value="Los Rios">Los Ríos</option>
+                    <option value="Magallanes y de la Antartica Chilena">Magallanes y de la Antártica Chilena</option>
+                    <option value="Metropolitana de Santiago">Metropolitana de Santiago</option>
+                    <option value="Nuble">Ñuble</option>
+                    <option value="Tarapaca">Tarapacá</option>
+                    <option value="Valparaiso">Valparaíso</option>
+>>>>>>> Stashed changes
                 </select>
             </div>
             <br>
@@ -80,4 +116,8 @@
         
                 </div>
     </div>
+<<<<<<< Updated upstream
 </div>
+=======
+</div>
+>>>>>>> Stashed changes
