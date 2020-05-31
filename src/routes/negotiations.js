@@ -42,7 +42,10 @@ router.get('negotiations.list', '/', async (ctx) => {
   const users = await ctx.orm.user;
   const currentUser = await ctx.state.currentUser;
   const negotiationsList = await ctx.orm.negotiation.findAll({
-    where: { [Op.or]: [{ sellerId: { [Op.eq]: currentUser.id } }, { customerId: { [Op.eq]: currentUser.id } }] },
+    where: {
+      [Op.or]: [{ sellerId: { [Op.eq]: currentUser.id } },
+        { customerId: { [Op.eq]: currentUser.id } }],
+    },
     include: [{ model: users, as: 'customer' }, { model: users, as: 'seller' }],
   });
   negotiationsList.sort(sortByDateDesc);
@@ -82,9 +85,17 @@ router.post('negotiations.create', '/', async (ctx) => {
   const negotiation = ctx.orm.negotiation.build({ customerId, sellerId, state });
   try {
     await negotiation.save({ fields: ['customerId', 'sellerId', 'state'] });
-    ctx.redirect(ctx.router.url('negotiations.list'));
+    const notification = ctx.orm.notification.build(
+      { userId: customerId, negotiationId: negotiation.id, type: 'newNegotiation' },
+    );
+    await notification.save({ fields: ['userId', 'negotiationId', 'type'] });
+    ctx.body = {
+      customerId,
+      negotiationId: negotiation.id,
+      redirect: ctx.router.url('negotiations.show', { id: negotiation.id }),
+    };
   } catch (validationError) {
-    await ctx.redirect(ctx.router.url('negotiations.list')); // Not displaying errors
+    await ctx.redirect('back'); // Not displaying errors
   }
 });
 

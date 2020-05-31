@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
 
     negotiation.hasMany(models.message);
     negotiation.hasMany(models.review);
+    negotiation.hasMany(models.notification);
   };
 
   return negotiation;
