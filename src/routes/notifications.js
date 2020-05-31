@@ -7,7 +7,19 @@ async function loadNotification(ctx, next) {
   return next();
 }
 
-router.get('notifications.list', '/', async (ctx) => {
+router.get('notifications.list', '/load', async (ctx) => {
+  const negotiations = await ctx.orm.negotiation;
+  const users = await ctx.orm.user;
+  const userId = ctx.state.currentUser.id;
+  const notificationsList = await ctx.orm.notification.findAll(
+    {
+      where: { userId }, limit: 10, order: [['id', 'DESC']], include: [{ model: negotiations, include: { model: users, as: 'seller' } }],
+    },
+  );
+  ctx.response.body = notificationsList;
+});
+
+router.get('notifications.all', '/', async (ctx) => {
   const negotiations = await ctx.orm.negotiation;
   const users = await ctx.orm.user;
   const userId = ctx.state.currentUser.id;
@@ -16,7 +28,10 @@ router.get('notifications.list', '/', async (ctx) => {
       where: { userId }, order: [['id', 'DESC']], include: [{ model: negotiations, include: { model: users, as: 'seller' } }],
     },
   );
-  ctx.response.body = notificationsList;
+  await ctx.render('notifications/all', {
+    notificationsList,
+    deleteNotificationPath: (notification) => ctx.router.url('notifications.delete', { id: notification.id }),
+  });
 });
 
 router.patch('notifications.update', '/:id', loadNotification, async (ctx) => {
