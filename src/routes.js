@@ -51,15 +51,6 @@ router.use('/negotiations', async (ctx, next) => {
   await next(); // go to next middleware
 });
 
-// No permite a un usuario cualquiera entrar al la url /users, los devuelve
-router.use('/users', async (ctx, next) => {
-  if (!ctx.state.currentUser) {
-    ctx.redirect('/');
-    return;
-  }
-  await next(); // go to next middleware
-});
-
 router.use('/notifications', async (ctx, next) => {
   if (!ctx.state.currentUser) {
     ctx.redirect('/session/new');
