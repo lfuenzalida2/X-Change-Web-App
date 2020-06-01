@@ -1,5 +1,6 @@
 const KoaRouter = require('koa-router');
 const { Op } = require('sequelize');
+const sendNegotiationEmail = require('../mailers/new_negotiation');
 
 const router = new KoaRouter();
 
@@ -82,6 +83,7 @@ router.post('negotiations.create', '/', async (ctx) => {
   const customerId = +ctx.request.body.customerId;
   const sellerId = +ctx.request.body.sellerId;
   const { state } = ctx.request.body;
+  const user = await ctx.orm.user.findByPk(customerId);
   const negotiation = ctx.orm.negotiation.build({ customerId, sellerId, state });
   try {
     await negotiation.save({ fields: ['customerId', 'sellerId', 'state'] });
@@ -89,6 +91,7 @@ router.post('negotiations.create', '/', async (ctx) => {
       { userId: customerId, negotiationId: negotiation.id, type: 'newNegotiation' },
     );
     await notification.save({ fields: ['userId', 'negotiationId', 'type'] });
+    await sendNegotiationEmail(ctx, { user });
     ctx.body = {
       customerId,
       negotiationId: negotiation.id,
