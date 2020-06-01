@@ -21,6 +21,36 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        name: 'computadores',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'celulares',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'cocina',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'ropa',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'anime',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'electrodomésticos',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ];
     return queryInterface.bulkInsert('categories', categoriesData);
   },
