@@ -52,7 +52,7 @@ router.use('/negotiations', async (ctx, next) => {
 });
 
 // No permite a un usuario cualquiera entrar al la url /users, los devuelve
-router.use('/users/index', async (ctx, next) => {
+router.use('/users', async (ctx, next) => {
   if (!ctx.state.currentUser) {
     ctx.redirect('/');
     return;

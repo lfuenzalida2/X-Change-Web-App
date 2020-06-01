@@ -31,6 +31,10 @@ html, body {
     justify-content: space-between;
   } 
 
+  .objects{
+    margin-right: 50px;
+  }
+
   hr{
     color: black;
     border: none;
@@ -224,11 +228,6 @@ li{
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
-
-    .flexbox-item{
-      color: white;
-      display: flex;
-    }
 
     .objects{
         margin-right: 50px;
