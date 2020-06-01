@@ -107,6 +107,7 @@ app.io.use((socket, next) => {
   return next(error);
 });
 
+
 app.io.on('connection', async (socket) => {
   socket.auth = false;
   // check the auth data sent by the client
@@ -125,6 +126,7 @@ app.io.on('connection', async (socket) => {
     socket.join(`chatRoom-${data.chatId}`);
   });
   socket.on('chat message', (data) => {
+    data.msg.chatId = data.chatId;
     app.io.to(`chatRoom-${data.chatId}`).emit('chat message', data.msg);
   });
   socket.on('notification', (data) => {

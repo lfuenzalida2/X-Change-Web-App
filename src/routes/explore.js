@@ -1,5 +1,6 @@
 const KoaRouter = require('koa-router');
 const Fuse = require('fuse.js');
+const { Op } = require('sequelize');
 
 const router = new KoaRouter();
 
@@ -12,16 +13,33 @@ const options = {
 };
 
 router.get('explore.list', '/', async (ctx) => {
+  const currentUser = await ctx.state.currentUser;
   const objectsList = await ctx.orm.object.findAll();
   const categoryList = await ctx.orm.category.findAll();
   const fuse = new Fuse(objectsList, options);
   const result = fuse.search('');
-  await ctx.render('explore/explore_list_object', {
-    result,
-    categoryList,
-    view: (object) => ctx.router.url('objects.view', { id: object.id }),
-    submitSearchPath: ctx.router.url('objects.search'),
-  });
+  const { user, category } = ctx.orm;
+  try {
+    const objectsList = await ctx.orm.object.findAll({
+      where: { userId: { [Op.not]: currentUser.id } },
+      include: [{ model: category }, { model: user }],
+    });
+    await ctx.render('explore/explore_list_object', {
+      result,
+      categoryList,
+      objectsList,
+      view: (object) => ctx.router.url('objects.view', { id: object.id }),
+      submitSearchPath: ctx.router.url('objects.search'),
+    });
+  } catch (err) {
+    const objectsList = await ctx.orm.object.findAll();
+    await ctx.render('explore/explore_list_object', {
+      objectsList,
+      categoryList,
+      view: (object) => ctx.router.url('objects.view', { id: object.id }),
+      submitSearchPath: ctx.router.url('objects.search'),
+    });
+  }
 });
 
 router.post('objects.search', '/', async (ctx) => {
@@ -63,6 +81,7 @@ router.post('objects.search', '/', async (ctx) => {
   await ctx.render('explore/explore_list_object', {
     result,
     categoryList,
+    objectsList,
     view: (object) => ctx.router.url('objects.view', { id: object.id }),
     submitSearchPath: ctx.router.url('objects.search'),
   });

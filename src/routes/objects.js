@@ -101,10 +101,15 @@ router.del('objects.delete', '/:id', loadObject, async (ctx) => {
 
 router.get('objects.view', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
+  const owner = await object.getUser();
+  const category = await object.getCategory();
   const views = object.views + 1;
   await object.update({ views });
   await ctx.render('objects/view', {
     object,
+    owner,
+    category: category.name,
+    editObjectPath: ctx.router.url('objects.edit', { id: object.id }),
     createNegotiation: ctx.router.url('negotiations.create'),
     submitObjectPath: ctx.router.url('objects.load', { id: object.id }),
     photos: await ctx.state.object.getPhotos(),

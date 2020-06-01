@@ -1,36 +1,38 @@
-<h2>Reviews</h2>
-<% if (!reviewsList.length) { %>
-  <p>No hay reviews aún.</p>
-<% } else { %>
-  <table>
-    <thead>
-      <tr>
-        <th>ReviewerId</th>
-        <th>ReviewedId</th>
-        <th>Rating</th>
-        <th>Comment</th>
-        <th>Negotiation</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% reviewsList.forEach((review) => { %>
+<div class="fixed-width">
+  <h2>Reviews</h2>
+  <% if (!reviewsList.length) { %>
+    <p>No hay reviews aún.</p>
+  <% } else { %>
+    <table>
+      <thead>
         <tr>
-          <td><%= review.reviewerId %></td>
-          <td><%= review.reviewedId %></td>
-          <td><%= review.rating %></td>
-          <td><%= review.text %></td>
-          <td>
-            <a href="<%= showNegotiationPath(review) %>">Ver Negociación</a>
-          </td>
-          <td>
-            <form action="<%= deleteReviewPath(review) %>" method="POST">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Delete" />
-            </form>
-          </td>
+          <th>ReviewerId</th>
+          <th>ReviewedId</th>
+          <th>Rating</th>
+          <th>Comment</th>
+          <th>Negotiation</th>
+          <th>Actions</th>
         </tr>
-      <% }) %>
-    </tbody>
-  </table>
-<% } %>
+      </thead>
+      <tbody>
+        <% reviewsList.forEach((review) => { %>
+          <tr>
+            <td><%= review.reviewerId %></td>
+            <td><%= review.reviewedId %></td>
+            <td><%= review.rating %></td>
+            <td><%= review.text %></td>
+            <td>
+              <a href="<%= showNegotiationPath(review) %>">Ver Negociación</a>
+            </td>
+            <td>
+              <form action="<%= deleteReviewPath(review) %>" method="POST">
+                <input type="hidden" name="_method" value="delete" />
+                <input type="submit" value="Delete" />
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>

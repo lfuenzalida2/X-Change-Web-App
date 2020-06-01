@@ -1,67 +1,82 @@
-<% if (currentUser) { %>
-<div>
-  <% if (locals.errors) { %>
-    <div class="errors">
-      You need to fix the following errors:
-      <ul>
-        <% locals.errors.forEach(error => { %>
-          <li><%= error.message %></li>
-        <% }); %>
-      </ul>
-    </div>
+<div class="fixed-width">
+  <% if (currentUser) { %>
+  <div>
+    <% if (locals.errors) { %>
+      <div class="errors">
+        You need to fix the following errors:
+        <ul>
+          <% locals.errors.forEach(error => { %>
+            <li><%= error.message %></li>
+          <% }); %>
+        </ul>
+      </div>
+    <% }} %>
+  
+  <div class="flex-container">
+      <div class="form">
+          <% if (!photos.length) { %>
+            <p>No hay fotos de este objeto aún</p>
+          <% } else { %>
+              <% photos.forEach((photo) => { %>
+                <img src=<%=`https://xchangestorage.s3.us-east-2.amazonaws.com/${photo.fileName}`%>>
+                <br>
+              <% }) %>
+          <% } %>
+      </div>
+      <div class="flexbox-item">
+          <div class="flex-container">
+              <div class="flexbox-item center">
+                  <h1><%= object.name %></h1>
+              </div>
+              <div class="form">
+                <div class="flexbox-item">
+                  Estado:
+                  <%= object.state %>
+                </div>
+                <div class="flexbox-item">
+                  Dueño del objeto:
+                  <%= owner.username %>
+                </div>
+                <div class="flexbox-item">
+                  Categoria:
+                  <%= category %>
+                </div>
+                <div class="flexbox-item">
+                  Descripción:
+                  <%= object.description %>
+                </div>
+              </div>
+          </div>
+      </div>
+      <% if(currentUser.id == object.userId) { %>
+        <a href="<%= editObjectPath %>">Editar objeto</a>
+        <br>
+        <br>
+      <% } %> 
+  </div>
+  
+  <% if (currentUser) {%>
+      <% if (currentUser.id !== object.userId) { %>
+          <form id="create-negotiation" action="<%= createNegotiation  %>" method="POST">
+              <input type="hidden" name="customerId" value=<%= object.userId %>>
+              <input type="hidden" name="state" value="In Progress">
+              <input type="hidden" name="sellerId" value=<%= currentUser.id %>>
+              <input type="submit" value="Crear negociación" />
+          </form>
+      <% } %>
   <% } %>
-  <form action="<%= submitObjectPath %>" enctype="multipart/form-data" method="post">
+</div>
+
+<% if (currentUser.id == object.userId){ %>
+  <form action="<%= submitObjectPath %>" enctype="multipart/form-data" method="post" >
     <div class="field">
-      <label for="list">Select file</label>
+      <label for="list">Seleccionar archivo</label>
       <input type="file" name="list" />
     </div>
+    <br>
     <div class="field">
-      <input type="submit" name="upload" value="Upload" />
+      <input type="submit" name="upload" value="Upload" class="btn"/>
     </div>
   </form>
 </div>
-<% } %>
-
-<h2>Fotos!</h2>
-<div class="flex-container">
-    <div class="flexbox-item border">
-        <% if (!photos.length) { %>
-          <p>No hay fotos de este objeto aún</p>
-        <% } else { %>
-            <% photos.forEach((photo) => { %>
-              <img src=<%=`https://xchangestorage.s3.us-east-2.amazonaws.com/${photo.fileName}`%>>
-              <br>
-            <% }) %>
-        <% } %>
-    </div>
-    <div class="flexbox-item">
-        <div class="flex-container">
-            <div class="flexbox-item">
-                <h1><%= object.name %></h1>
-            </div>
-            <div class="flexbox-item">
-                <%= object.state %>
-            </div>
-            <div class="flexbox-item">
-                <%= object.userId %>
-            </div>
-            <div class="flexbox-item">
-                <%= object.categoryId %>
-            </div>
-            <div class="flexbox-item">
-                <%= object.description %>
-            </div>
-        </div>
-    </div>
-</div>
-
-<% if (currentUser) {%>
-    <% if (currentUser.id !== object.userId) { %>
-        <form id="create-negotiation" action="<%= createNegotiation  %>" method="POST">
-            <input type="hidden" name="customerId" value=<%= object.userId %>>
-            <input type="hidden" name="state" value="In Progress">
-            <input type="hidden" name="sellerId" value=<%= currentUser.id %>>
-            <input type="submit" value="Crear negociación" />
-        </form>
-    <% } %>
 <% } %>

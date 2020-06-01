@@ -45,7 +45,6 @@ router.get('users.new', '/new', async (ctx) => {
   await ctx.render('users/new', {
     newUser,
     submitVariable: ctx.router.url('users.create'),
-    home: ctx.router.url('users.list'),
   });
 });
 
@@ -62,12 +61,11 @@ router.post('users.create', '/', async (ctx) => {
     }
     await newUser.save({ fields: ['username', 'password', 'mail', 'number', 'region', 'profilePicture'] });
     await sendRegistrationEmail(ctx, { user: newUser });
-    ctx.redirect(ctx.router.url('users.list'));
+    ctx.redirect(ctx.router.url('session.new'));
   } catch (validationError) {
     await ctx.render('users/new', {
       newUser,
       errors: validationError.errors,
-      home: ctx.router.url('users.list'),
       submitVariable: ctx.router.url('users.create', { id: newUser.id }),
     });
   }
@@ -77,7 +75,6 @@ router.get('users.edit', '/:id/edit', async (ctx) => {
   const newUser = await ctx.orm.user.findByPk(ctx.params.id);
   await ctx.render('users/edit', {
     newUser,
-    home: ctx.router.url('users.list'),
     submitVariable: ctx.router.url('users.update', { id: newUser.id }),
   });
 });
@@ -97,7 +94,6 @@ router.patch('users.update', '/:id', async (ctx) => {
     await ctx.render('users/edit', {
       newUser,
       errors: validationError.errors,
-      home: ctx.router.url('users.list'),
       submitVariable: ctx.router.url('users.update', { id: newUser.id }),
     });
   }
@@ -128,8 +124,16 @@ router.get('users.index', '/:id', async (ctx) => {
 router.post('users.view', '/:id/profile', async (ctx) => {
   const { reviewerId } = ctx.request.body;
   const reviewer = await ctx.orm.user.findByPk(reviewerId);
+  const user = await ctx.orm.user;
+  const reviews = await ctx.orm.review.findAll({
+    where: { reviewedId: reviewerId },
+    include: [{ model: user, as: 'reviewed' }, { model: user, as: 'reviewer' }],
+  });
+  console.log(reviews);
   await ctx.render('account/other', {
     reviewer,
+    reviews,
+    otherProfile: (other) => ctx.router.url('users.view', { id: other.id }),
   });
 });
 
