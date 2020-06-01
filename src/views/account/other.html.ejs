@@ -1,22 +1,24 @@
-<div class="flexbox-item">
+<div class="fixed-width">
     <a href="<%= profile(currentUser) %>">Volver</a>
-</div>
-<div class="flex-container border">
-    <div>
-        <div class="flexbox-item">
-            Imagen
-        </div>
+    <div class="flexbox-item center">
+        Imagen
+    </div>
+    <h1 class="center"><%= reviewer.username %></h1>
+    <div class="form">
+        Información sobre <%= reviewer.username %>
+        <br>
+        <br>
         <div>
-            <%= reviewer.username %>
-        </div>
-        <div>
-            <%= reviewer.region %>
-        </div>
-        <div>
-            Cantidad de X-Changes
-        </div>
-        <div>
-            Promedio de Reseñas
+            <div>
+                Región: <%= reviewer.region %>
+            </div>
+            <div>
+                Cantidad de X-Changes: 0
+            </div>
+            <div>
+                Promedio de Reseñas
+            </div>
         </div>
     </div>
+
 </div>

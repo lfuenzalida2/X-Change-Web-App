@@ -52,34 +52,40 @@
       </div>
     </form>
   </div>
+  <div class="form">
+    <div class="flexbox-item objects border">
+      <% if (!result.length && !objectsList) { %>
+        <p>Lo siento, no se encontraron resultados de lo que estas buscando.</p>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>State</th>
+              <th>CategoryId</th>
+              <th>Description</th>
+              <th>Owner</th>
+              <th>Región</th>
+              <th>ver</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% result.forEach((element) => { %>
+            <% object = element.item.dataValues; %>
+              <tr>
+                  <td><%= object.name %></td>
+                  <td><%= object.state %></td>
+                  <td><%= object.categoryId %></td>
+                  <td><%= object.description %></td>
+                  <td><%= object.user.username %></td>
+                  <td><%= object.user.region %></td>
+                  <td><a href="<%= view(object) %>">ver</a></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <% } %>
+      </div>
+  </div>
 </div>
 
-<% if (!result.length) { %>
-  <p>Lo siento, no se encontraron resultados de lo que estas buscando.</p>
-<% } else { %>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>State</th>
-        <th>CategoryId</th>
-        <th>Description</th>
-        <th>Owner</th>
-        <th>Región</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% result.forEach((element) => { %>
-      <% object = element.item.dataValues; %>
-        <tr>
-            <td><%= object.name %></td>
-            <td><%= object.state %></td>
-            <td><%= object.categoryId %></td>
-            <td><%= object.description %></td>
-            <td><%= object.user.username %></td>
-            <td><%= object.user.region %></td>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
-<% } %>

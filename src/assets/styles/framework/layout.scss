@@ -47,10 +47,12 @@ a {
   text-align: center;
   text-decoration: none;
   display: inline-block;
+  padding:5px;
 }
 
 a:hover{
   background-color: rgb(242, 242, 242);
+  border-radius: 10px;
 }
 
 h1 {
@@ -162,16 +164,16 @@ li{
   background-color: lightgreen;
   border-radius: 5px;
   float: right;
-  padding-left: .2rem;
-  padding-right: .2rem;
+  padding-left: .4rem;
+  padding-right: .4rem;
 }
 
 .other{
   background-color: lightgray;
   border-radius: 5px;
   float: left;
-  padding-left: .2rem;
-  padding-right: .2rem;
+  padding-left: .4rem;
+  padding-right: .4rem;
 }
 
 .time{
@@ -243,18 +245,21 @@ li{
     }
   }
 
-  .notifications {
-    cursor: pointer;
-    display:inline-block;
-    min-width:50px;
-    border:solid 1px #ccc;
-    vertical-align:top;
-    margin:0px;
-    text-align:center;
-    padding:5px;
-    margin-top: 14px;
-    margin-right: 14px;
-  }
+.notifications {
+  cursor: pointer;
+  display:inline-block;
+  min-width:50px;
+  vertical-align:top;
+  margin:0px;
+  text-align:center;
+  padding:5px;
+  margin: auto;
+}
+
+.notifications:hover{
+  background-color: rgb(242, 242, 242);
+  border-radius: 10px;
+}
 
 [data-badge] {
   position:relative;

@@ -1,6 +1,7 @@
 <div class="fixed-width">
   <h2>Negociacion con <%= otherRole.username %></h2>
   <div class="flexbox-container">
+  <input type="hidden" id="currentUser" value="<%= currentUser.id %>">
   <% if(negotiation.state == "In Progress") { %>
       <form action="<%= editNegotiationPath %>" method="POST">
         <input type="hidden" name="_method" value="patch" />
@@ -84,7 +85,7 @@
         <input type="hidden" name="receiverId" value=<%= otherRole.id %> />
         <input type="hidden" name="negotiationId" value=<%= negotiation.id %> />
         <textarea id="m" type="text" name="text"></textarea>
-        <input type="submit" value="Enviar" class="btn"/>
+        <input type="submit" value="Enviar" class="btn" id="enter"/>
       </form>
     <% } %>
   </div>
@@ -134,3 +135,4 @@
   </div>
   
 </div>
+

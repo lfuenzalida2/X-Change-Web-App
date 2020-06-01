@@ -1,5 +1,6 @@
 const KoaRouter = require('koa-router');
 const Fuse = require('fuse.js');
+const { Op } = require('sequelize');
 
 const router = new KoaRouter();
 
@@ -34,7 +35,9 @@ router.get('explore.list', '/', async (ctx) => {
     const objectsList = await ctx.orm.object.findAll();
     await ctx.render('explore/explore_list_object', {
       objectsList,
+      categoryList,
       view: (object) => ctx.router.url('objects.view', { id: object.id }),
+      submitSearchPath: ctx.router.url('objects.search'),
     });
   }
 });
@@ -78,6 +81,7 @@ router.post('objects.search', '/', async (ctx) => {
   await ctx.render('explore/explore_list_object', {
     result,
     categoryList,
+    objectsList,
     view: (object) => ctx.router.url('objects.view', { id: object.id }),
     submitSearchPath: ctx.router.url('objects.search'),
   });

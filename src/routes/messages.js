@@ -36,8 +36,6 @@ router.post('messages.create', '/', async (ctx) => {
     await negotiation.save();
     const time = myFunction(message.createdAt);
     const parsedMessage = {
-      senderId,
-      receiverId,
       currentUserId,
       message: message.text,
       time,
