@@ -14,14 +14,14 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        negotiationId: 2,
+        negotiationId: 3,
         objectId: 2,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        negotiationId: 2,
-        objectId: 4,
+        negotiationId: 3,
+        objectId: 21,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
