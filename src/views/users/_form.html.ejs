@@ -69,15 +69,15 @@
             </div>
             <br>
             
+            <div>
+                <% if (newUser.isNewRecord) { %>
+                    <input type="submit" name="create" value="Create" class="btn">
+                <% }else { %>
+                    <input type="submit" name="update" value="Update" class="btn">
+                <% } %>
+    
+            </div>
         </form>
         <br>
-                <div>
-                    <% if (newUser.isNewRecord) { %>
-                        <input type="submit" name="create" value="Create" class="float-r btn">
-                    <% }else { %>
-                        <input type="submit" name="update" value="Update" class="float-r btn">
-                    <% } %>
-        
-                </div>
     </div>
 </div>

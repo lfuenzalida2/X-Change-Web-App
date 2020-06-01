@@ -1,42 +1,44 @@
-<h1>Vista Users</h1>
-
-<% if (!usersList.length) { %>
-<p>No results</p>
-<% } else{ %>
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>mail</th>
-            <th>Password</th>
-            <th>number</th>
-            <th>region</th>
-            <th>profile picture</th>
-            <th colspan="2">Edit</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% usersList.forEach((user) => { %>
+<div class="fixed-width">
+    <h1>Vista Users</h1>
+    
+    <% if (!usersList.length) { %>
+    <p>No results</p>
+    <% } else{ %>
+    <table>
+        <thead>
             <tr>
-                <td><%= user.id %></td>
-                <td><%= user.username %></td>
-                <td><%= user.mail %></td>
-                <td><%= user.password %></td>
-                <td><%= user.number %></td>
-                <td><%= user.region %></td>
-                <td><%= user.profile_picture %></td>
-                <td><a href="<%= editUserPath(user) %>">Edit</a></td>
-                <td>
-                    <form action="<%= delUserPath(user) %>" method="post">
-                        <input type="hidden" name="_method" value="delete">
-                        <input type="submit" value="X">
-                    </form>
-                </td>
+                <th>ID</th>
+                <th>Username</th>
+                <th>mail</th>
+                <th>Password</th>
+                <th>number</th>
+                <th>region</th>
+                <th>profile picture</th>
+                <th colspan="2">Edit</th>
             </tr>
-        <% }) %>
-    </tbody>
-</table>
-<% } %>
-
-<a href="<%= newUserPath %>">New User</a>
+        </thead>
+        <tbody>
+            <% usersList.forEach((user) => { %>
+                <tr>
+                    <td><span class="span"><%= user.id %></span></td>
+                    <td><span><%= user.username %></span></td>
+                    <td><span><%= user.mail %></span></td>
+                    <td><span class="span"><%= user.password %></span></td>
+                    <td><span><%= user.number %></span></td>
+                    <td><span><%= user.region %></span></td>
+                    <td><span><%= user.profile_picture %></span></td>
+                    <td><span><a href="<%= editUserPath(user) %>">Edit</a></span></td>
+                    <td>
+                        <form action="<%= delUserPath(user) %>" method="post">
+                            <input type="hidden" name="_method" value="delete">
+                            <input type="submit" value="X">
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <% } %>
+    
+    <a href="<%= newUserPath %>">New User</a>
+</div>

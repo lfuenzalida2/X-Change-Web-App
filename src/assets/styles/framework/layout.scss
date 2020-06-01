@@ -96,6 +96,13 @@ img {
   text-align: center;
 }
 
+.span{
+  display: block;
+  text-overflow: ellipsis;
+  width: 50px;
+  overflow: hidden;
+}
+
 .border{
   border: solid 1px;
   border-radius: 5px;
