@@ -63,7 +63,7 @@
   <br>
   <br>
   <div id=chat>
-    <h3>Chat con <%= otherRole.username %></h3>
+    <h3 class="float-l"><%= otherRole.username %></h3>
     <ul id=messages>
       <% messagesList.forEach((message) => { %> %>
         <li>
@@ -79,6 +79,8 @@
         <br>
       <% }) %>
     </ul>
+  </div>
+  <div class="form" id="send">
     <% if(negotiation.state == "In Progress") { %>
       <form id="send-message" action="<%= newMessagePath  %>" method="POST">
         <input type="hidden" name="senderId" value=<%= currentRole.id %> />
