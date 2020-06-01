@@ -128,8 +128,16 @@ router.get('users.index', '/:id', async (ctx) => {
 router.post('users.view', '/:id/profile', async (ctx) => {
   const { reviewerId } = ctx.request.body;
   const reviewer = await ctx.orm.user.findByPk(reviewerId);
+  const user = await ctx.orm.user;
+  const reviews = await ctx.orm.review.findAll({
+    where: { reviewedId: reviewerId },
+    include: [{ model: user, as: 'reviewed' }, { model: user, as: 'reviewer' }],
+  });
+  console.log(reviews);
   await ctx.render('account/other', {
     reviewer,
+    reviews,
+    otherProfile: (other) => ctx.router.url('users.view', { id: other.id }),
   });
 });
 

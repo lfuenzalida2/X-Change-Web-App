@@ -1,6 +1,8 @@
 <div class="fixed-width-lg flexbox-container" id="search">
   <div class="form">
     Buscar
+    <br>
+    <br>
     <form action="<%= submitSearchPath %>" method="post">
       <div>
         <label for="keywords">Palabras Clave: </label>
@@ -9,7 +11,7 @@
       <br>
       <div>
         <label for="state">State: </label>
-        <select name="state" id="state">
+        <select name="state" id="state" class="float-r">
           <option value="true">Disponible</option>
           <option value="false">Se está intercambiando</option>
         </select>
@@ -17,7 +19,7 @@
       <br>
       <div>
         <label for="region">Region: </label>
-        <select name="region" id="region">
+        <select name="region" id="region" class="float-r">
           <option value="todas">Todas</option>
           <option value="Aisen del G. Carlos Ibáñez del Campo">Aisén del G. Carlos Ibáñez del Campo</option>
           <option value="Antofagasta">Antofagasta</option>
@@ -39,7 +41,7 @@
       <br>
       <div>
         <label for="categoryId">Categoria: </label>
-        <select name="categoryId" id="categoryId">
+        <select name="categoryId" id="categoryId" class="float-r">
           <option value="todas">Todas</option>
           <% categoryList.forEach((category)=> { %>
             <option value="<%= category.id %>"><%= category.name %></option>
@@ -48,7 +50,7 @@
       </div>
       <br>
       <div>
-        <input type="submit" name="Submit"  value="Buscar">
+        <input type="submit" name="Submit"  value="Buscar" class="btn">
       </div>
     </form>
   </div>
@@ -79,7 +81,7 @@
                   <td><%= object.description %></td>
                   <td><%= object.user.username %></td>
                   <td><%= object.user.region %></td>
-                  <td><a href="<%= view(object) %>">ver</a></td>
+                  <td><a href="<%= view(object) %>">Ver</a></td>
               </tr>
             <% }) %>
           </tbody>
