@@ -1,0 +1,44 @@
+ul > li {
+  display: inline-block;
+}
+
+#container {
+
+}
+
+.pagination {
+  margin: auto;
+  text-align: center;
+  padding: 10px;
+}
+
+.group {
+  cursor: pointer;
+  display:block;
+  width:1000px;
+  vertical-align:top;
+  margin:0px;
+  text-align:center;
+  padding:5px;
+  margin: auto;
+}
+
+.group-item-text {
+  padding: 0px;
+  margin: 0px;
+}
+
+.group-item {
+  width:1000px;
+  background-color: rgb(224,255,255);
+  border-radius: 15px;
+  border: solid 5px;
+}
+
+.group-footer {
+  display: inline-block;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: center;
+  color: black;
+}
