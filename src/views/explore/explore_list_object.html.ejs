@@ -55,39 +55,36 @@
     </form>
   </div>
   <div class="form">
-    <div class="flexbox-item objects border">
-      <% if (!result.length && !objectsList) { %>
-        <p>Lo siento, no se encontraron resultados de lo que estas buscando.</p>
-      <% } else { %>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>State</th>
-              <th>CategoryId</th>
-              <th>Description</th>
-              <th>Owner</th>
-              <th>Región</th>
-              <th>ver</th>
-            </tr>
-          </thead>
-          <tbody>
+    <div id="container">
+        <nav aria-label=...>
+          <ul class=pagination>
+            <li id="previous-page"><a href="javascript:void(0)" aria-label=Previous><span aria-hidden=true>&laquo;</span></a></li>
+          </ul>
+        </nav>
+
+        <div id="page">
+          <% if (!result.length) { %>
+            <div class="list-group">
+              <a href="javascript:void(0)" class="list-group-item active">
+                <h4 class="list-group-item-heading">Lo siento, no se encontraron resultados relacionados a lo que buscas.</h4>
+              </a>
+            </div>
+          <% } else { %>
             <% result.forEach((element) => { %>
             <% object = element.item.dataValues; %>
-              <tr>
-                  <td><%= object.name %></td>
-                  <td><%= object.state %></td>
-                  <td><%= object.categoryId %></td>
-                  <td><%= object.description %></td>
-                  <td><%= object.user.username %></td>
-                  <td><%= object.user.region %></td>
-                  <td><a href="<%= view(object) %>">Ver</a></td>
-              </tr>
-            <% }) %>
-          </tbody>
-        </table>
-        <% } %>
+          <div class="list-group">
+            <a href="<%= view(object) %>" class="list-group-item active">
+              <h4 class="list-group-item-heading"><%= object.name %></h4>
+              <p class="list-group-item-text"><%= object.description %></p>
+              <p class="list-group-footer">Dueño: <%= object.user.username %></p>
+              <p class="list-group-footer">Ubicación: <%= object.user.region %></p>
+            </a>
+          </div>
+          <% }) %>
+          <% } %>
+
+        </div>
+
       </div>
   </div>
 </div>
-
