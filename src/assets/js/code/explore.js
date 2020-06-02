@@ -3,7 +3,7 @@
 const numberOfItems = $('#page .group').length;
 const limitPerPage = 3;
 $(`#page .group:gt(${(limitPerPage - 1)})`).hide();
-const totalPages = Math.round(numberOfItems / limitPerPage);
+const totalPages = Math.ceil(numberOfItems / limitPerPage);
 $('.pagination').append(`<li class='current-page active'><a href='javascript:void(0)'>${1}</a></li>`);
 
 for (let i = 2; i <= totalPages; i++) {
