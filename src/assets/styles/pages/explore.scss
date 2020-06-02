@@ -12,7 +12,7 @@ ul > li {
   padding: 10px;
 }
 
-.list-group {
+.group {
   cursor: pointer;
   display:block;
   width:1000px;
@@ -23,19 +23,19 @@ ul > li {
   margin: auto;
 }
 
-.list-group-item-text {
+.group-item-text {
   padding: 0px;
   margin: 0px;
 }
 
-.list-group-item {
+.group-item {
   width:1000px;
   background-color: rgb(224,255,255);
   border-radius: 15px;
   border: solid 5px;
 }
 
-.list-group-footer {
+.group-footer {
   display: inline-block;
   padding-left: 10px;
   padding-right: 10px;

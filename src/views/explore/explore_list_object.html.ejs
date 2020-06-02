@@ -64,20 +64,20 @@
 
         <div id="page">
           <% if (!result.length) { %>
-            <div class="list-group">
-              <a href="javascript:void(0)" class="list-group-item active">
-                <h4 class="list-group-item-heading">Lo siento, no se encontraron resultados relacionados a lo que buscas.</h4>
+            <div class="group">
+              <a href="javascript:void(0)" class="group-item active">
+                <h4 class="group-item-heading">Lo siento, no se encontraron resultados relacionados a lo que buscas.</h4>
               </a>
             </div>
           <% } else { %>
             <% result.forEach((element) => { %>
             <% object = element.item.dataValues; %>
-          <div class="list-group">
-            <a href="<%= view(object) %>" class="list-group-item active">
-              <h4 class="list-group-item-heading"><%= object.name %></h4>
-              <p class="list-group-item-text"><%= object.description %></p>
-              <p class="list-group-footer">Dueño: <%= object.user.username %></p>
-              <p class="list-group-footer">Ubicación: <%= object.user.region %></p>
+          <div class="group">
+            <a href="<%= view(object) %>" class="group-item active">
+              <h4 class="group-item-heading"><%= object.name %></h4>
+              <p class="group-item-text"><%= object.description %></p>
+              <p class="group-footer">Dueño: <%= object.user.username %></p>
+              <p class="group-footer">Ubicación: <%= object.user.region %></p>
             </a>
           </div>
           <% }) %>
