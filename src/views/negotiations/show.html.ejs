@@ -83,23 +83,20 @@
         </div>
       <% }) %>
     </div>
-    <% if(negotiation.state == "In Progress") {%>
+
     <div id="send">
-      <% if(negotiation.state == "In Progress") { %>
-        <form id="send-message" action="<%= newMessagePath  %>" method="POST">
-          <input type="hidden" name="senderId" value=<%= currentRole.id %> />
-          <input type="hidden" name="receiverId" value=<%= otherRole.id %> />
-          <input type="hidden" name="negotiationId" value=<%= negotiation.id %> />
-          <div class="wrapper-textarea"><textarea id="m" type="text" name="text"></textarea> </div>
-          <input id="send-btn" type="submit" value="Enviar" class="btn" id="enter"/>
-        </form>
-      <% } %>
+      <form id="send-message" action="<%= newMessagePath  %>" method="POST">
+        <input type="hidden" name="senderId" value=<%= currentRole.id %> />
+        <input type="hidden" name="receiverId" value=<%= otherRole.id %> />
+        <input type="hidden" name="negotiationId" value=<%= negotiation.id %> />
+        <div class="wrapper-textarea"><textarea id="m" type="text" name="text"></textarea> </div>
+        <input id="send-btn" type="submit" value="Enviar" class="btn" <%= negotiation.state === "In Progress" ? true : "disabled"%>/>
+      </form>
     </div>
-    <% } %>
   </div>
   <br>
 
   <div id="add_object">Render de React</div>
- 
+
 
 </div>
