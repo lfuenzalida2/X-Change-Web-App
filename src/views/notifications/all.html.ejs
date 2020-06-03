@@ -1,26 +1,28 @@
-<% if (currentUser.id) { %>
-<h2>Mis Notificaciones</h2>
-<% if (!notificationsList.length) { %>
-  <p>No tienes ninguna notificación.</p>
-<% } else { %>
-  <div class="all-notifications">
-  <% notificationsList.forEach((notification) => { %>
-    <% let seen; %>
-    <% if (notification.seen) { %>
-      <% seen = 'seen'; %>
-      <% } else { %>
-      <% seen = 'unseen'; %>
-    <% } %>
-      <form id="seeNotificationForm" class="notification <%= seen %>" onclick="submit();" action="notifications/<%= notification.id %>" method="POST">
-        <input type="hidden" name="_method" value="patch" />
-        <div class="inline-info"> <%= notification.negotiation.seller.username %> inició una negociación contigo. </div>
-        <div class="inline-date"> (<%= notification.createdAt.toLocaleString('es-CL', { hour12: false }) %>) </div>
-        <input class="delete" type="submit" form="deleteNotificationForm" value="✖" />
-      </form>
-      <form id="deleteNotificationForm" action="<%= deleteNotificationPath(notification) %>" method="POST">
-        <input type="hidden" name="_method" value="delete"  />
-      </form>
-  <% }); %>
-  </div>
-<% } %>
-<% } %>
+<div class="fixed-width-lg">
+  <% if (currentUser.id) { %>
+  <h2>Mis Notificaciones</h2>
+  <% if (!notificationsList.length) { %>
+    <p>No tienes ninguna notificación.</p>
+  <% } else { %>
+    <div class="all-notifications">
+    <% notificationsList.forEach((notification) => { %>
+      <% let seen; %>
+      <% if (notification.seen) { %>
+        <% seen = 'seen'; %>
+        <% } else { %>
+        <% seen = 'unseen'; %>
+      <% } %>
+        <form id="seeNotificationForm" class="notification <%= seen %>" onclick="submit();" action="notifications/<%= notification.id %>" method="POST">
+          <input type="hidden" name="_method" value="patch" />
+          <div class="inline-info"> <%= notification.negotiation.seller.username %> inició una negociación contigo. </div>
+          <div class="inline-date"> (<%= notification.createdAt.toLocaleString('es-CL', { hour12: false }) %>) </div>
+          <input class="delete" type="submit" form="deleteNotificationForm" value="✖" />
+        </form>
+        <form id="deleteNotificationForm" action="<%= deleteNotificationPath(notification) %>" method="POST">
+          <input type="hidden" name="_method" value="delete"  />
+        </form>
+    <% }); %>
+    </div>
+  <% } %>
+  <% } %>
+</div>

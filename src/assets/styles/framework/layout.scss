@@ -124,6 +124,20 @@ input{
   max-width: 400px;
 }
 
+.fixed-width-xlg{
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 800px;
+}
+
+.fixed-width-lg{
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 700px;
+}
+
 .fixed-width{
   width: 50%;
   margin-left: auto;
@@ -191,13 +205,6 @@ td{
 textarea{
   height: 30px;
   vertical-align: bottom;
-}
-
-.fixed-width-lg{
-  width: 60%;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 500px;
 }
 
 li{
@@ -385,7 +392,6 @@ a.see-all-notifications:hover {
 }
 
 .all-notifications {
-  width: 50%;
   margin-left: auto;
   margin-right: auto;
 }

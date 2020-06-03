@@ -142,7 +142,7 @@ export default class addObject extends Component {
             </tbody>
           </table>
         </div>
-
+        <br />
         <div>
           <table className="form">
             <thead>
@@ -158,7 +158,7 @@ export default class addObject extends Component {
               { data.map((element) => (
                 <tr key={element.id}>
                   <td>{element.attributes.name}</td>
-                  <td>{element.attributes.state.toString()}</td>
+                  <td>{element.attributes.state ? 'Disponible' : 'No Disponible'}</td>
                   <td>{element.attributes.category.name}</td>
                   <td>{element.attributes.description}</td>
                   <td>
