@@ -12,7 +12,7 @@
   </head>
 
   <body>
-    <header class="flexbox-container">
+    <header class="flexbox-container" id="header">
 
       <div class="flexbox-item home flexbox-container">
         <div class="separate">
@@ -22,13 +22,16 @@
           </a>
         </div>
       </div>
+      
       <hr>
       <div class="separate">
-        <a href="<%= newObject %>" class="item">Publicar</a>
+        <a href="<%= newObject %>" class="flexbox-item">
+          <span class="item">Publicar</span>
+        </a>
       </div>
 
       <div class="flexbox-item title item">
-        <a href="/" class="flexbox-item">
+        <a href="/" class="flexbox-item" id="title">
           <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/xchange.png">
           <span class="item">X-Change</span>
         </a>
@@ -45,15 +48,25 @@
             </div>
             <hr>
             <div class="separate">
-              <a href="<%= inventory(currentUser) %>" class="item">Inventario</a>
+              <a href="<%= inventory(currentUser) %>" class="flexbox-item">
+                <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/inventory.png">
+                <span class="item">Inventario</span>
+              </a>
             </div>
             <hr>
             <div class="separate">
-              <a href="<%= negotiations %>" class="item">Negociaciones</a>
+              <a href="<%= negotiations %>" class="flexbox-item">
+                <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/negotiation.png">
+                <span class="item">Negociaciones</span>
+                
+              </a>
             </div>
             <hr>
             <div class="separate">
-              <div data-badge=<%= newNotifications %> class="item notifications">Notificaciones</div>
+              <div data-badge=<%= newNotifications %> class="item notifications flexbox-item">
+                <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/notification.png">
+                <span class="item">Notificaciones</span> 
+              </div>
               <div class="notifications-container"></div>
             </div>
             <div class="separate logout">
@@ -65,7 +78,10 @@
       <!-- if not logged in -->
           <% } else { %>
             <div class="separate">
-              <a href="<%= newSessionPath %>" class="item">Iniciar Sesión</a>
+              <a href="<%= newSessionPath %>" class="flexbox-item">
+                <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/account.png">
+                <span class="item">Iniciar sesion</span>
+              </a>
             </div>
             <hr>
             <div class="separate">

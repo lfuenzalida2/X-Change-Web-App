@@ -4,6 +4,29 @@ html, body {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+.flexbox-item{
+  color: black;
+  display: flex;
+  font-weight: bolder;
+}
+
+#title{
+  color: black;
+  display: flex;
+  font-weight: bolder;
+  flex-direction: column;
+  position: relative;
+  left: 245%;
+}
+
+#header{
+  margin-bottom: 0;
+}
+
+.bolder{
+  font-weight: bolder;
+}
+
 .flexbox-container {
   position: relative;
   margin: 10px;
