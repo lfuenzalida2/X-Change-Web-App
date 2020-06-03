@@ -16,18 +16,19 @@ paths
 
 # Navegabilidad
 
-La navegabilidad de la página se puede hacer completamente a partir de botones, no es neceasario ingresar ninguna ruta.
+La navegabilidad de la página se puede hacer completamente a partir de botones y links, no es neceasario ingresar ninguna ruta.
 
 # Servicios de terceros
 
 Para levantar la página Web usamos Heroku <br>
-Para almacenar las imagenes en el cloud usamos google cloud<br>
+Para almacenar las imágenes e iconos de la aplicación en la nube usamos Amazon S3<br>
 Las contraseñas estan encriptadas con bcrypt<br>
 Para enviar emails utilizamos los servicios de Sendgrid<br>
+Utilizamos el paquete `socket.io` para establecer conexiones en tiempo real, implementadas en el chat de las negociaciones, y las notificaciones push.
 
 # A modo de Testeo
 
-Actualmente hay 2 cuentas disponibles, una de admin y una de usuario normal (por ahora no hay diferencias entre estos)<br>
+Actualmente hay 2 cuentas disponibles, una de admin y una de usuario normal<br>
 Para loguearse usar:<br>
 correo: admin@xchange.com contrseña: 12345678<br>
 correo: user@example.com contraseña: 12345678<br>
