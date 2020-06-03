@@ -14,6 +14,8 @@ export default class addObject extends Component {
       loading: true,
       id: props.id,
     };
+    this.añadirObjeto = this.añadirObjeto.bind(this);
+    this.quitarObjeto = this.quitarObjeto.bind(this);
   }
 
   async componentDidMount() {
@@ -48,8 +50,8 @@ export default class addObject extends Component {
     const url = 'http://localhost:3000/api/' + negotiationId + '/object';
     const body = { negotiationId, objectId, add: 'Añadir' };
     await axios.post(url, body)
-      .then((res) => {
-        console.log(res);
+      .then(async (res) => {
+        this.setState({ data: res.data.data });
       })
       .catch((err) => {
         console.log(err);
@@ -66,7 +68,7 @@ export default class addObject extends Component {
     const body = { negotiationId, objectId, _method: 'delete' };
     await axios.post(url, body)
       .then((res) => {
-        console.log(res);
+        this.setState({ data: res.data.data });
       })
       .catch((err) => {
         console.log(err);
