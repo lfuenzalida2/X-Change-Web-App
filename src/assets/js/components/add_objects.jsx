@@ -63,12 +63,12 @@ export default class addObject extends Component {
     data.map((element) => {
       // eslint-disable-next-line consistent-return
       element.attributes.negotiations.map((negotiationObjects) => {
-        if (negotiation.id === negotiationObjects.id.toString() && id === element.id) {
+        console.log(element.attributes.state);
+        if ((negotiation.id === negotiationObjects.id.toString() || element.attributes.state === false) && id === element.id) {
           value = 'disabled';
         }
       });
     });
-    console.log(value);
     return value;
   }
 
@@ -108,6 +108,7 @@ export default class addObject extends Component {
   render() {
     const { loading, data, negotiation } = this.state;
     if (loading) return <p>Loading...</p>;
+    console.log(data);
     return (
       <div>
         <h2>Lista de Objetos</h2>
