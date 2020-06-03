@@ -14,7 +14,17 @@
   <body>
     <header class="flexbox-container" id="header">
 
-      <div class="flexbox-item home flexbox-container">
+      <div class="flexbox-item home item">
+        <div class="separate">
+          <a href="/" class="flexbox-item" id="title">
+            <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/xchange.png">
+            <span class="item">X-Change</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- if logged in -->
+      <div class="flexbox-item session flexbox-container" id="user-bar">
         <div class="separate">
           <a href="<%= explore %>" class="flexbox-item">
             <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/search-icon.png">
@@ -22,25 +32,14 @@
           </a>
         </div>
         <hr>
-        <div class="separate">
-          <a href="<%= newObject %>" class="flexbox-item">
-            <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/publish.png">
-            <span class="item">Publicar</span>
-          </a>
-        </div>
-      </div>
-      
-
-      <div class="flexbox-item title item">
-        <a href="/" class="flexbox-item" id="title">
-          <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/xchange.png">
-          <span class="item">X-Change</span>
-        </a>
-      </div>
-
-      <!-- if logged in -->
-      <div class="flexbox-item session flexbox-container" id="user-bar">
-          <% if (currentUser) { %>
+        <% if (currentUser) { %>
+          <div class="separate">
+            <a href="<%= newObject %>" class="flexbox-item">
+              <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/publish.png">
+              <span class="item">Publicar</span>
+            </a>
+          </div>
+          <hr>
             <div class="separate item">          
               <a href="<%= profile(currentUser) %>" class="flexbox-item">
                 <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/account.png">
