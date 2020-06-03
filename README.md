@@ -7,13 +7,6 @@ X-Change es un página Web que te permite tomar esas cosas que tenias guardando 
 [link](https://notxchange.herokuapp.com/)
 https://notxchange.herokuapp.com/
 
-paths
-[users](https://notxchange.herokuapp.com/users/)
-[objects](https://notxchange.herokuapp.com/objects/)
-[negotaitions](https://notxchange.herokuapp.com/negotiations/)
-[categories](https://notxchange.herokuapp.com/categories/)
-[reviews](https://notxchange.herokuapp.com/reviews/)
-
 # Navegabilidad
 
 La navegabilidad de la página se puede hacer completamente a partir de botones y links, no es neceasario ingresar ninguna ruta.
@@ -22,7 +15,7 @@ La navegabilidad de la página se puede hacer completamente a partir de botones 
 
 Para levantar la página Web usamos Heroku <br>
 Para almacenar las imágenes e iconos de la aplicación en la nube usamos Amazon S3<br>
-Las contraseñas estan encriptadas con bcrypt<br>
+Las contraseñas estan encriptadas con el paquete `bcrypt`<br>
 Para enviar emails utilizamos los servicios de Sendgrid<br>
 Utilizamos el paquete `socket.io` para establecer conexiones en tiempo real, implementadas en el chat de las negociaciones, y las notificaciones push.
 
