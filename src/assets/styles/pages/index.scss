@@ -27,23 +27,6 @@
    font-family: "Gill Sans", sans-serif;
 }
 
-.flex-container {
-    margin: 20px;
-    padding: 0;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-
-    .flexbox-item{
-      color: white;
-      display: flex;
-    }
-
-    .objects{
-        margin-right: 50px;
-    }
-  }
-
 .border{
 
     border: solid;
@@ -87,7 +70,7 @@
   transform: translateY(-50%);
   width: auto;
   padding: 16px;
-  color: white;
+  color: black;
   font-weight: bold;
   font-size: 18px;
   transition: 0.6s ease;
@@ -164,6 +147,10 @@
   -webkit-animation-duration: 1.5s;
   animation-name: fade;
   animation-duration: 1.5s;
+}
+
+.fade:hover{
+  background: none;
 }
 
 @-webkit-keyframes fade {

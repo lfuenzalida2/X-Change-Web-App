@@ -7,6 +7,7 @@ const koaStatic = require('koa-static');
 const render = require('koa-ejs');
 const session = require('koa-session');
 const override = require('koa-override-method');
+const jsonApiSerializer = require('jsonapi-serializer');
 const http = require('http');
 const socketIO = require('socket.io');
 const assets = require('./assets');
@@ -39,6 +40,11 @@ app.use((ctx, next) => {
   ctx.state.env = ctx.app.env;
   return next();
 });
+
+// json serializer
+app.context.jsonSerializer = function jsonSerializer(type, options) {
+  return new jsonApiSerializer.Serializer(type, options);
+};
 
 // log requests
 app.use(koaLogger());

@@ -1,5 +1,6 @@
 const KoaRouter = require('koa-router');
 const { Op } = require('sequelize');
+const sendNegotiationEmail = require('../mailers/new_negotiation');
 
 const router = new KoaRouter();
 
@@ -17,6 +18,7 @@ function currentRole(ctx, customer, seller) {
   }
   return null;
 }
+
 function otherRole(ctx, customer, seller) {
   const { currentUser } = ctx.state;
   if (currentUser.id === customer.id) {
@@ -24,6 +26,7 @@ function otherRole(ctx, customer, seller) {
   }
   return customer;
 }
+
 function didReview(ctx, reviews) {
   const { currentUser } = ctx.state;
   for (let i = 0; i < reviews.length; i += 1) {
@@ -82,6 +85,7 @@ router.post('negotiations.create', '/', async (ctx) => {
   const customerId = +ctx.request.body.customerId;
   const sellerId = +ctx.request.body.sellerId;
   const { state } = ctx.request.body;
+  const user = await ctx.orm.user.findByPk(customerId);
   const negotiation = ctx.orm.negotiation.build({ customerId, sellerId, state });
   try {
     await negotiation.save({ fields: ['customerId', 'sellerId', 'state'] });
@@ -89,6 +93,7 @@ router.post('negotiations.create', '/', async (ctx) => {
       { userId: customerId, negotiationId: negotiation.id, type: 'newNegotiation' },
     );
     await notification.save({ fields: ['userId', 'negotiationId', 'type'] });
+    await sendNegotiationEmail(ctx, { user });
     ctx.body = {
       customerId,
       negotiationId: negotiation.id,
@@ -132,14 +137,6 @@ router.post('negotiations.add', '/:id', loadNegotiation, async (ctx) => {
     await negotiation.save();
     ctx.router.url('negotiations.add_object');
   } catch (validationError) {
-    await ctx.render('negotiations/add_object', {
-      objectList,
-      deleteObject: ctx.router.url('negotiations.object_del', { id: negotiation.id }),
-      objects: await ctx.state.negotiation.getObjects(),
-      errors: validationError.errors,
-      goToNegotiation: ctx.router.url('negotiations.show', { id: negotiation.id }),
-      addObjectPath: ctx.router.url('negotiations.add', { id: negotiation.id }),
-    });
   }
 });
 
@@ -160,8 +157,9 @@ router.del('negotiations.delete', '/:id', loadNegotiation, async (ctx) => {
   ctx.redirect(ctx.router.url('negotiations.list'));
 });
 
-
-router.del('negotiations.object_del', '/:id/object', loadNegotiation, async (ctx) => {
+router.del('negotiations.object_del', '/:id/object', async (ctx) => {
+  console.log(ctx.request.body);
+  ctx.state.negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
   const objectNegotiation = ctx.orm.objectNegotiation.build(ctx.request.body);
   await objectNegotiation.destroy();
   await ctx.redirect('back');

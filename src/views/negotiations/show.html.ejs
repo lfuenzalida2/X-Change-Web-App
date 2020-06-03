@@ -99,47 +99,7 @@
   </div>
   <br>
 
-  <div id="object-list">
-    <h2>Lista de Objetos</h2>
-    <div class="form">
-      <% if (!objects.length) { %>
-        <p>No hay objetos aún.</p>
-      <% } else { %>
-        <table id="generic-list">
-          <thead>
-              <tr>
-                <th>N</th>
-                <th>Nombre</th>
-                <% if (negotiation.state == "In Progress") { %>
-                  <th>Quitar</th>
-                <% } %>
-              </tr>
-          </thead>
-          <tbody>
-            <% objects.forEach((object, index) => { %>
-              <tr>
-                <td><%- (index + 1) %></td>
-                <td><%- object.name %></td>
-                <td>
-                  <form action="<%= deleteObject %>" method="POST">
-                    <input type="hidden" name="_method" value="delete">
-                    <input type="hidden" name="negotiationId" value="<%= negotiation.id %>">
-                    <input type="hidden" name="objectId" value="<%= object.id %>">
-                    <% if (negotiation.state == "In Progress") { %>
-                      <input type="submit" value="Quitar" class="btn">
-                    <% } %>
-                  </form>
-                </td>
-              </tr>
-            <% }) %>
-          </tbody>
-        </table>
-      <% } %>
-    </div>
-    <br>
-    <% if(negotiation.state == "In Progress") { %>
-      <a class="btn" href="<%= addObjectPath %>">Añadir Objeto</a>
-    <% } %>
-  </div>
+  <div id="add_object">Render de React</div>
+ 
 
 </div>

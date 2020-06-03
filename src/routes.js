@@ -11,6 +11,7 @@ const users = require('./routes/users');
 const session = require('./routes/session');
 const inventory = require('./routes/inventory');
 const notifications = require('./routes/notifications');
+const api = require('./routes/api');
 
 const router = new KoaRouter();
 
@@ -52,15 +53,6 @@ router.use('/negotiations', async (ctx, next) => {
   await next(); // go to next middleware
 });
 
-// No permite a un usuario cualquiera entrar al la url /users, los devuelve
-router.use('/users/index', async (ctx, next) => {
-  if (!ctx.state.currentUser) {
-    ctx.redirect('/');
-    return;
-  }
-  await next(); // go to next middleware
-});
-
 router.use('/notifications', async (ctx, next) => {
   if (!ctx.state.currentUser) {
     ctx.redirect('/session/new');
@@ -78,6 +70,7 @@ router.use('/objects', async (ctx, next) => {
 });
 
 router.use('/', index.routes());
+router.use('/api', api.routes());
 router.use('/explore', explore.routes());
 router.use('/inventory', inventory.routes());
 router.use('/categories', categories.routes());

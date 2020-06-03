@@ -1,5 +1,4 @@
 <div class="fixed-width-lg">
-    imagen
     <%= currentUser.profilePicture %>
     <h1 class="center"><%= currentUser.username %></h1>
     <div class="form">
@@ -23,7 +22,6 @@
     
     <div class="form">
         <% if (reviews.length > 0) { %>
-            <% console.log(reviews.length); %>
             <% if (currentUser.id == reviews[0].reviewedId) {%>
             <div>
                 <h3 class="flexbox-item">Ratings</h1>

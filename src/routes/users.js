@@ -129,7 +129,6 @@ router.post('users.view', '/:id/profile', async (ctx) => {
     where: { reviewedId: reviewerId },
     include: [{ model: user, as: 'reviewed' }, { model: user, as: 'reviewer' }],
   });
-  console.log(reviews);
   await ctx.render('account/other', {
     reviewer,
     reviews,

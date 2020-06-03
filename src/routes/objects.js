@@ -118,6 +118,8 @@ router.get('objects.view', '/:id', loadObject, async (ctx) => {
 
 router.post('objects.load', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
+  const owner = await object.getUser();
+  const category = await object.getCategory();
   try {
     const { list } = ctx.request.files;
     if (!list.name) {
@@ -134,8 +136,11 @@ router.post('objects.load', '/:id', loadObject, async (ctx) => {
   } catch (validationError) {
     await ctx.render('objects/view', {
       object,
+      owner,
+      category,
       errors: validationError.errors,
       createNegotiation: ctx.router.url('negotiations.create'),
+      editObjectPath: ctx.router.url('objects.edit', { id: object.id }),
       submitObjectPath: ctx.router.url('objects.load', { id: object.id }),
       photos: await ctx.state.object.getPhotos(),
     });
