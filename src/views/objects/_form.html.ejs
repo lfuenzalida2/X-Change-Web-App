@@ -34,10 +34,10 @@
       <br>
       <div>
          <label for="categoryId">Categoria</label>
-         <select name="categoryId" value="<%= object.categoryId %>" class="float-r">
-           <option value="1">1</option>
-           <option value="2">2</option>
-           <option value="3">3</option>
+         <select name="categoryId" value="<%= object.categoryId %>" id="categoryId" class="float-r">
+           <% categoryList.forEach((category)=> { %>
+             <option value="<%= category.id %>"><%= category.name %></option>
+           <% }) %>
          </select>
       </div>
       <br>
@@ -45,7 +45,6 @@
         <label for="description">Descripción</label>
         <input type="text" name="description" value="<%= object.description %>" class="float-r"/>
       </div>
-    </div>
     <br>
       <div class="field">
         <% if (object.isNewRecord) { %>
@@ -55,4 +54,5 @@
         <% } %>
       </div>
     </form>
+  </div>
 </div>

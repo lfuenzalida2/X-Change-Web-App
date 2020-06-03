@@ -11,7 +11,6 @@ router.get('inventory.list', '/:id', async (ctx) => {
   );
   await ctx.render('inventory/index', {
     objectsList,
-    newObject: ctx.router.url('objects.new'),
     objectView: (object) => ctx.router.url('objects.view', { id: object.id }),
   });
 });

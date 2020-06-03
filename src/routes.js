@@ -38,6 +38,7 @@ router.use(async (ctx, next) => {
     profile: (user) => ctx.router.url('users.index', { id: user.id }),
     registerSession: ctx.router.url('users.new'),
     negotiations: ctx.router.url('negotiations.list'),
+    newObject: ctx.router.url('objects.new'),
     submitSearchPath: ctx.router.url('objects.search'),
     newNotifications,
   });

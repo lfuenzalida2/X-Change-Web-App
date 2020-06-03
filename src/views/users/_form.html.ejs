@@ -8,7 +8,7 @@
         <% } %>
     </div>
     <br>
-    
+
     <div class="flex-item bg-gray">
         <% if (locals.errors) { %>
             <div class="errors">
@@ -56,10 +56,22 @@
             <br>
             <div>
                 <label for="region">Region</label>
-                <select name="region" value="<%= newUser.region %>" class="float-r">
-                    <option value="temuco">Temuco</option>
-                    <option value="santiago">Santiago</option>
-                    <option value="concepcion">Concepcion</option>
+                <select name="region" value="<%= newUser.region %>" id="region" class="float-r">
+                  <option value="Aisen del G. Carlos Ibáñez del Campo">Aisén del G. Carlos Ibáñez del Campo</option>
+                  <option value="Antofagasta">Antofagasta</option>
+                  <option value="Arica y Parinacota">Arica y Parinacota</option>
+                  <option value="Atacama">Atacama</option>
+                  <option value="Biobio">Biobío</option>
+                  <option value="Coquimbo">Coquimbo</option>
+                  <option value="La Araucania">La Araucanía</option>
+                  <option value="Libertador General Bernardo O'Higgins">Libertador General Bernardo O'Higgins</option>
+                  <option value="Los Lagos">Los Lagos</option>
+                  <option value="Los Rios">Los Ríos</option>
+                  <option value="Magallanes y de la Antartica Chilena">Magallanes y de la Antártica Chilena</option>
+                  <option value="Metropolitana de Santiago">Metropolitana de Santiago</option>
+                  <option value="Nuble">Ñuble</option>
+                  <option value="Tarapaca">Tarapacá</option>
+                  <option value="Valparaiso">Valparaíso</option>
                 </select>
             </div>
             <br>
@@ -68,14 +80,14 @@
                 <input type="text" name="profile_picture" value="<%= newUser.profile_picture %>" class="float-r"/>
             </div>
             <br>
-            
+
             <div>
                 <% if (newUser.isNewRecord) { %>
                     <input type="submit" name="create" value="Create" class="btn">
                 <% }else { %>
                     <input type="submit" name="update" value="Update" class="btn">
                 <% } %>
-    
+
             </div>
         </form>
         <br>

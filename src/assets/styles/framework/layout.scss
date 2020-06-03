@@ -29,7 +29,7 @@ html, body {
   .session{
     margin-right: 1%;
     justify-content: space-between;
-  } 
+  }
 
   .objects{
     margin-right: 50px;
@@ -135,6 +135,7 @@ td{
 }
 
 #chat{
+  margin-top: 20px;
   display: block;
   border: solid 1px gray;
   padding: 10px;
@@ -145,10 +146,38 @@ td{
   overflow-y: scroll;
   max-height: 300px;
   width: 400px;
+}
 
-  h3{
-    margin-top: .2rem;
-  }
+.chat-title{
+  font-size: 18px;
+  font-weight: bold;
+  display: block;
+  top: 0;
+  position: sticky;
+  margin: 0;
+  margin-bottom: 5px;
+  padding: 5px 0;
+  border-bottom: 1px solid black;
+  background-color: inherit;
+  text-align: center;
+}
+
+#send-message{
+  display: flex;
+  justify-content: space-between;
+  width: inherit;
+}
+
+#m {
+  width: 100%;
+}
+
+#send-btn {
+  width: 20%;
+}
+
+.wrapper-textarea {
+  width: 79%;
 }
 
 textarea{
@@ -167,10 +196,6 @@ li{
   list-style: none;
 }
 
-#send{
-  width: inherit;
-}
-
 #search{
   width: 70%;
   max-width: 1000px;
@@ -181,25 +206,34 @@ li{
   padding-top: 0;
 }
 
-.me{
+.wrapper-me {
+  text-align: right;
+}
+.me {
+  word-wrap: break-word;
+  display: inline-block;
   background-color: lightgreen;
   border-radius: 5px;
-  float: right;
-  padding-left: .4rem;
-  padding-right: .4rem;
+  max-width: 75%;
+  margin-bottom: 5px;
+  padding: 4px;
+  text-align: left;
 }
 
-.other{
+.other {
+  word-wrap: break-word;
+  display: inline-block;
   background-color: lightgray;
   border-radius: 5px;
-  float: left;
-  padding-left: .4rem;
-  padding-right: .4rem;
+  max-width: 75%;
+  margin-bottom: 5px;
+  padding: 4px;
 }
 
 .time{
   font-size: 10px;
-  float: right;
+  text-align: right;
+  display: block;
 }
 
 .time-other{
@@ -207,10 +241,13 @@ li{
   float: left;
 }
 
-#messages{
-  padding: 0;
+#object-list, #messages{
+  width: 100%;
 }
 
+#object-list {
+  text-align: center;
+}
 
 .welcome-text {
    margin: 0 auto;
@@ -333,8 +370,10 @@ li{
   opacity: 0.9;
 }
 
-.see-all-notifications:hover {
+a.see-all-notifications:hover {
   opacity: 1;
+  background-color: #A52A2A;
+  border-radius: 0px;
 }
 
 .all-notifications {
@@ -389,4 +428,8 @@ li{
 
 .notification:hover .delete {
   visibility: visible;
+}
+
+.logout {
+  margin-left: 14px;
 }
