@@ -36,7 +36,7 @@ export default class addObject extends Component {
   async componentDidMount() {
     await axios({
       method: 'get',
-      url: 'http://localhost:3000/api/' + this.state.id,
+      url: 'http://notxchange.herokuapp.com/api/' + this.state.id,
     })
       .then(async (res) => {
         this.setState({ data: res.data.data });
@@ -46,7 +46,7 @@ export default class addObject extends Component {
 
     await axios({
       method: 'get',
-      url: 'http://localhost:3000/api/negotiation/' + this.state.id,
+      url: 'http://notxchange.herokuapp.com/api/negotiation/' + this.state.id,
     })
       .then(async (res) => {
         this.setState({ negotiation: res.data.data });
@@ -75,7 +75,7 @@ export default class addObject extends Component {
     event.preventDefault();
     const negotiationId = event.target.negotiationId.value;
     const objectId = event.target.objectId.value;
-    const url = 'http://localhost:3000/api/' + negotiationId + '/object';
+    const url = 'http://notxchange.herokuapp.com/api/' + negotiationId + '/object';
     const body = { negotiationId, objectId, add: 'Añadir' };
     await axios.post(url, body)
       .then(async (res) => {
@@ -92,7 +92,7 @@ export default class addObject extends Component {
     event.preventDefault();
     const negotiationId = event.target.negotiationId.value;
     const objectId = event.target.objectId.value;
-    const url = 'http://localhost:3000/api/' + negotiationId + '/object';
+    const url = 'http://notxchange.herokuapp.com/api/' + negotiationId + '/object';
     const body = { negotiationId, objectId, _method: 'delete' };
     await axios.post(url, body)
       .then((res) => {
