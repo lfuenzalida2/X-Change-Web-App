@@ -15,31 +15,36 @@
 
       <div class="flexbox-item home flexbox-container">
         <div class="separate">
-          <a href="/" class="item">Hogar</a>
-        </div>
-        <hr>
-        <div class="separate">
-          <a href="<%= explore %>" class="item">Buscar</a>
+          <a href="<%= explore %>" class="flexbox-item">
+            <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/search-icon.png">
+            <span class="item">Buscar</span>
+          </a>
         </div>
       </div>
+      <hr>
+      <div class="separate">
+        <a href="<%= newObject %>" class="item">Publicar</a>
+      </div>
 
-      <div class="flexbox-item title">
-        <p>X-Change</p>
+      <div class="flexbox-item title item">
+        <a href="/" class="flexbox-item">
+          <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/xchange.png">
+          <span class="item">X-Change</span>
+        </a>
       </div>
 
       <!-- if logged in -->
       <div class="flexbox-item session flexbox-container" id="user-bar">
           <% if (currentUser) { %>
-            <div class="separate">
-              <a href="<%= profile(currentUser) %>" class="item">Perfil</a>
+            <div class="separate item">          
+              <a href="<%= profile(currentUser) %>" class="flexbox-item">
+                <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/account.png">
+                <span class="item">Perfil</span>
+              </a>
             </div>
             <hr>
             <div class="separate">
               <a href="<%= inventory(currentUser) %>" class="item">Inventario</a>
-            </div>
-            <hr>
-            <div class="separate">
-              <a href="<%= newObject %>" class="item">Publicar</a>
             </div>
             <hr>
             <div class="separate">

@@ -15,6 +15,7 @@ html, body {
   .flexbox-item{
     color: black;
     display: flex;
+    padding: auto;
   }
 
   .title{
@@ -72,10 +73,9 @@ h1 {
   margin: 2px;
 }
 
-img {
-    max-width:20%;
-    max-width:20%;
-    height:auto;
+.navbar-images{
+  max-height: 30px;
+  padding-right: .3rem;
 }
 
 .item{
@@ -98,6 +98,7 @@ img {
 
 .center{
   text-align: center;
+  vertical-align: center;
 }
 
 .span{

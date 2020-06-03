@@ -11,7 +11,6 @@ class ActualButton extends Component {
   render() {
     // eslint-disable-next-line react/prop-types
     const disabled = this.props.disabled;
-    console.log(disabled);
     return (
       <input type="submit" name="add" value="Añadir" className="btn" disabled={disabled} />
     );
@@ -63,7 +62,6 @@ export default class addObject extends Component {
     data.map((element) => {
       // eslint-disable-next-line consistent-return
       element.attributes.negotiations.map((negotiationObjects) => {
-        console.log(element.attributes.state);
         if ((negotiation.id === negotiationObjects.id.toString() || element.attributes.state === false) && id === element.id) {
           value = 'disabled';
         }
