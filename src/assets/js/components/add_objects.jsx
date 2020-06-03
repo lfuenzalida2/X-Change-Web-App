@@ -1,8 +1,22 @@
 /* eslint-disable react/destructuring-assignment */
+// eslint-disable-next-line max-classes-per-file
 import React, { Component } from 'react';
 
 const axios = require('axios');
 
+
+// eslint-disable-next-line react/prefer-stateless-function
+class ActualButton extends Component {
+  // eslint-disable-next-line react/require-render-return
+  render() {
+    // eslint-disable-next-line react/prop-types
+    const disabled = this.props.disabled;
+    console.log(disabled);
+    return (
+      <input type="submit" name="add" value="Añadir" className="btn" disabled={disabled} />
+    );
+  }
+}
 
 export default class addObject extends Component {
   constructor(props) {
@@ -12,16 +26,18 @@ export default class addObject extends Component {
       data: null,
       negotiation: null,
       loading: true,
+      // eslint-disable-next-line react/prop-types
       id: props.id,
     };
     this.añadirObjeto = this.añadirObjeto.bind(this);
     this.quitarObjeto = this.quitarObjeto.bind(this);
+    this.actualObjects = this.ActualObjects.bind(this);
   }
 
   async componentDidMount() {
     await axios({
       method: 'get',
-      url: 'http://localhost:3000/api/'+ this.state.id,
+      url: 'http://localhost:3000/api/' + this.state.id,
     })
       .then(async (res) => {
         this.setState({ data: res.data.data });
@@ -39,7 +55,21 @@ export default class addObject extends Component {
       }, (err) => {
         console.log(err);
       });
+  }
 
+  ActualObjects(id) {
+    var value = '';
+    const { data, negotiation } = this.state;
+    data.map((element) => {
+      // eslint-disable-next-line consistent-return
+      element.attributes.negotiations.map((negotiationObjects) => {
+        if (negotiation.id === negotiationObjects.id.toString() && id === element.id) {
+          value = 'disabled';
+        }
+      });
+    });
+    console.log(value);
+    return value;
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -78,9 +108,6 @@ export default class addObject extends Component {
   render() {
     const { loading, data, negotiation } = this.state;
     if (loading) return <p>Loading...</p>;
-
-    console.log(data);
-    console.log(negotiation);
     return (
       <div>
         <h2>Lista de Objetos</h2>
@@ -88,7 +115,6 @@ export default class addObject extends Component {
           <table>
             <thead>
               <tr>
-                <th>N</th>
                 <th>Nombre</th>
                 { negotiation.attributes.state === 'In Progress' && (
                   <th>Quitar</th>
@@ -98,9 +124,9 @@ export default class addObject extends Component {
             <tbody>
               { data.map((element) => (
                 element.attributes.negotiations.map((object) => (
+                  // eslint-disable-next-line radix
                   negotiation.attributes.state === 'In Progress' && object.objectNegotiation.negotiationId === parseInt(negotiation.id) && (
                   <tr key={element.id}>
-                    <td>{element.id}</td>
                     <td>{element.attributes.name}</td>
                     <td>
                       <form method="DEL" onSubmit={this.quitarObjeto}>
@@ -140,7 +166,8 @@ export default class addObject extends Component {
                     <form method="POST" onSubmit={this.añadirObjeto}>
                       <input type="hidden" name="negotiationId" value={negotiation.id} />
                       <input type="hidden" name="objectId" value={element.id} />
-                      <input type="submit" name="add" value="Añadir" className="btn" />
+                      <ActualButton disabled={this.ActualObjects(element.id)} />
+
                     </form>
                   </td>
                 </tr>
