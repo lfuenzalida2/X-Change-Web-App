@@ -5,6 +5,7 @@ const ownerList = {};
 if ($('#chat').length > 0) {
   $(document).ready(() => {
     $(() => {
+      $('#chat').scrollTop($('#chat')[0].scrollHeight);
       const socket = io();
       socket.on('connect', () => {
         const url = window.location.pathname;
@@ -30,15 +31,9 @@ if ($('#chat').length > 0) {
         return false;
       });
       socket.on('chat message', (msg) => {
-        if (msg.currentUserId === parseInt(ownerList[msg.chatId])) {
-          $('#messages').append($('<span>').text(msg.time).addClass('time'));
-          $('#messages').append($('<span>').text(msg.message).addClass('me'));
-        } else {
-          $('#messages').append($('<span>').text(msg.time).addClass('time-other'));
-          $('#messages').append($('<span>').text(msg.message).addClass('other'));
-        }
-        $('#messages').append($('<br>'));
-        $('#messages').append($('<br>'));
+        const role = msg.currentUserId === parseInt(ownerList[msg.chatId], 10) ? 'me' : 'other';
+        $('#messages').append(`<div class="${role}"> ${msg.message} <div class="time">${msg.time}</div> </div>`);
+        $('#chat').scrollTop($('#chat')[0].scrollHeight);
       });
     });
   });

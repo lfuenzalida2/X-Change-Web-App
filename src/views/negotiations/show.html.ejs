@@ -14,7 +14,7 @@
         <input type="submit" value="Cancelar Negociacion" class="btn"/>
       </form>
     <% } else { %>
-      <button type="button" name="button" disabled  class="btn">Acceptado</button>
+      <button type="button" name="button" disabled  class="btn">Negociación Aceptada</button>
   </div>
   <% if (negotiation.state == "Accepted") { %>
     <div class="form">
@@ -59,41 +59,47 @@
       </form>
     <% } %>
   <% } %>
-  
+
   <br>
   <br>
   <div id=chat>
-    <h3 class="float-l"><%= otherRole.username %></h3>
-    <ul id=messages>
+    <div class="chat-title">Chat con <%= otherRole.username %></div>
+    <div id=messages>
       <% messagesList.forEach((message) => { %> %>
-        <li>
+        <div>
           <% if (message.senderId == currentUser.id){ %>
-            <span class="time"><%= message.createdAt.toLocaleString('es-CL').slice(10,15) %></span>
-            <span class="me"><%= message.text %></span><br>
+            <div class="wrapper-me">
+              <div class="me">
+                <%= message.text %>
+                <div class="time"><%= message.createdAt.toLocaleString('es-CL', { hour12: false }).slice(09,15) %></div>
+              </div>
+            </div>
           <% } else { %>
-            <span class="time-other"><%= message.createdAt.toLocaleString('es-CL').slice(10,15) %></span>
-            <span class="other"><%= message.text %></span><br>
-            <% } %>
-          
-        </li>
-        <br>
+            <div class="other">
+              <%= message.text %>
+              <div class="time"><%= message.createdAt.toLocaleString('es-CL', { hour12: false }).slice(09,15) %></div>
+            </div>
+          <% } %>
+        </div>
       <% }) %>
-    </ul>
-  </div>
-  <div class="form" id="send">
-    <% if(negotiation.state == "In Progress") { %>
-      <form id="send-message" action="<%= newMessagePath  %>" method="POST">
-        <input type="hidden" name="senderId" value=<%= currentRole.id %> />
-        <input type="hidden" name="receiverId" value=<%= otherRole.id %> />
-        <input type="hidden" name="negotiationId" value=<%= negotiation.id %> />
-        <textarea id="m" type="text" name="text"></textarea>
-        <input type="submit" value="Enviar" class="btn" id="enter"/>
-      </form>
+    </div>
+    <% if(negotiation.state == "In Progress") {%>
+    <div id="send">
+      <% if(negotiation.state == "In Progress") { %>
+        <form id="send-message" action="<%= newMessagePath  %>" method="POST">
+          <input type="hidden" name="senderId" value=<%= currentRole.id %> />
+          <input type="hidden" name="receiverId" value=<%= otherRole.id %> />
+          <input type="hidden" name="negotiationId" value=<%= negotiation.id %> />
+          <div class="wrapper-textarea"><textarea id="m" type="text" name="text"></textarea> </div>
+          <input id="send-btn" type="submit" value="Enviar" class="btn" id="enter"/>
+        </form>
+      <% } %>
+    </div>
     <% } %>
   </div>
   <br>
-  
-  <div>
+
+  <div id="object-list">
     <h2>Lista de Objetos</h2>
     <div class="form">
       <% if (!objects.length) { %>
@@ -130,11 +136,10 @@
         </table>
       <% } %>
     </div>
-
+    <br>
     <% if(negotiation.state == "In Progress") { %>
-      <a href="<%= addObjectPath %>">Añadir Objeto</a>
+      <a class="btn" href="<%= addObjectPath %>">Añadir Objeto</a>
     <% } %>
   </div>
-  
-</div>
 
+</div>

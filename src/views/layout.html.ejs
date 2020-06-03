@@ -39,6 +39,10 @@
             </div>
             <hr>
             <div class="separate">
+              <a href="<%= newObject %>" class="item">Publicar</a>
+            </div>
+            <hr>
+            <div class="separate">
               <a href="<%= negotiations %>" class="item">Negociaciones</a>
             </div>
             <hr>
@@ -46,7 +50,7 @@
               <div data-badge=<%= newNotifications %> class="item notifications">Notificaciones</div>
               <div class="notifications-container"></div>
             </div>
-            <div class="separate">
+            <div class="separate logout">
               <form action="<%= destroySessionPath %>" method="post">
                 <input type="hidden" name="_method" value="delete" />
                 <input type="submit" value="Cerrar Sesión" class="btn"/>
