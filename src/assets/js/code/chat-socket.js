@@ -5,7 +5,7 @@ const ownerList = {};
 if ($('#chat').length > 0) {
   $(document).ready(() => {
     $(() => {
-      $('#chat').scrollTop($('#chat')[0].scrollHeight);
+      $('#messages').scrollTop($('#messages')[0].scrollHeight);
       const socket = io();
       socket.on('connect', () => {
         const url = window.location.pathname;
