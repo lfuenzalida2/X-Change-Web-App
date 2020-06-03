@@ -33,7 +33,7 @@ if ($('#chat').length > 0) {
       socket.on('chat message', (msg) => {
         const role = msg.currentUserId === parseInt(ownerList[msg.chatId], 10) ? 'me' : 'other';
         $('#messages').append(`<div class="wrapper-${role}"><div class="${role}"> ${msg.message} <div class="time">${msg.time}</div> </div></div>`);
-        $('#chat').scrollTop($('#chat')[0].scrollHeight);
+        $('#messages').scrollTop($('#messages')[0].scrollHeight);
       });
     });
   });
