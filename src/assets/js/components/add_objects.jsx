@@ -10,7 +10,7 @@ class ActualButton extends Component {
   // eslint-disable-next-line react/require-render-return
   render() {
     // eslint-disable-next-line react/prop-types
-    const disabled = this.props.disabled;
+    const { disabled } = this.props;
     return (
       <input type="submit" name="add" value="Añadir" className="btn" disabled={disabled} />
     );
@@ -36,7 +36,7 @@ export default class addObject extends Component {
   async componentDidMount() {
     await axios({
       method: 'get',
-      url: 'http://notxchange.herokuapp.com/api/' + this.state.id,
+      url: 'https://notxchange.herokuapp.com/api/' + this.state.id,
     })
       .then(async (res) => {
         this.setState({ data: res.data.data });
@@ -46,7 +46,7 @@ export default class addObject extends Component {
 
     await axios({
       method: 'get',
-      url: 'http://notxchange.herokuapp.com/api/negotiation/' + this.state.id,
+      url: 'https://notxchange.herokuapp.com/api/negotiation/' + this.state.id,
     })
       .then(async (res) => {
         this.setState({ negotiation: res.data.data });
@@ -75,7 +75,7 @@ export default class addObject extends Component {
     event.preventDefault();
     const negotiationId = event.target.negotiationId.value;
     const objectId = event.target.objectId.value;
-    const url = 'http://notxchange.herokuapp.com/api/' + negotiationId + '/object';
+    const url = 'https://notxchange.herokuapp.com/api/' + negotiationId + '/object';
     const body = { negotiationId, objectId, add: 'Añadir' };
     await axios.post(url, body)
       .then(async (res) => {
@@ -92,7 +92,7 @@ export default class addObject extends Component {
     event.preventDefault();
     const negotiationId = event.target.negotiationId.value;
     const objectId = event.target.objectId.value;
-    const url = 'http://notxchange.herokuapp.com/api/' + negotiationId + '/object';
+    const url = 'https://notxchange.herokuapp.com/api/' + negotiationId + '/object';
     const body = { negotiationId, objectId, _method: 'delete' };
     await axios.post(url, body)
       .then((res) => {
