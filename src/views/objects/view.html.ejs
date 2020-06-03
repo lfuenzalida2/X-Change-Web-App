@@ -13,38 +13,38 @@
       </div>
     <% }} %>
 
-  <div class="flex-container">
-      <div class="flexbox-item">
-          <div class="flex-container">
-              <div class="flexbox-item center">
-                  <h1 class="center"><%= object.name %></h1>
-                  <hr>
+  <div>
+    <div>
+        <div>
+            <div class="flexbox-item center">
+                <h1 class="center"><%= object.name %></h1>
+                <hr>
+            </div>
+            <div class="form">
+              <div class="flexbox-item">
+                Estado:
+                <%= object.state ? 'Disponible' : 'No Disponible' %>
               </div>
-              <div class="form">
-                <div class="flexbox-item">
-                  Estado:
-                  <%= object.state ? 'Disponible' : 'No Disponible' %>
-                </div>
-                <div class="flexbox-item">
-                  Dueño del objeto:
-                  <%= owner.username %>
-                </div>
-                <div class="flexbox-item">
-                  Categoria:
-                  <%= category %>
-                </div>
-                <div class="flexbox-item">
-                  Descripción:
-                  <%= object.description %>
-                </div>
+              <div class="flexbox-item">
+                Dueño del objeto:
+                <%= owner.username %>
               </div>
-          </div>
-      </div>
-      <% if(currentUser.id == object.userId) { %>
-        <a href="<%= editObjectPath %>">Editar objeto</a>
-        <br>
-        <br>
-      <% } %>
+              <div class="flexbox-item">
+                Categoria:
+                <%= category %>
+              </div>
+              <div class="flexbox-item">
+                Descripción:
+                <%= object.description %>
+              </div>
+            </div>
+        </div>
+    </div>
+    <% if(currentUser.id == object.userId) { %>
+      <a href="<%= editObjectPath %>">Editar objeto</a>
+      <br>
+      <br>
+    <% } %>
   </div>
 
   <% if (currentUser) {%>
