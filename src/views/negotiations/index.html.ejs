@@ -20,7 +20,7 @@
             <% } else {%>
               <td><%= negotiation.seller.username %></td>
             <% } %>
-            <td><%= negotiation.state %></td>
+            <td><%= negotiation.state === 'Accepted' ? 'Aceptada' : negotiation.state === 'Cancelled' ?  'Cancelada' : 'En progreso' %></td>
             <td><a href="<%= showNegotiationPath(negotiation) %>">Ver Detalles</a></td>
           </tr>
         <% }) %>
