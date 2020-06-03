@@ -11,6 +11,7 @@ const users = require('./routes/users');
 const session = require('./routes/session');
 const inventory = require('./routes/inventory');
 const notifications = require('./routes/notifications');
+const api = require('./routes/api');
 
 const router = new KoaRouter();
 
@@ -68,6 +69,7 @@ router.use('/objects', async (ctx, next) => {
 });
 
 router.use('/', index.routes());
+router.use('/api', api.routes());
 router.use('/explore', explore.routes());
 router.use('/inventory', inventory.routes());
 router.use('/categories', categories.routes());

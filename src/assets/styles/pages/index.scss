@@ -70,7 +70,7 @@
   transform: translateY(-50%);
   width: auto;
   padding: 16px;
-  color: white;
+  color: black;
   font-weight: bold;
   font-size: 18px;
   transition: 0.6s ease;
@@ -147,6 +147,10 @@
   -webkit-animation-duration: 1.5s;
   animation-name: fade;
   animation-duration: 1.5s;
+}
+
+.fade:hover{
+  background: none;
 }
 
 @-webkit-keyframes fade {

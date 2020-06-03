@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App';
+import App from './components/add_objects';
 
-const reactAppContainer = document.getElementById('react-app');
+const addObject = document.getElementById('add_object');
+const url = window.location.href;
+const id = url.slice(url.lastIndexOf('/') + 1, url.length);
 
-if (reactAppContainer) {
-  ReactDOM.render(<App />, reactAppContainer);
+if (addObject) {
+  ReactDOM.render(<App id={id} />, addObject);
 }
