@@ -34,6 +34,7 @@ router.get('explore.list', '/', async (ctx) => {
   } catch (err) {
     const objectsList = await ctx.orm.object.findAll();
     await ctx.render('explore/explore_list_object', {
+      result,
       objectsList,
       categoryList,
       view: (object) => ctx.router.url('objects.view', { id: object.id }),
