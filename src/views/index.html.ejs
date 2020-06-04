@@ -24,9 +24,9 @@
     <button type="submit" class="btn">Buscar</button>
   </form>
 </div>
-
+<br>
 <div>
-  <h2 class="center">
+  <h2 class="center underline">
     Objetos más vistos
   </h2>
 </div>
@@ -59,7 +59,7 @@
 
 <!-- The dots/circles -->
 <div class="dots">
- <span class="dot"></span>
- <span class="dot"></span>
- <span class="dot"></span>
+  <% for (var i = 0; i < mostViewed.length; i++) { %>
+    <span class="dot"></span>
+ <% } %>
 </div>
