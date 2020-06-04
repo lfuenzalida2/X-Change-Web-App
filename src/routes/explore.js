@@ -14,13 +14,13 @@ const options = {
 
 router.get('explore.list', '/', async (ctx) => {
   const currentUser = await ctx.state.currentUser;
-  const objectsList = await ctx.orm.object.findAll();
+  let objectsList = await ctx.orm.object.findAll();
   const categoryList = await ctx.orm.category.findAll();
   const fuse = new Fuse(objectsList, options);
   const result = fuse.search('');
   const { user, category } = ctx.orm;
   try {
-    const objectsList = await ctx.orm.object.findAll({
+    objectsList = await ctx.orm.object.findAll({
       where: { userId: { [Op.not]: currentUser.id } },
       include: [{ model: category }, { model: user }],
     });
@@ -32,7 +32,7 @@ router.get('explore.list', '/', async (ctx) => {
       submitSearchPath: ctx.router.url('objects.search'),
     });
   } catch (err) {
-    const objectsList = await ctx.orm.object.findAll();
+    objectsList = await ctx.orm.object.findAll();
     await ctx.render('explore/explore_list_object', {
       result,
       objectsList,
