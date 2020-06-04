@@ -92,7 +92,7 @@ export default class addObject extends Component {
     event.preventDefault();
     const negotiationId = event.target.negotiationId.value;
     const objectId = event.target.objectId.value;
-    const url = `http://notxchange.herokuapp.com/api/${negotiationId}/object`;
+    const url = `https://notxchange.herokuapp.com/api/${negotiationId}/object`;
     const body = { negotiationId, objectId, _method: 'delete' };
     await axios.post(url, body)
       .then((res) => {
