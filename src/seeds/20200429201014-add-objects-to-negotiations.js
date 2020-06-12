@@ -31,6 +31,24 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        negotiationId: 1,
+        objectId: 8,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        negotiationId: 1,
+        objectId: 9,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        negotiationId: 1,
+        objectId: 10,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ];
     return queryInterface.bulkInsert('objectNegotiations', objectNegotiationsData);
   },
