@@ -104,46 +104,19 @@ router.post('negotiations.create', '/', async (ctx) => {
   }
 });
 
-router.get('negotiations.add_object', '/:id/add_object', loadNegotiation, async (ctx) => {
-  const { negotiation } = ctx.state;
-  const categories = ctx.orm.category;
-  const currentUser = await ctx.state.currentUser;
-  const objectList = await ctx.orm.object.findAll({
-    where: { userId: currentUser.id },
-    include: { model: categories },
-  });
-  await ctx.render('negotiations/add_object', {
-    negotiation,
-    objectList,
-    deleteObject: ctx.router.url('negotiations.object_del', { id: negotiation.id }),
-    addObjectPath: ctx.router.url('negotiations.add', { id: negotiation.id }),
-    goToNegotiation: ctx.router.url('negotiations.show', { id: negotiation.id }),
-    objects: await ctx.state.negotiation.getObjects(),
-  });
-});
-
-router.post('negotiations.add', '/:id', loadNegotiation, async (ctx) => {
-  const { negotiation } = ctx.state;
-  const categories = ctx.orm.category;
-  const currentUser = await ctx.state.currentUser;
-  const objectList = await ctx.orm.object.findAll({
-    where: { userId: currentUser.id },
-    include: { model: categories },
-  });
-  const objectNegotiation = ctx.orm.objectNegotiation.build(ctx.request.body);
-  try {
-    await objectNegotiation.save({ fields: ['negotiationId', 'objectId'] });
-    negotiation.changed('updatedAt', true);
-    await negotiation.save();
-    ctx.router.url('negotiations.add_object');
-  } catch (validationError) {
-  }
-});
-
 router.patch('negotiations.update', '/:id', loadNegotiation, async (ctx) => {
   const { negotiation } = ctx.state;
+  const { customerId, sellerId, state } = ctx.request.body;
+  if (state === 'Accepted') {
+    const objectNegotiation = await ctx.orm.objectNegotiation.findAll({
+      where: { negotiationId: negotiation.id },
+    });
+    objectNegotiation.forEach(async (object) => {
+      const element = await ctx.orm.object.findByPk(object.objectId);
+      await element.update({ state: false });
+    });
+  }
   try {
-    const { customerId, sellerId, state } = ctx.request.body;
     await negotiation.update({ customerId, sellerId, state });
     ctx.redirect('back');
   } catch (validationError) {
@@ -151,14 +124,15 @@ router.patch('negotiations.update', '/:id', loadNegotiation, async (ctx) => {
   }
 });
 
+// Negotiation delete
 router.del('negotiations.delete', '/:id', loadNegotiation, async (ctx) => {
   const { negotiation } = ctx.state;
   await negotiation.destroy();
   ctx.redirect(ctx.router.url('negotiations.list'));
 });
 
+// Object in negotiation delete
 router.del('negotiations.object_del', '/:id/object', async (ctx) => {
-  console.log(ctx.request.body);
   ctx.state.negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
   const objectNegotiation = ctx.orm.objectNegotiation.build(ctx.request.body);
   await objectNegotiation.destroy();

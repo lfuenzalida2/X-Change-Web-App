@@ -3,7 +3,6 @@ const KoaRouter = require('koa-router');
 const router = new KoaRouter();
 
 router.get('api.objects.list', '/:id', async (ctx) => {
-  console.log("redurec");
   const { currentUser } = ctx.state;
   const categories = ctx.orm.category;
   const negotiations = ctx.orm.negotiation;
@@ -40,7 +39,6 @@ router.post('api.object_add', '/:id/object', async (ctx) => {
     const respuesta = { status: 200, text: 'gucci la wea salió fina' };
     ctx.redirect(ctx.router.url('api.objects.list', { id: ctx.params.id }));
   } catch (err) {
-    console.log(err);
     const respuesta = { status: 400, text: 'miegda la wea se ha caido' };
     ctx.body = ctx.jsonSerializer('respuesta', {
       attributes: ['status', 'text'],

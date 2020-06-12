@@ -25,6 +25,10 @@ html, body {
   font-weight: bolder;
 }
 
+.underline {
+  text-decoration: underline;
+}
+
 .flexbox-container {
   position: relative;
   margin: 10px;
@@ -287,16 +291,6 @@ li{
 
 .cursiva{
   font-style: oblique;
-}
-
-.welcome-text {
-   margin: 0 auto;
-   width: 1000px;
-   line-height: 18px;
-   color: rgb(34, 34, 34);
-   opacity: 0.7;
-   text-align: center;
-   font-family: "Gill Sans", sans-serif;
 }
 
 .flex-container {

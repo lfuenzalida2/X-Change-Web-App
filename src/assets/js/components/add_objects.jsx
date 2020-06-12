@@ -66,6 +66,8 @@ export default class addObject extends Component {
           value = 'disabled';
         }
       });
+      console.log(element);
+
     });
     return value;
   }
