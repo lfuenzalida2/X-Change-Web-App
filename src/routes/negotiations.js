@@ -106,8 +106,17 @@ router.post('negotiations.create', '/', async (ctx) => {
 
 router.patch('negotiations.update', '/:id', loadNegotiation, async (ctx) => {
   const { negotiation } = ctx.state;
+  const { customerId, sellerId, state } = ctx.request.body;
+  if (state === 'Accepted') {
+    const objectNegotiation = await ctx.orm.objectNegotiation.findAll({
+      where: { negotiationId: negotiation.id },
+    });
+    objectNegotiation.forEach(async (object) => {
+      const element = await ctx.orm.object.findByPk(object.objectId);
+      await element.update({ state: false });
+    });
+  }
   try {
-    const { customerId, sellerId, state } = ctx.request.body;
     await negotiation.update({ customerId, sellerId, state });
     ctx.redirect('back');
   } catch (validationError) {
@@ -115,12 +124,14 @@ router.patch('negotiations.update', '/:id', loadNegotiation, async (ctx) => {
   }
 });
 
+// Negotiation delete
 router.del('negotiations.delete', '/:id', loadNegotiation, async (ctx) => {
   const { negotiation } = ctx.state;
   await negotiation.destroy();
   ctx.redirect(ctx.router.url('negotiations.list'));
 });
 
+// Object in negotiation delete
 router.del('negotiations.object_del', '/:id/object', async (ctx) => {
   ctx.state.negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
   const objectNegotiation = ctx.orm.objectNegotiation.build(ctx.request.body);
