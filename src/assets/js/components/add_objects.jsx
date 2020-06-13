@@ -6,9 +6,6 @@ import io from '../../../../node_modules/socket.io-client/dist/socket.io';
 
 const axios = require('axios');
 
-// const ur = 'https://notxchange.herokuapp.com/';
-const ur = 'http://localhost:3000/';
-
 // eslint-disable-next-line react/prefer-stateless-function
 class ActualButton extends Component {
   // eslint-disable-next-line react/require-render-return
@@ -32,8 +29,11 @@ export default class addObject extends Component {
       loading: true,
       // eslint-disable-next-line react/prop-types
       id: props.id,
+      // eslint-disable-next-line react/prop-types
+      url: props.url,
       socket: io(),
     };
+    console.log(this.state.url);
     this.añadirObjeto = this.añadirObjeto.bind(this);
     this.quitarObjeto = this.quitarObjeto.bind(this);
     this.actualObjects = this.ActualObjects.bind(this);
@@ -42,30 +42,31 @@ export default class addObject extends Component {
   }
 
   async componentDidMount() {
+    // API calls to get my objects and the other's object
     await this.myObjects();
     await this.otherObjects();
+
+    // object socket connection
     this.state.socket.emit('join negotiation', { negotiationId: this.state.id });
     this.state.socket.on('add object', await this.otherObjects);
     this.state.socket.on('remove object', await this.otherObjects);
 
-    // negotiation info, only requeste
+    // negotiation info, only request
     await axios({
       method: 'get',
       url: `${ur}api/negotiation/${this.state.id}`,
     })
       .then(async (res) => {
-        this.setState({ negotiation: res.data.data });
-        this.setState({ loading: false });
+        this.setState({ negotiation: res.data.data, loading: false });
       }, (err) => {
         console.log(err);
       });
   }
 
-
   async myObjects() {
     await axios({
       method: 'get',
-      url: `${ur}api/${this.state.id}`,
+      url: `${this.state.url}/api/${this.state.id}`,
     })
       .then(async (res) => {
         this.setState({ data: res.data.data });
@@ -77,7 +78,7 @@ export default class addObject extends Component {
   async otherObjects() {
     await axios({
       method: 'get',
-      url: `${ur}api/other/${this.state.id}`,
+      url: `${this.state.url}/api/other/${this.state.id}`,
     })
       .then(async (res) => {
         this.setState({ other_data: res.data.data });
@@ -111,7 +112,7 @@ export default class addObject extends Component {
     event.preventDefault();
     const negotiationId = event.target.negotiationId.value;
     const objectId = event.target.objectId.value;
-    const url = `${ur}api/${negotiationId}/object`;
+    const url = `${this.state.url}/api/${negotiationId}/object`;
     const body = { negotiationId, objectId, add: 'Añadir' };
     await axios.post(url, body)
       .then(async (res) => {
@@ -131,7 +132,7 @@ export default class addObject extends Component {
     event.preventDefault();
     const negotiationId = event.target.negotiationId.value;
     const objectId = event.target.objectId.value;
-    const url = `${ur}api/${negotiationId}/object`;
+    const url = `${this.state.url}/api/${negotiationId}/object`;
     const body = { negotiationId, objectId, _method: 'delete' };
     await axios.post(url, body)
       .then((res) => {
