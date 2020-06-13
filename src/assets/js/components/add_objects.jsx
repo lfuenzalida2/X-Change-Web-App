@@ -33,7 +33,6 @@ export default class addObject extends Component {
       url: props.url,
       socket: io(),
     };
-    console.log(this.state.url);
     this.añadirObjeto = this.añadirObjeto.bind(this);
     this.quitarObjeto = this.quitarObjeto.bind(this);
     this.actualObjects = this.ActualObjects.bind(this);
@@ -54,7 +53,7 @@ export default class addObject extends Component {
     // negotiation info, only request
     await axios({
       method: 'get',
-      url: `${ur}api/negotiation/${this.state.id}`,
+      url: `${this.state.url}/api/negotiation/${this.state.id}`,
     })
       .then(async (res) => {
         this.setState({ negotiation: res.data.data, loading: false });
