@@ -2,6 +2,7 @@
 /* eslint-disable react/destructuring-assignment */
 // eslint-disable-next-line max-classes-per-file
 import React, { Component } from 'react';
+import io from '../../../../node_modules/socket.io-client/dist/socket.io';
 
 const axios = require('axios');
 
@@ -31,13 +32,37 @@ export default class addObject extends Component {
       loading: true,
       // eslint-disable-next-line react/prop-types
       id: props.id,
+      socket: io(),
     };
     this.añadirObjeto = this.añadirObjeto.bind(this);
     this.quitarObjeto = this.quitarObjeto.bind(this);
     this.actualObjects = this.ActualObjects.bind(this);
+    this.myObjects = this.myObjects.bind(this);
+    this.otherObjects = this.otherObjects.bind(this);
   }
 
   async componentDidMount() {
+    await this.myObjects();
+    await this.otherObjects();
+    this.state.socket.emit('join negotiation', { negotiationId: this.state.id });
+    this.state.socket.on('add object', await this.otherObjects);
+    this.state.socket.on('remove object', await this.otherObjects);
+
+    // negotiation info, only requeste
+    await axios({
+      method: 'get',
+      url: `${ur}api/negotiation/${this.state.id}`,
+    })
+      .then(async (res) => {
+        this.setState({ negotiation: res.data.data });
+        this.setState({ loading: false });
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+
+  async myObjects() {
     await axios({
       method: 'get',
       url: `${ur}api/${this.state.id}`,
@@ -47,24 +72,15 @@ export default class addObject extends Component {
       }, (err) => {
         console.log(err);
       });
+  }
 
+  async otherObjects() {
     await axios({
       method: 'get',
       url: `${ur}api/other/${this.state.id}`,
     })
       .then(async (res) => {
         this.setState({ other_data: res.data.data });
-      }, (err) => {
-        console.log(err);
-      });
-
-    await axios({
-      method: 'get',
-      url: `${ur}api/negotiation/${this.state.id}`,
-    })
-      .then(async (res) => {
-        this.setState({ negotiation: res.data.data });
-        this.setState({ loading: false });
       }, (err) => {
         console.log(err);
       });
@@ -101,6 +117,9 @@ export default class addObject extends Component {
       .then(async (res) => {
         this.setState({ data: res.data.data });
       })
+      .then(async (res) => {
+        this.state.socket.emit('add object', negotiationId);
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -117,6 +136,9 @@ export default class addObject extends Component {
     await axios.post(url, body)
       .then((res) => {
         this.setState({ data: res.data.data });
+      })
+      .then(async (res) => {
+        this.state.socket.emit('remove object', negotiationId);
       })
       .catch((err) => {
         console.log(err);

@@ -14,8 +14,9 @@ if ($('#chat').length > 0) {
         if (!ownerList[id]) {
           ownerList[id] = owner;
         }
-        socket.emit('join chat', { chatId: id, owner }); // agregar el owner aca
+        socket.emit('join negotiation', { negotiationId: id, owner }); // agregar el owner aca
       });
+      console.log(socket);
       $('#send-message').submit(function (e) {
         e.preventDefault(); // prevents page reloading
         $.post(
@@ -24,14 +25,14 @@ if ($('#chat').length > 0) {
           (data) => {
             const url = window.location.pathname;
             const id = url.substring(url.lastIndexOf('/') + 1);
-            socket.emit('chat message', { chatId: id, msg: data });
+            socket.emit('chat message', { negotiationId: id, msg: data });
             $('#m').val('');
           },
         );
         return false;
       });
       socket.on('chat message', (msg) => {
-        const role = msg.currentUserId === parseInt(ownerList[msg.chatId], 10) ? 'me' : 'other';
+        const role = msg.currentUserId === parseInt(ownerList[msg.negotiationId], 10) ? 'me' : 'other';
         $('#messages').append(`<div class="wrapper-${role}"><div class="${role}"> ${msg.message} <div class="time">${msg.time}</div> </div></div>`);
         $('#messages').scrollTop($('#messages')[0].scrollHeight);
       });

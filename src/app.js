@@ -128,12 +128,18 @@ app.io.on('connection', async (socket) => {
   if (!socket.auth) {
     socket.disconnect('unauthorized');
   }
-  socket.on('join chat', (data) => {
-    socket.join(`chatRoom-${data.chatId}`);
+  socket.on('join negotiation', (data) => {
+    socket.join(`negotiationRoom-${data.negotiationId}`);
+  });
+  socket.on('add object', (data) => {
+    app.io.to(`negotiationRoom-${data}`).emit('add object', data);
+  });
+  socket.on('remove object', (data) => {
+    app.io.to(`negotiationRoom-${data}`).emit('remove object', data);
   });
   socket.on('chat message', (data) => {
-    data.msg.chatId = data.chatId;
-    app.io.to(`chatRoom-${data.chatId}`).emit('chat message', data.msg);
+    data.msg.negotiationId = data.negotiationId;
+    app.io.to(`negotiationRoom-${data.negotiationId}`).emit('chat message', data.msg);
   });
   socket.on('notification', (data) => {
     app.io.to(`userRoom-${data}`).emit('notification');
