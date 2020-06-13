@@ -82,6 +82,8 @@ export default class addObject extends Component {
         // eslint-disable-next-line max-len
         if ((negotiation.id === negotiationObjects.id.toString() || element.attributes.state === false) && id === element.id) {
           value = 'disabled';
+        } else if (negotiation.attributes.state === 'Cancelled' || negotiation.attributes.state === 'Accepted') {
+          value = 'disabled';
         }
       });
     });
@@ -134,24 +136,25 @@ export default class addObject extends Component {
               <thead className="head">
                 <tr>
                   <th>Nombre</th>
-                  { negotiation.attributes.state === 'In Progress' && (
-                    <th>Quitar</th>
-                  )}
                 </tr>
               </thead>
               <tbody>
                 { data.map((element) => (
                   element.attributes.negotiations.map((object) => (
                     // eslint-disable-next-line radix
-                    negotiation.attributes.state === 'In Progress' && object.objectNegotiation.negotiationId === parseInt(negotiation.id) && (
+                    negotiation.attributes.state !== 'Cancelled' && object.objectNegotiation.negotiationId === parseInt(negotiation.id) && (
                     <tr key={element.id}>
+                      {(element.attributes.photos[0]
+                        ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
+                        : <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg`} alt="" /></td>
+                        )}
                       <td>{element.attributes.name}</td>
                       <td>
                         <form method="DEL" onSubmit={this.quitarObjeto}>
                           <input type="hidden" name="_method" value="delete" />
                           <input type="hidden" name="negotiationId" value={negotiation.id} />
                           <input type="hidden" name="objectId" value={element.id} />
-                          <input type="submit" value="Quitar" className="btn float-r" />
+                          <input type="submit" value="Quitar" className="btn float-r" disabled={(negotiation.attributes.state === 'In Progress' ? '' : 'disabled')} />
                         </form>
                       </td>
                     </tr>
@@ -172,8 +175,12 @@ export default class addObject extends Component {
                 { other_data.map((element) => (
                   element.attributes.negotiations.map((object) => (
                     // eslint-disable-next-line radix
-                    negotiation.attributes.state === 'In Progress' && object.objectNegotiation.negotiationId === parseInt(negotiation.id) && (
+                    negotiation.attributes.state !== 'Cancelled' && object.objectNegotiation.negotiationId === parseInt(negotiation.id) && (
                     <tr key={element.id}>
+                      {(element.attributes.photos[0]
+                        ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
+                        : <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg`} alt="" /></td>
+                       )}
                       <td>{element.attributes.name}</td>
                     </tr>
                     )
@@ -197,6 +204,10 @@ export default class addObject extends Component {
               <tbody>
                 { data.map((element) => (
                   <tr key={element.id}>
+                    {(element.attributes.photos[0]
+                      ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
+                      : <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg`} alt="" /></td>
+                    )}
                     <td>{element.attributes.name}</td>
                     <td>{element.attributes.category.name}</td>
                     <td>
@@ -204,7 +215,6 @@ export default class addObject extends Component {
                         <input type="hidden" name="negotiationId" value={negotiation.id} />
                         <input type="hidden" name="objectId" value={element.id} />
                         <ActualButton disabled={this.ActualObjects(element.id)} />
-
                       </form>
                     </td>
                   </tr>
@@ -223,6 +233,10 @@ export default class addObject extends Component {
               <tbody>
                 { other_data.map((element) => (
                   <tr key={element.id}>
+                    {(element.attributes.photos[0]
+                      ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
+                      : <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg`} alt="" /></td>
+                    )}
                     <td>{element.attributes.name}</td>
                     <td>{element.attributes.category.name}</td>
                   </tr>

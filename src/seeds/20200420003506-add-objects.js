@@ -301,6 +301,16 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        userId: 1,
+        categoryId: 4,
+        name: 'Elon Musk',
+        state: true,
+        description: 'Cambio a mi Elon Musk, motivos: ya no baila como antes.',
+        views: 200000,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ];
     return queryInterface.bulkInsert('objects', objectsData);
   },

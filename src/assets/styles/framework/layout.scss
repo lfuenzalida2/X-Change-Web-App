@@ -103,6 +103,11 @@ h1 {
   padding-right: .3rem;
 }
 
+.negotiation-images{
+  max-height: 100px;
+  height: auto;
+}
+
 .item{
   margin: auto;
 }
@@ -192,7 +197,7 @@ td{
   border-radius: 5px;
   background-color: rgb(242, 242, 242);
   min-height: 30px;
-  max-height: 600px;
+  height: 600px;
   width: 300px;
 }
 
@@ -211,7 +216,7 @@ td{
 }
 
 #messages {
-  max-height: max-content;
+  height: 3000px;
   overflow-y: scroll;
   margin-bottom: 10px;
 }

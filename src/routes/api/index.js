@@ -6,12 +6,13 @@ router.get('api.objects.list', '/:id', async (ctx) => {
   const { currentUser } = ctx.state;
   const categories = ctx.orm.category;
   const negotiations = ctx.orm.negotiation;
+  const photos = ctx.orm.photo;
   const objectsList = await ctx.orm.object.findAll({
     where: { userId: currentUser.id },
-    include: [{ model: categories }, { model: negotiations }],
+    include: [{ model: categories }, { model: negotiations }, { model: photos }],
   });
   ctx.body = ctx.jsonSerializer('object', {
-    attributes: ['name', 'description', 'state', 'category', 'negotiations'],
+    attributes: ['name', 'description', 'state', 'category', 'negotiations', 'photos'],
   }).serialize(objectsList);
 });
 
@@ -20,21 +21,22 @@ router.get('api.objects.list_other', '/other/:id', async (ctx) => {
   const negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
   const categories = ctx.orm.category;
   const negotiations = ctx.orm.negotiation;
+  const photos = ctx.orm.photo;
   if (negotiation.sellerId === currentUser.id) {
     const objectsList = await ctx.orm.object.findAll({
       where: { userId: negotiation.customerId },
-      include: [{ model: categories }, { model: negotiations }],
+      include: [{ model: categories }, { model: negotiations }, { model: photos }],
     });
     ctx.body = ctx.jsonSerializer('object', {
-      attributes: ['name', 'description', 'state', 'category', 'negotiations'],
+      attributes: ['name', 'description', 'state', 'category', 'negotiations', 'photos'],
     }).serialize(objectsList);
   } else if (negotiation.customerId === currentUser.id) {
     const objectsList = await ctx.orm.object.findAll({
       where: { userId: negotiation.sellerId },
-      include: [{ model: categories }, { model: negotiations }],
+      include: [{ model: categories }, { model: negotiations }, { model: photos }],
     });
     ctx.body = ctx.jsonSerializer('object', {
-      attributes: ['name', 'description', 'state', 'category', 'negotiations'],
+      attributes: ['name', 'description', 'state', 'category', 'negotiations', 'photos'],
     }).serialize(objectsList);
   }
 });

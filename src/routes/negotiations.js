@@ -105,9 +105,19 @@ router.post('negotiations.create', '/', async (ctx) => {
 });
 
 router.patch('negotiations.update', '/:id', loadNegotiation, async (ctx) => {
-  const { negotiation } = ctx.state;
-  const { customerId, sellerId, state } = ctx.request.body;
-  if (state === 'Accepted') {
+  const { negotiation, currentUser } = ctx.state;
+  const { state } = ctx.request.body;
+  const iAm = (currentUser.id === negotiation.customerId) ? 'Customer' : 'Seller';
+  if (negotiation.state === 'In Progress') {
+    negotiation.state = iAm;
+  } else if (negotiation.state === 'Customer' && iAm === 'Seller') {
+    negotiation.state = 'Accepted';
+  } else if (negotiation.state === 'Seller' && iAm === 'Customer') {
+    negotiation.state = 'Accepted';
+  } else if (negotiation.state !== 'Accepted') {
+    negotiation.state = state;
+  }
+  if (negotiation.state === 'Accepted') {
     const objectNegotiation = await ctx.orm.objectNegotiation.findAll({
       where: { negotiationId: negotiation.id },
     });
@@ -117,7 +127,7 @@ router.patch('negotiations.update', '/:id', loadNegotiation, async (ctx) => {
     });
   }
   try {
-    await negotiation.update({ customerId, sellerId, state });
+    await negotiation.update({ state: negotiation.state });
     ctx.redirect('back');
   } catch (validationError) {
     await ctx.redirect('back'); // Not displaying errors
