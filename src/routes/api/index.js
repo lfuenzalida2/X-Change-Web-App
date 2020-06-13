@@ -15,6 +15,30 @@ router.get('api.objects.list', '/:id', async (ctx) => {
   }).serialize(objectsList);
 });
 
+router.get('api.objects.list_other', '/other/:id', async (ctx) => {
+  const { currentUser } = ctx.state;
+  const negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
+  const categories = ctx.orm.category;
+  const negotiations = ctx.orm.negotiation;
+  if (negotiation.sellerId === currentUser.id) {
+    const objectsList = await ctx.orm.object.findAll({
+      where: { userId: negotiation.customerId },
+      include: [{ model: categories }, { model: negotiations }],
+    });
+    ctx.body = ctx.jsonSerializer('object', {
+      attributes: ['name', 'description', 'state', 'category', 'negotiations'],
+    }).serialize(objectsList);
+  } else if (negotiation.customerId === currentUser.id) {
+    const objectsList = await ctx.orm.object.findAll({
+      where: { userId: negotiation.sellerId },
+      include: [{ model: categories }, { model: negotiations }],
+    });
+    ctx.body = ctx.jsonSerializer('object', {
+      attributes: ['name', 'description', 'state', 'category', 'negotiations'],
+    }).serialize(objectsList);
+  }
+});
+
 router.get('api.negotiation.get', '/negotiation/:id', async (ctx) => {
   const negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
   ctx.body = ctx.jsonSerializer('negotiation', {

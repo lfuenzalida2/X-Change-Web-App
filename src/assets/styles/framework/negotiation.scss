@@ -1,0 +1,25 @@
+.neg_layout{
+    display: flex;
+    margin: 1%;
+}
+
+.neg_obj_list{
+    width: 50%;
+    margin: 1%;
+    height: 250px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-width: 300px;
+}
+
+#negotiation_objects{
+    max-width: 70%;
+}
+
+td{
+    width: 100%;
+}
+
+tr{
+    width: 100%;
+}

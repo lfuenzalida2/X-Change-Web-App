@@ -1,102 +1,103 @@
-<div class="fixed-width">
-  <h2>Negociacion con <%= otherRole.username %></h2>
-  <div class="flexbox-container">
-  <input type="hidden" id="currentUser" value="<%= currentUser.id %>">
-  <% if(negotiation.state == "In Progress") { %>
-      <form action="<%= editNegotiationPath %>" method="POST">
-        <input type="hidden" name="_method" value="patch" />
-        <input type="hidden" name="state" value="Accepted" />
-        <input type="submit" value="Aceptar Oferta" class="btn"/>
-      </form>
-      <form action="<%= editNegotiationPath %>" method="POST">
-        <input type="hidden" name="_method" value="patch" />
-        <input type="hidden" name="state" value="Cancelled" />
-        <input type="submit" value="Cancelar Negociacion" class="btn"/>
-      </form>
-    <% } else { %>
-      <button type="button" name="button" disabled  class="btn">Negociación Aceptada</button>
-  </div>
-  <% if (negotiation.state == "Accepted") { %>
-    <div class="form">
-      Felicidades, han podido realizar un X-Change exitoso!
-      <br>
-      Aquí está el email y telefono de <%= otherRole.username %>
-      <br>
-      mail: <%= otherRole.mail %>
-      <br>
-      telefono: <%= otherRole.number %>
-    </div>
-  <% } else if (negotiation.state == "Cancelled") { %>
-    <div class="form">
-      Es una pena que no haya funcionado el X-Change ;(
-    </div>
-  <% } %>
-  <br>
-  <% if (currentReview) { %>
-    <div class="border" id="review">
-        <h3>Tu review fue</h3>
-        <% reviews.forEach(review => { %>
-          <% if(review.reviewerId == currentUser.id){ %>
-            <label for="rating">Rating:</label>
-            <span name="rating"><%= review.rating %></span>
-            |
-            <label for="text">Texto:</label>
-            <span name="text"><%= review.text %></span>
-          <% } %>
-        <% }); %>
-      </div>
-      <% } %>
-    <br>
-    <% if (currentReview) { %>
-      <button type="button" name="button" disabled class="btn">Ya realizaste una review</button>
+<div class="fixed-width-negotiation">
+  <div id="negotiation_objects" class="float-r fixed-width-xlg">
+    <h2 class="center">Negociacion con <%= otherRole.username %></h2>
+    <div class="flexbox-container">
+      <input type="hidden" id="currentUser" value="<%= currentUser.id %>">
+      <% if(negotiation.state == "In Progress") { %>
+        <div class="flexbox-container">
+          <form action="<%= editNegotiationPath %>" method="POST">
+            <input type="hidden" name="_method" value="patch" />
+            <input type="hidden" name="state" value="Accepted" />
+            <input type="submit" value="Aceptar Oferta" class="btn"/>
+          </form>
+          <form action="<%= editNegotiationPath %>" method="POST">
+            <input type="hidden" name="_method" value="patch" />
+            <input type="hidden" name="state" value="Cancelled" />
+            <input type="submit" value="Cancelar Negociacion" class="btn"/>
+          </form>
+        </div>
       <% } else { %>
-      <form action="<%= newReviewPath %>" method="POST">
-        <input type="hidden" name="reviewerId" value="<%= currentRole.id %>" />
-        <input type="hidden" name="reviewedId" value="<%= otherRole.id %>" />
-        <input type="hidden" name="reviewedName" value="<%= otherRole.username %>" />
-        <input type="hidden" name="negotiationId" value="<%= negotiation.id %>" />
-        <input type="submit" value="Hacer una Review" class="btn"/>
-      </form>
-    <% } %>
-  <% } %>
-
-  <br>
-  <br>
-  <div id=chat>
-    <div class="chat-title">Chat con <%= otherRole.username %></div>
-    <div id=messages>
-      <% messagesList.forEach((message) => { %> %>
-        <div>
-          <% if (message.senderId == currentUser.id){ %>
-            <div class="wrapper-me">
-              <div class="me">
+        <button type="button" name="button" disabled  class="btn">Negociación Aceptada</button>
+        <% if (negotiation.state == "Accepted") { %>
+          <div class="form">
+            Felicidades, han podido realizar un X-Change exitoso!
+            <br>
+            Aquí está el email y telefono de <%= otherRole.username %>
+            <br>
+            mail: <%= otherRole.mail %>
+            <br>
+            telefono: <%= otherRole.number %>
+          </div>
+        <% } else if (negotiation.state == "Cancelled") { %>
+          <div class="form">
+            Es una pena que no haya funcionado el X-Change ;(
+          </div>
+        <% } %>
+        <br>
+        <% if (currentReview) { %>
+          <div class="border" id="review">
+              <h3>Tu review fue</h3>
+              <% reviews.forEach(review => { %>
+                <% if(review.reviewerId == currentUser.id){ %>
+                  <label for="rating">Rating:</label>
+                  <span name="rating"><%= review.rating %></span>
+                  |
+                  <label for="text">Texto:</label>
+                  <span name="text"><%= review.text %></span>
+                <% } %>
+              <% }); %>
+            </div>
+            <% } %>
+          <br>
+          <% if (currentReview) { %>
+            <button type="button" name="button" disabled class="btn">Ya realizaste una review</button>
+            <% } else { %>
+            <form action="<%= newReviewPath %>" method="POST">
+              <input type="hidden" name="reviewerId" value="<%= currentRole.id %>" />
+              <input type="hidden" name="reviewedId" value="<%= otherRole.id %>" />
+              <input type="hidden" name="reviewedName" value="<%= otherRole.username %>" />
+              <input type="hidden" name="negotiationId" value="<%= negotiation.id %>" />
+              <input type="submit" value="Hacer una Review" class="btn"/>
+            </form>
+          <% } %>
+        <% } %>
+    </div>
+  
+    <div id=chat>
+      <div class="chat-title">Chat con <%= otherRole.username %></div>
+      <div id=messages>
+        <% messagesList.forEach((message) => { %> %>
+          <div>
+            <% if (message.senderId == currentUser.id){ %>
+              <div class="wrapper-me">
+                <div class="me">
+                  <%= message.text %>
+                  <div class="time"><%= message.createdAt.toLocaleString('es-CL', { hour12: false }).slice(09,15) %></div>
+                </div>
+              </div>
+            <% } else { %>
+              <div class="other">
                 <%= message.text %>
                 <div class="time"><%= message.createdAt.toLocaleString('es-CL', { hour12: false }).slice(09,15) %></div>
               </div>
-            </div>
-          <% } else { %>
-            <div class="other">
-              <%= message.text %>
-              <div class="time"><%= message.createdAt.toLocaleString('es-CL', { hour12: false }).slice(09,15) %></div>
-            </div>
-          <% } %>
-        </div>
-      <% }) %>
+            <% } %>
+          </div>
+        <% }) %>
+      </div>
+  
+      <div id="send">
+        <form id="send-message" action="<%= newMessagePath  %>" method="POST">
+          <input type="hidden" name="senderId" value=<%= currentRole.id %> />
+          <input type="hidden" name="receiverId" value=<%= otherRole.id %> />
+          <input type="hidden" name="negotiationId" value=<%= negotiation.id %> />
+          <div class="wrapper-textarea"><textarea id="m" type="text" name="text"></textarea> </div>
+          <input id="send-btn" type="submit" value="Enviar" class="btn" <%= negotiation.state === "In Progress" ? true : "disabled"%>/>
+        </form>
+      </div>
     </div>
-
-    <div id="send">
-      <form id="send-message" action="<%= newMessagePath  %>" method="POST">
-        <input type="hidden" name="senderId" value=<%= currentRole.id %> />
-        <input type="hidden" name="receiverId" value=<%= otherRole.id %> />
-        <input type="hidden" name="negotiationId" value=<%= negotiation.id %> />
-        <div class="wrapper-textarea"><textarea id="m" type="text" name="text"></textarea> </div>
-        <input id="send-btn" type="submit" value="Enviar" class="btn" <%= negotiation.state === "In Progress" ? true : "disabled"%>/>
-      </form>
-    </div>
+  
+    <div id="add_object">Render de React</div>
   </div>
-  <br>
-
-  <div id="add_object">Render de React</div>
 
 
 </div>

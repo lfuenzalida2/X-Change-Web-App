@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/destructuring-assignment */
 // eslint-disable-next-line max-classes-per-file
 import React, { Component } from 'react';
@@ -14,7 +15,7 @@ class ActualButton extends Component {
     // eslint-disable-next-line react/prop-types
     const { disabled } = this.props;
     return (
-      <input type="submit" name="add" value="Añadir" className="btn" disabled={disabled} />
+      <input type="submit" name="add" value="Añadir" className="btn float-r" disabled={disabled} />
     );
   }
 }
@@ -25,6 +26,7 @@ export default class addObject extends Component {
 
     this.state = {
       data: null,
+      other_data: null,
       negotiation: null,
       loading: true,
       // eslint-disable-next-line react/prop-types
@@ -38,7 +40,7 @@ export default class addObject extends Component {
   async componentDidMount() {
     await axios({
       method: 'get',
-      url: ur+'api/' + this.state.id,
+      url: `${ur}api/${this.state.id}`,
     })
       .then(async (res) => {
         this.setState({ data: res.data.data });
@@ -48,7 +50,17 @@ export default class addObject extends Component {
 
     await axios({
       method: 'get',
-      url: ur+'api/negotiation/' + this.state.id,
+      url: `${ur}api/other/${this.state.id}`,
+    })
+      .then(async (res) => {
+        this.setState({ other_data: res.data.data });
+      }, (err) => {
+        console.log(err);
+      });
+
+    await axios({
+      method: 'get',
+      url: `${ur}api/negotiation/${this.state.id}`,
     })
       .then(async (res) => {
         this.setState({ negotiation: res.data.data });
@@ -59,17 +71,19 @@ export default class addObject extends Component {
   }
 
   ActualObjects(id) {
+    // eslint-disable-next-line no-var
     var value = '';
     const { data, negotiation } = this.state;
+    // eslint-disable-next-line array-callback-return
     data.map((element) => {
       // eslint-disable-next-line consistent-return
+      // eslint-disable-next-line array-callback-return
       element.attributes.negotiations.map((negotiationObjects) => {
+        // eslint-disable-next-line max-len
         if ((negotiation.id === negotiationObjects.id.toString() || element.attributes.state === false) && id === element.id) {
           value = 'disabled';
         }
       });
-      console.log(element);
-
     });
     return value;
   }
@@ -79,7 +93,7 @@ export default class addObject extends Component {
     event.preventDefault();
     const negotiationId = event.target.negotiationId.value;
     const objectId = event.target.objectId.value;
-    const url = ur+'api/' + negotiationId + '/object';
+    const url = `${ur}api/${negotiationId}/object`;
     const body = { negotiationId, objectId, add: 'Añadir' };
     await axios.post(url, body)
       .then(async (res) => {
@@ -96,7 +110,7 @@ export default class addObject extends Component {
     event.preventDefault();
     const negotiationId = event.target.negotiationId.value;
     const objectId = event.target.objectId.value;
-    const url = ur+'api/' + negotiationId + '/object';
+    const url = `${ur}api/${negotiationId}/object`;
     const body = { negotiationId, objectId, _method: 'delete' };
     await axios.post(url, body)
       .then((res) => {
@@ -108,75 +122,114 @@ export default class addObject extends Component {
   }
 
   render() {
-    const { loading, data, negotiation } = this.state;
+    const { loading, data, other_data, negotiation } = this.state;
     if (loading) return <p>Loading...</p>;
     console.log(data);
     return (
       <div>
-        <h2>Lista de Objetos</h2>
-        <div className="form">
-          <table>
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                { negotiation.attributes.state === 'In Progress' && (
-                  <th>Quitar</th>
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              { data.map((element) => (
-                element.attributes.negotiations.map((object) => (
-                  // eslint-disable-next-line radix
-                  negotiation.attributes.state === 'In Progress' && object.objectNegotiation.negotiationId === parseInt(negotiation.id) && (
+        <h2 className="center">Lista de Objetos</h2>
+        <div className="neg_layout">
+          <div className="neg_obj_list form">
+            <table>
+              <thead className="head">
+                <tr>
+                  <th>Nombre</th>
+                  { negotiation.attributes.state === 'In Progress' && (
+                    <th>Quitar</th>
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+                { data.map((element) => (
+                  element.attributes.negotiations.map((object) => (
+                    // eslint-disable-next-line radix
+                    negotiation.attributes.state === 'In Progress' && object.objectNegotiation.negotiationId === parseInt(negotiation.id) && (
+                    <tr key={element.id}>
+                      <td>{element.attributes.name}</td>
+                      <td>
+                        <form method="DEL" onSubmit={this.quitarObjeto}>
+                          <input type="hidden" name="_method" value="delete" />
+                          <input type="hidden" name="negotiationId" value={negotiation.id} />
+                          <input type="hidden" name="objectId" value={element.id} />
+                          <input type="submit" value="Quitar" className="btn float-r" />
+                        </form>
+                      </td>
+                    </tr>
+                    )
+                  ))
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="neg_obj_list form">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                </tr>
+              </thead>
+              <tbody>
+                { other_data.map((element) => (
+                  element.attributes.negotiations.map((object) => (
+                    // eslint-disable-next-line radix
+                    negotiation.attributes.state === 'In Progress' && object.objectNegotiation.negotiationId === parseInt(negotiation.id) && (
+                    <tr key={element.id}>
+                      <td>{element.attributes.name}</td>
+                    </tr>
+                    )
+                  ))
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <br />
+        <div className="neg_layout">
+          <div className="neg_obj_list">
+            <table className="form">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Categoria</th>
+                  <th>Añadir a la Negociación</th>
+                </tr>
+              </thead>
+              <tbody>
+                { data.map((element) => (
                   <tr key={element.id}>
                     <td>{element.attributes.name}</td>
+                    <td>{element.attributes.category.name}</td>
                     <td>
-                      <form method="DEL" onSubmit={this.quitarObjeto}>
-                        <input type="hidden" name="_method" value="delete" />
+                      <form method="POST" onSubmit={this.añadirObjeto}>
                         <input type="hidden" name="negotiationId" value={negotiation.id} />
                         <input type="hidden" name="objectId" value={element.id} />
-                        <input type="submit" value="Quitar" className="btn" />
+                        <ActualButton disabled={this.ActualObjects(element.id)} />
+
                       </form>
                     </td>
                   </tr>
-                  )
-                ))
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <br />
-        <div>
-          <table className="form">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Estado</th>
-                <th>Categoria</th>
-                <th>Descripción</th>
-                <th>Añadir a la Negociación</th>
-              </tr>
-            </thead>
-            <tbody>
-              { data.map((element) => (
-                <tr key={element.id}>
-                  <td>{element.attributes.name}</td>
-                  <td>{element.attributes.state ? 'Disponible' : 'No Disponible'}</td>
-                  <td>{element.attributes.category.name}</td>
-                  <td>{element.attributes.description}</td>
-                  <td>
-                    <form method="POST" onSubmit={this.añadirObjeto}>
-                      <input type="hidden" name="negotiationId" value={negotiation.id} />
-                      <input type="hidden" name="objectId" value={element.id} />
-                      <ActualButton disabled={this.ActualObjects(element.id)} />
-
-                    </form>
-                  </td>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="neg_obj_list">
+            <table className="form">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Categoria</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                { other_data.map((element) => (
+                  <tr key={element.id}>
+                    <td>{element.attributes.name}</td>
+                    <td>{element.attributes.category.name}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     );
