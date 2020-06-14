@@ -42,20 +42,7 @@ function sortByDateDesc(a, b) {
 }
 
 router.get('negotiations.list', '/', async (ctx) => {
-  const users = await ctx.orm.user;
-  const currentUser = await ctx.state.currentUser;
-  const negotiationsList = await ctx.orm.negotiation.findAll({
-    where: {
-      [Op.or]: [{ sellerId: { [Op.eq]: currentUser.id } },
-        { customerId: { [Op.eq]: currentUser.id } }],
-    },
-    include: [{ model: users, as: 'customer' }, { model: users, as: 'seller' }],
-  });
-  negotiationsList.sort(sortByDateDesc);
-  await ctx.render('negotiations/index', {
-    negotiationsList,
-    showNegotiationPath: (negotiation) => ctx.router.url('negotiations.show', { id: negotiation.id }),
-  });
+  await ctx.render('negotiations/index');
 });
 
 router.get('negotiations.show', '/:id', loadNegotiation, async (ctx) => {

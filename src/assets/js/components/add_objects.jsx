@@ -18,7 +18,7 @@ class ActualButton extends Component {
   }
 }
 
-export default class addObject extends Component {
+class Negotiation extends Component {
   constructor(props) {
     super(props);
 
@@ -117,7 +117,7 @@ export default class addObject extends Component {
       .then(async (res) => {
         this.setState({ data: res.data.data });
       })
-      .then(async (res) => {
+      .then(async () => {
         this.state.socket.emit('add object', negotiationId);
       })
       .catch((err) => {
@@ -137,7 +137,7 @@ export default class addObject extends Component {
       .then((res) => {
         this.setState({ data: res.data.data });
       })
-      .then(async (res) => {
+      .then(async () => {
         this.state.socket.emit('remove object', negotiationId);
       })
       .catch((err) => {
@@ -146,7 +146,10 @@ export default class addObject extends Component {
   }
 
   render() {
-    const { loading, data, other_data, negotiation } = this.state;
+    const {
+      loading, data, other_data, negotiation,
+    } = this.state;
+
     if (loading) return <p>Loading...</p>;
     console.log(data);
     return (
@@ -168,7 +171,7 @@ export default class addObject extends Component {
                     <tr key={element.id}>
                       {(element.attributes.photos[0]
                         ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
-                        : <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg`} alt="" /></td>
+                        : <td><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></td>
                         )}
                       <td>{element.attributes.name}</td>
                       <td>
@@ -201,7 +204,7 @@ export default class addObject extends Component {
                     <tr key={element.id}>
                       {(element.attributes.photos[0]
                         ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
-                        : <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg`} alt="" /></td>
+                        : <td><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></td>
                        )}
                       <td>{element.attributes.name}</td>
                     </tr>
@@ -228,7 +231,7 @@ export default class addObject extends Component {
                   <tr key={element.id}>
                     {(element.attributes.photos[0]
                       ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
-                      : <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg`} alt="" /></td>
+                      : <td><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></td>
                     )}
                     <td>{element.attributes.name}</td>
                     <td>{element.attributes.category.name}</td>
@@ -257,7 +260,7 @@ export default class addObject extends Component {
                   <tr key={element.id}>
                     {(element.attributes.photos[0]
                       ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
-                      : <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg`} alt="" /></td>
+                      : <td><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></td>
                     )}
                     <td>{element.attributes.name}</td>
                     <td>{element.attributes.category.name}</td>

@@ -1,37 +1,6 @@
 <div class="negotiation-layout">
-  <!-- This is the list of negotiations available -->
-  <div class="fixed-width float-l" id="negotiations-list">
-    <h2>Mis Negociaciones</h2>
-    <% if (!negotiationsList.length) { %>
-      <p>No tienes ninguna negociación aún.</p>
-    <% } else { %>
-      <br>
-      <table class="form">
-        <thead>
-          <tr>
-            <th>Usuario</th>
-            <th>Estado</th>
-            <th>Ver</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% negotiationsList.forEach((negotiation) => { %>
-            <tr>
-              <% if(negotiation.customerId != currentUser.id){ %>
-                <td><%= negotiation.customer.username %></td>
-              <% } else {%>
-                <td><%= negotiation.seller.username %></td>
-              <% } %>
-              <td><%= negotiation.state === 'Accepted' ? 'Aceptada' : negotiation.state === 'Cancelled' ?  'Cancelada' : 'En progreso' %></td>
-              <td><a href="<%= showNegotiationPath(negotiation) %>">Ver Detalles</a></td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    <% } %>
-  </div>
-
   <!-- This is where a negotiation is opened -->
   <div id="negotiation">Render de React</div>
 </div>
 
+ASDASD

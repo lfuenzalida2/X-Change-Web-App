@@ -1,6 +1,34 @@
 const KoaRouter = require('koa-router');
+const { Op } = require('sequelize');
 
 const router = new KoaRouter();
+
+function sortByDateDesc(a, b) {
+  return -(new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime());
+}
+
+router.get('api.negotiation.get.negotiations', '/negotiations', async (ctx) => {
+  const users = await ctx.orm.user;
+  const currentUser = await ctx.state.currentUser;
+  const negotiationsList = await ctx.orm.negotiation.findAll({
+    where: {
+      [Op.or]: [{ sellerId: { [Op.eq]: currentUser.id } },
+        { customerId: { [Op.eq]: currentUser.id } }],
+    },
+    include: [{ model: users, as: 'customer' }, { model: users, as: 'seller' }],
+  });
+  negotiationsList.sort(sortByDateDesc);
+  ctx.body = ctx.jsonSerializer('negotiation', {
+    attributes: ['state', 'customer', 'seller'],
+  }).serialize(negotiationsList);
+});
+
+router.get('api.current.user', '/current_user', async (ctx) => {
+  const currentUser = await ctx.state.currentUser;
+  ctx.body = ctx.jsonSerializer('currentUser', {
+    attributes: ['id', 'username'],
+  }).serialize(currentUser);
+});
 
 router.get('api.objects.list', '/:id', async (ctx) => {
   const { currentUser } = ctx.state;
@@ -41,6 +69,7 @@ router.get('api.objects.list_other', '/other/:id', async (ctx) => {
   }
 });
 
+
 router.get('api.negotiation.get', '/negotiation/:id', async (ctx) => {
   const negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
   ctx.body = ctx.jsonSerializer('negotiation', {
@@ -71,7 +100,5 @@ router.post('api.object_add', '/:id/object', async (ctx) => {
     }).serialize(respuesta);
   }
 });
-
-
 
 module.exports = router;
