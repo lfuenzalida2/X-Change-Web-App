@@ -30,6 +30,16 @@ router.get('api.current.user', '/current_user', async (ctx) => {
   }).serialize(currentUser);
 });
 
+router.get('api.negotiation.review', '/review/:id/:rid/:red', async (ctx) => {
+  const { id, rid, red } = ctx.params;
+  const review = await ctx.orm.review.findOne({
+    where: { negotiationId: id, reviewerId: rid, reviewedId: red },
+  });
+  ctx.body = ctx.jsonSerializer('review', {
+    attributes: ['rating', 'text'],
+  }).serialize(review);
+});
+
 router.get('api.negotiation.messagges', '/messagges/:id', async (ctx) => {
   const negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
   const messaggesList = await negotiation.getMessages();

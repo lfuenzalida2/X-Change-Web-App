@@ -95,7 +95,7 @@ router.patch('negotiations.update', '/:id', loadNegotiation, async (ctx) => {
   const { negotiation, currentUser } = ctx.state;
   const { state } = ctx.request.body;
   const iAm = (currentUser.id === negotiation.customerId) ? 'Customer' : 'Seller';
-  if (negotiation.state === 'In Progress') {
+  if (negotiation.state === 'In Progress' && state !== 'Cancelled') {
     negotiation.state = iAm;
   } else if (negotiation.state === 'Customer' && iAm === 'Seller') {
     negotiation.state = 'Accepted';
@@ -115,7 +115,9 @@ router.patch('negotiations.update', '/:id', loadNegotiation, async (ctx) => {
   }
   try {
     await negotiation.update({ state: negotiation.state });
-    ctx.redirect('back');
+    ctx.body = ctx.jsonSerializer('negotiation', {
+      attributes: ['id'],
+    }).serialize(negotiation);
   } catch (validationError) {
     await ctx.redirect('back'); // Not displaying errors
   }

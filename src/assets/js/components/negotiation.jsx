@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-var */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-param-reassign */
@@ -84,6 +85,46 @@ export default class NegotiationsList extends Component {
   }
 }
 
+class Negotiations extends Component {
+  render() {
+    const { negotiationsList, currentUser, openNegotiation } = this.props;
+    return (
+      <div className="fixed-width float-l" id="negotiations-list">
+        <h2>Mis Negociaciones</h2>
+        { !negotiationsList.length
+          ? <p>No tienes niguna negociacion</p>
+          : (
+            <table className="form">
+              <thead>
+                <tr>
+                  <th>Usuario</th>
+                  <th>Estado</th>
+                  <th>Ver</th>
+                </tr>
+              </thead>
+              <tbody>
+                { negotiationsList.map((negotiation) => (
+                  <tr key={negotiation.id}>
+                    { negotiation.attributes.customer.id !== currentUser.id
+                      ? <td>{negotiation.attributes.customer.username}</td>
+                      : <td>{negotiation.attributes.seller.username}</td> }
+                    <td>{negotiation.attributes.state === 'Accepted' ? 'Aceptada' : negotiation.attributes.state === 'Cancelled' ? 'Cancelada' : 'En Progreso'}</td>
+                    <td>
+                      <form onSubmit={openNegotiation}>
+                        <input type="hidden" name="negotiationId" value={negotiation.id} />
+                        <input type="submit" value="Ver" className="btn" />
+                      </form>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+      </div>
+    );
+  }
+}
+
 class Negotiation extends Component {
   constructor(props) {
     super(props);
@@ -95,6 +136,7 @@ class Negotiation extends Component {
       negotiation: null,
       loading: true,
       messages: null,
+      review: null,
       socket: io(),
     };
     this.añadirObjeto = this.añadirObjeto.bind(this);
@@ -102,7 +144,10 @@ class Negotiation extends Component {
     this.ActualObjects = this.ActualObjects.bind(this);
     this.getNegotiation = this.getNegotiation.bind(this);
     this.getMessages = this.getMessages.bind(this);
+    this.getReview = this.getReview.bind(this);
     this.myObjects = this.myObjects.bind(this);
+    this.submitReview = this.submitReview.bind(this);
+    this.submitNegotiation = this.submitNegotiation.bind(this);
     this.otherObjects = this.otherObjects.bind(this);
     this.whenMounting = this.whenMounting.bind(this);
   }
@@ -136,8 +181,8 @@ class Negotiation extends Component {
       } else {
         this.setState({ otherUser: this.state.negotiation.attributes['seller-id'], loading: false });
       }
+      await this.getReview();
     }
-
   }
 
   async myObjects() {
@@ -185,6 +230,56 @@ class Negotiation extends Component {
       .then(async (res) => {
         const { data } = res.data;
         this.setState({ messages: data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  async getReview() {
+    // Obtain messages
+    await axios({
+      method: 'get',
+      url: `${this.props.url}/api/review/${this.props.id}/${this.props.currentUser.id}/${this.state.otherUser}`,
+    })
+      .then(async (res) => {
+        const { data } = res.data;
+        this.setState({ review: data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  async submitReview(event) {
+    // Submit Review+
+    event.preventDefault();
+    const { rating, text } = event.target;
+    const { otherUser, negotiation } = this.state;
+    const { currentUser } = this.props;
+    const url = `${this.props.url}/reviews/`;
+    const body = {
+      reviewerId: currentUser.id, reviewedId: otherUser, negotiationId: negotiation.id, rating: rating.value, text: text.value,
+    };
+    await axios.post(url, body)
+      .then(async (res) => {
+        (res.status === 200) ? this.getReview() : alert(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  async submitNegotiation(event) {
+    event.preventDefault();
+    const { state } = event.target;
+    const { negotiation } = this.state;
+    const url = `${this.props.url}/negotiations/${negotiation.id}`;
+    const body = { state: state.value };
+    await axios.patch(url, body)
+      .then(async (res) => {
+        await this.getNegotiation();
+        // this.setState({ data: res.data.data });
       })
       .catch((err) => {
         console.log(err);
@@ -245,7 +340,7 @@ class Negotiation extends Component {
 
   render() {
     const {
-      loading, data, otherData, otherUser, negotiation, socket, messages,
+      loading, data, otherData, otherUser, negotiation, socket, messages, review,
     } = this.state;
 
     const { currentUser, url } = this.props;
@@ -254,7 +349,7 @@ class Negotiation extends Component {
     return (
       <div>
         <div>
-          <Submit otherUser={otherUser} negotiation={negotiation} currentUser={currentUser} />
+          <Submit key={review} submitNegotiation={this.submitNegotiation} submitReview={this.submitReview} negotiation={negotiation} currentUser={currentUser} review={review} />
         </div>
         <div>
           <Messages key={messages} url={url} socket={socket} negotiation={negotiation} currentUser={currentUser} otherUser={otherUser} owner={negotiation.attributes['seller-id']} />
@@ -275,12 +370,94 @@ class Negotiation extends Component {
 }
 
 class Submit extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      reviewForm: false,
+    };
+    this.openReviewSubmit = this.openReviewSubmit.bind(this);
+  }
+
+  openReviewSubmit(event) {
+    event.preventDefault();
+    this.setState({ reviewForm: true });
+  }
+
   render() {
+    const {
+      negotiation, currentUser, review, submitReview, submitNegotiation,
+    } = this.props;
+
+    const { reviewForm } = this.state;
+
+    if (reviewForm) {
+      return (
+        <div className="form">
+          <form onSubmit={submitReview} method="POST">
+            <input type="number" name="rating" max="5" min="1" />
+            <textarea type="text" name="text" />
+            <input type="submit" value="Enviar la Valoración" className="btn" />
+          </form>
+        </div>
+      );
+    }
+
     return (
-      <div>
-        <h2> Negociación con </h2>
+      <div className="flexbox-container">
+        <input type="hidden" id="currentUser" value={currentUser.id} />
+        { negotiation.attributes.state === 'In Progress' ? (
+          <>
+            <form onSubmit={submitNegotiation} method="POST">
+              <input type="hidden" name="state" value="Accepted" />
+              <input type="submit" value="Aceptar Oferta" className="btn" />
+            </form>
+
+            <form onSubmit={submitNegotiation} method="POST">
+              <input type="hidden" name="state" value="Cancelled" />
+              <input type="submit" value="Cancelar Negociación" className="btn" />
+            </form>
+          </>
+        ) : (negotiation.attributes.state === 'Accepted' ? (
+          <>
+            <div className="form">
+              Felicidades, han podido realizar un X-Change exitoso!
+            </div>
+          </>
+        ) : (negotiation.attributes.state === 'Cancelled' ? (
+          <div className="form">
+            Es una pena que no haya funcionado el X-Change ;(
+          </div>
+        ) : (negotiation.attributes.state !== 'In Progress' && negotiation.attributes.state !== 'Cancelled' && negotiation.attributes.state !== 'Accepted' && (
+          <div className="form">
+            Ahora debes esperar a que acepte la negociación
+            <form onSubmit={submitNegotiation} method="POST">
+              <input type="hidden" name="state" value="In Progress" />
+              <input type="submit" value="No estoy Listo" className="btn" />
+            </form>
+          </div>
+        )))
+        )}
+        { review ? (
+          <div className="border" id="review">
+            <h3>Tu review fue</h3>
+            <label htmlFor="rating">Rating:</label>
+            <span name="rating">{review.attributes.rating}</span>
+            <br />
+            <label htmlFor="text">Texto:</label>
+            <span name="text">{review.attributes.text}</span>
+          </div>
+        ) : ((negotiation.attributes.state === 'Accepted' || negotiation.attributes.state === 'Cancelled') && (
+          <>
+            <form onSubmit={this.openReviewSubmit} method="POST">
+              <input type="submit" value="Hacer una Review" className="btn" />
+            </form>
+          </>
+        )
+        )}
       </div>
-    )};
+    );
+  }
 }
 
 class Messages extends Component {
@@ -399,46 +576,6 @@ class Messages extends Component {
             <input ref={this.send} type="submit" id="send-btn" values="Enviar" className="btn" disabled={negotiation.attributes.state === 'Cancelled' ? 'disabled' : ''} />
           </form>
         </div>
-      </div>
-    );
-  }
-}
-
-class Negotiations extends Component {
-  render() {
-    const { negotiationsList, currentUser, openNegotiation } = this.props;
-    return (
-      <div className="fixed-width float-l" id="negotiations-list">
-        <h2>Mis Negociaciones</h2>
-        { !negotiationsList.length
-          ? <p>No tienes niguna negociacion</p>
-          : (
-            <table className="form">
-              <thead>
-                <tr>
-                  <th>Usuario</th>
-                  <th>Estado</th>
-                  <th>Ver</th>
-                </tr>
-              </thead>
-              <tbody>
-                { negotiationsList.map((negotiation) => (
-                  <tr key={negotiation.id}>
-                    { negotiation.attributes.customer.id !== currentUser.id
-                      ? <td>{negotiation.attributes.customer.username}</td>
-                      : <td>{negotiation.attributes.seller.username}</td> }
-                    <td>{negotiation.attributes.state === 'Accepted' ? 'Aceptada' : negotiation.attributes.state === 'Cancelled' ? 'Cancelada' : 'En Progreso'}</td>
-                    <td>
-                      <form onSubmit={openNegotiation}>
-                        <input type="hidden" name="negotiationId" value={negotiation.id} />
-                        <input type="submit" value="Ver" className="btn" />
-                      </form>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
       </div>
     );
   }
