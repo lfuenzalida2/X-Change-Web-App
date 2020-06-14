@@ -1,3 +1,5 @@
+/* eslint-disable no-var */
+/* eslint-disable array-callback-return */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-shadow */
 /* eslint-disable radix */
@@ -92,11 +94,14 @@ class Negotiation extends Component {
       otherUser: null,
       negotiation: null,
       loading: true,
+      messages: null,
       socket: io(),
     };
     this.añadirObjeto = this.añadirObjeto.bind(this);
     this.quitarObjeto = this.quitarObjeto.bind(this);
     this.ActualObjects = this.ActualObjects.bind(this);
+    this.getNegotiation = this.getNegotiation.bind(this);
+    this.getMessages = this.getMessages.bind(this);
     this.myObjects = this.myObjects.bind(this);
     this.otherObjects = this.otherObjects.bind(this);
     this.whenMounting = this.whenMounting.bind(this);
@@ -113,37 +118,26 @@ class Negotiation extends Component {
   }
 
   async whenMounting() {
-    // API calls to get my objects, the other's object and messagges
+    // API calls to get my objects, the other's object, negotiations info and messagges
     await this.myObjects();
     await this.otherObjects();
+    await this.getNegotiation();
+    await this.getMessages();
 
     // object socket connection
     this.state.socket.emit('join negotiation', { negotiationId: this.props.id });
     this.state.socket.on('add object', this.otherObjects);
     this.state.socket.on('remove object', this.otherObjects);
 
-    // negotiation info, only request
-    await axios({
-      method: 'get',
-      url: `${this.props.url}/api/negotiation/${this.props.id}`,
-    })
-      .then(async (res) => {
-        this.setState({ negotiation: res.data.data });
-      }, (err) => {
-        console.log(err);
-      })
-      .then(() => {
-        // Get otherUser of the negotiation
-        if (this.state.negotiation) {
-          if (this.props.currentUser.id === this.state.negotiation.attributes['seller-id']) {
-            this.setState({ otherUser: this.state.negotiation.attributes['customer-id'], loading: false });
-          } else {
-            this.setState({ otherUser: this.state.negotiation.attributes['seller-id'], loading: false });
-          }
-        }
-      }, (err) => {
-        console.log(err);
-      });
+    // Get otherUser of the negotiation
+    if (this.state.negotiation) {
+      if (this.props.currentUser.id === this.state.negotiation.attributes['seller-id']) {
+        this.setState({ otherUser: this.state.negotiation.attributes['customer-id'], loading: false });
+      } else {
+        this.setState({ otherUser: this.state.negotiation.attributes['seller-id'], loading: false });
+      }
+    }
+
   }
 
   async myObjects() {
@@ -170,16 +164,38 @@ class Negotiation extends Component {
       });
   }
 
+  async getNegotiation() {
+    await axios({
+      method: 'get',
+      url: `${this.props.url}/api/negotiation/${this.props.id}`,
+    })
+      .then(async (res) => {
+        this.setState({ negotiation: res.data.data });
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+  async getMessages() {
+    // Obtain messages
+    await axios({
+      method: 'get',
+      url: `${this.props.url}/api/messagges/${this.props.id}`,
+    })
+      .then(async (res) => {
+        const { data } = res.data;
+        this.setState({ messages: data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   ActualObjects(id) {
-    // eslint-disable-next-line no-var
     var value = '';
     const { data, negotiation } = this.state;
-    // eslint-disable-next-line array-callback-return
     data.map((element) => {
-      // eslint-disable-next-line consistent-return
-      // eslint-disable-next-line array-callback-return
       element.attributes.negotiations.map((negotiationObjects) => {
-        // eslint-disable-next-line max-len
         if ((negotiation.id === negotiationObjects.id.toString() || element.attributes.state === false) && id === element.id) {
           value = 'disabled';
         } else if (negotiation.attributes.state === 'Cancelled' || negotiation.attributes.state === 'Accepted') {
@@ -229,14 +245,19 @@ class Negotiation extends Component {
 
   render() {
     const {
-      loading, data, otherData, otherUser, negotiation, socket,
+      loading, data, otherData, otherUser, negotiation, socket, messages,
     } = this.state;
+
+    const { currentUser, url } = this.props;
 
     if (loading) return <p>Loading...</p>;
     return (
       <div>
         <div>
-          <Messages url={this.props.url} socket={socket} negotiation={negotiation} currentUser={this.props.currentUser} otherUser={otherUser} owner={negotiation.attributes['seller-id']} />
+          <Submit otherUser={otherUser} negotiation={negotiation} currentUser={currentUser} />
+        </div>
+        <div>
+          <Messages key={messages} url={url} socket={socket} negotiation={negotiation} currentUser={currentUser} otherUser={otherUser} owner={negotiation.attributes['seller-id']} />
         </div>
         <h2 className="center">Lista de Objetos</h2>
         <div className="neg_layout">
@@ -253,6 +274,15 @@ class Negotiation extends Component {
   }
 }
 
+class Submit extends Component {
+  render() {
+    return (
+      <div>
+        <h2> Negociación con </h2>
+      </div>
+    )};
+}
+
 class Messages extends Component {
   constructor(props) {
     super(props);
@@ -267,6 +297,7 @@ class Messages extends Component {
     this.sendMessage = this.sendMessage.bind(this);
     this.onKeyEnter = this.onKeyEnter.bind(this);
     this.getMessages = this.getMessages.bind(this);
+    this.whenMounting = this.whenMounting.bind(this);
     this.scrollBottom = this.scrollBottom.bind(this);
   }
 
@@ -277,6 +308,10 @@ class Messages extends Component {
       this.scrollBottom();
     });
 
+    await this.whenMounting();
+  }
+
+  async whenMounting() {
     // get Messages
     await this.getMessages();
     this.setState({ loading: false });
@@ -477,7 +512,7 @@ class TradingObjectList extends Component {
                 )}
                 <td>{element.attributes.name}</td>
                 <td>{element.attributes.category.name}</td>
-                {añadirObjeto && (
+                {añadirObjeto && element.state !== false && (
                 <td>
                   <form method="POST" onSubmit={añadirObjeto}>
                     <input type="hidden" name="negotiationId" value={negotiation.id} />
