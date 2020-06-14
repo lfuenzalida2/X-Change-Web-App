@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-shadow */
 /* eslint-disable radix */
 /* eslint-disable react/sort-comp */
@@ -15,7 +16,7 @@ import io from '../../../../node_modules/socket.io-client/dist/socket.io';
 
 const axios = require('axios');
 
-export default class negotiations extends Component {
+export default class NegotiationsList extends Component {
   constructor(props) {
     super(props);
 
@@ -90,7 +91,6 @@ class Negotiation extends Component {
       otherData: null,
       otherUser: null,
       negotiation: null,
-      messages: null,
       loading: true,
       socket: io(),
     };
@@ -99,7 +99,6 @@ class Negotiation extends Component {
     this.ActualObjects = this.ActualObjects.bind(this);
     this.myObjects = this.myObjects.bind(this);
     this.otherObjects = this.otherObjects.bind(this);
-    this.getMessages = this.getMessages.bind(this);
     this.whenMounting = this.whenMounting.bind(this);
   }
 
@@ -117,7 +116,6 @@ class Negotiation extends Component {
     // API calls to get my objects, the other's object and messagges
     await this.myObjects();
     await this.otherObjects();
-    await this.getMessages();
 
     // object socket connection
     this.state.socket.emit('join negotiation', { negotiationId: this.props.id });
@@ -144,21 +142,6 @@ class Negotiation extends Component {
           }
         }
       }, (err) => {
-        console.log(err);
-      });
-  }
-
-  async getMessages() {
-    // Obtain messages
-    await axios({
-      method: 'get',
-      url: `${this.props.url}/api/messagges/${this.props.id}`,
-    })
-      .then(async (res) => {
-        const { data } = res.data;
-        this.setState({ messages: data });
-      })
-      .catch((err) => {
         console.log(err);
       });
   }
@@ -246,14 +229,14 @@ class Negotiation extends Component {
 
   render() {
     const {
-      loading, data, otherData, otherUser, negotiation, socket, messages,
+      loading, data, otherData, otherUser, negotiation, socket,
     } = this.state;
 
     if (loading) return <p>Loading...</p>;
     return (
       <div>
         <div>
-          <Messages url={this.props.url} messages={messages} socket={socket} negotiation={negotiation} currentUser={this.props.currentUser} otherUser={otherUser} owner={negotiation.attributes['seller-id']} />
+          <Messages url={this.props.url} socket={socket} negotiation={negotiation} currentUser={this.props.currentUser} otherUser={otherUser} owner={negotiation.attributes['seller-id']} />
         </div>
         <h2 className="center">Lista de Objetos</h2>
         <div className="neg_layout">
@@ -276,17 +259,53 @@ class Messages extends Component {
 
     this.state = {
       loading: true,
+      messages: null,
     };
+    // This lets us refer to a Html element
+    this.send = React.createRef();
+    this.messagesRef = React.createRef();
     this.sendMessage = this.sendMessage.bind(this);
+    this.onKeyEnter = this.onKeyEnter.bind(this);
+    this.getMessages = this.getMessages.bind(this);
+    this.scrollBottom = this.scrollBottom.bind(this);
   }
 
   async componentDidMount() {
     // object socket connection
-    this.props.socket.emit('join negotiation', { negotiationId: this.props.id });
-    this.props.socket.on('chat message', (msg) => {
-      console.log(msg);
+    this.props.socket.on('chat message', async () => {
+      await this.getMessages();
+      this.scrollBottom();
     });
+
+    // get Messages
+    await this.getMessages();
     this.setState({ loading: false });
+    this.scrollBottom();
+  }
+
+  scrollBottom() {
+    this.messagesRef.current.scrollTo({ top: 9999999999999999 });
+  }
+
+  async getMessages() {
+    // Obtain messages
+    await axios({
+      method: 'get',
+      url: `${this.props.url}/api/messagges/${this.props.negotiation.id}`,
+    })
+      .then(async (res) => {
+        const { data } = res.data;
+        this.setState({ messages: data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  async onKeyEnter(event) {
+    if (event.keyCode === 13) {
+      this.send.current.click();
+    }
   }
 
   async sendMessage(event) {
@@ -299,9 +318,10 @@ class Messages extends Component {
     const body = {
       negotiationId, senderId, receiverId, text,
     };
+    event.target.m.value = '';
     await axios.post(url, body)
-      .then(async (res) => {
-        this.props.socket.emit('chat message', { negotiationId, msg: res.data });
+      .then(async () => {
+        this.props.socket.emit('chat message', { negotiationId });
       })
       .catch((err) => {
         console.log(err);
@@ -309,14 +329,14 @@ class Messages extends Component {
   }
 
   render() {
-    const { loading } = this.state;
-    const { messages, currentUser, otherUser, negotiation, owner, socket } = this.props;
+    const { loading, messages } = this.state;
+    const { currentUser, negotiation } = this.props;
 
     if (loading) return <p>Loading Messages...</p>;
 
     return (
       <div id="chat">
-        <div id="messages">
+        <div id="messages" ref={this.messagesRef}>
           { messages.map((message) => (
             <div key={message.id}>
               { (message.attributes['sender-id'] === currentUser.id)
@@ -340,8 +360,8 @@ class Messages extends Component {
 
         <div id="send">
           <form id="send-message" onSubmit={this.sendMessage} method="POST">
-            <div className="wrapper-textarea"><textarea name="text" id="m" type="text" /></div>
-            <input type="submit" id="send-btn" values="Enviar" className="btn" disabled={negotiation.attributes.state === 'Cancelled' ? 'disabled' : ''} />
+            <div className="wrapper-textarea"><textarea name="text" id="m" type="text" onKeyDown={this.onKeyEnter} /></div>
+            <input ref={this.send} type="submit" id="send-btn" values="Enviar" className="btn" disabled={negotiation.attributes.state === 'Cancelled' ? 'disabled' : ''} />
           </form>
         </div>
       </div>
