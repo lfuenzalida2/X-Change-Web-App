@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-expressions */
@@ -16,9 +17,6 @@ export default class negotiations extends Component {
     super(props);
 
     this.state = {
-      data: null,
-      other_data: null,
-      negotiation: null,
       loading: true,
       socket: io(),
       negotiations: null,
@@ -46,8 +44,10 @@ export default class negotiations extends Component {
     })
       .then(async (res) => {
         const { data } = res.data;
-        this.setState({ currentUser: { id: parseInt(data.id), username: data.attributes.username },
-          loading: false });
+        this.setState({
+          currentUser: { id: parseInt(data.id), username: data.attributes.username },
+          loading: false,
+        });
       }, (err) => {
         console.log(err);
       });
@@ -123,7 +123,7 @@ class Negotiations extends Component {
 
 class AvailableObjectList extends Component {
   render() {
-    const { data, negotiation } = this.props;
+    const { data, negotiation, quitarObjeto } = this.props;
     return (
       <div className="neg_obj_list form">
         <table>
@@ -143,14 +143,16 @@ class AvailableObjectList extends Component {
                     : <td><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></td>
                     )}
                   <td>{element.attributes.name}</td>
-                  <td>
-                    <form method="DEL" onSubmit={this.quitarObjeto}>
-                      <input type="hidden" name="_method" value="delete" />
-                      <input type="hidden" name="negotiationId" value={negotiation.id} />
-                      <input type="hidden" name="objectId" value={element.id} />
-                      <input type="submit" value="Quitar" className="btn float-r" disabled={(negotiation.attributes.state === 'In Progress' ? '' : 'disabled')} />
-                    </form>
-                  </td>
+                  {quitarObjeto && (
+                    <td>
+                      <form method="DEL" onSubmit={quitarObjeto}>
+                        <input type="hidden" name="_method" value="delete" />
+                        <input type="hidden" name="negotiationId" value={negotiation.id} />
+                        <input type="hidden" name="objectId" value={element.id} />
+                        <input type="submit" value="Quitar" className="btn float-r" disabled={(negotiation.attributes.state === 'In Progress' ? '' : 'disabled')} />
+                      </form>
+                    </td>
+                  )}
                 </tr>
                 )
               ))
@@ -162,20 +164,74 @@ class AvailableObjectList extends Component {
   }
 }
 
+
+class TradingObjectList extends Component {
+  render() {
+    const {
+      data, negotiation, ActualObjects, añadirObjeto,
+    } = this.props;
+    return (
+      <div className="neg_obj_list">
+        <table className="form">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Categoria</th>
+              <th>Añadir a la Negociación</th>
+            </tr>
+          </thead>
+          <tbody>
+            { data.map((element) => (
+              <tr key={element.id}>
+                {(element.attributes.photos[0]
+                  ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
+                  : <td><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></td>
+                )}
+                <td>{element.attributes.name}</td>
+                <td>{element.attributes.category.name}</td>
+                {añadirObjeto && (
+                <td>
+                  <form method="POST" onSubmit={añadirObjeto}>
+                    <input type="hidden" name="negotiationId" value={negotiation.id} />
+                    <input type="hidden" name="objectId" value={element.id} />
+                    <ActualButton disabled={ActualObjects(element.id)} />
+                  </form>
+                </td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+}
+
+class ActualButton extends Component {
+  // eslint-disable-next-line react/require-render-return
+  render() {
+    // eslint-disable-next-line react/prop-types
+    const { disabled } = this.props;
+    return (
+      <input type="submit" name="add" value="Añadir" className="btn float-r" disabled={disabled} />
+    );
+  }
+}
+
 class Negotiation extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       data: null,
-      other_data: null,
+      otherData: null,
       negotiation: null,
       loading: true,
       socket: io(),
     };
     this.añadirObjeto = this.añadirObjeto.bind(this);
     this.quitarObjeto = this.quitarObjeto.bind(this);
-    this.actualObjects = this.ActualObjects.bind(this);
+    this.ActualObjects = this.ActualObjects.bind(this);
     this.myObjects = this.myObjects.bind(this);
     this.otherObjects = this.otherObjects.bind(this);
   }
@@ -244,7 +300,7 @@ class Negotiation extends Component {
       url: `${this.props.url}/api/other/${this.props.id}`,
     })
       .then(async (res) => {
-        this.setState({ other_data: res.data.data });
+        this.setState({ otherData: res.data.data });
       }, (err) => {
         console.log(err);
       });
@@ -311,141 +367,23 @@ class Negotiation extends Component {
 
   render() {
     const {
-      loading, data, other_data, negotiation,
+      loading, data, otherData, negotiation,
     } = this.state;
 
     if (loading) return <p>Loading...</p>;
-    console.log(data);
     return (
       <div>
         <h2 className="center">Lista de Objetos</h2>
         <div className="neg_layout">
-          <div className="neg_obj_list form">
-            <table>
-              <thead className="head">
-                <tr>
-                  <th>Nombre</th>
-                </tr>
-              </thead>
-              <tbody>
-                { data.map((element) => (
-                  element.attributes.negotiations.map((object) => (
-                    // eslint-disable-next-line radix
-                    negotiation.attributes.state !== 'Cancelled' && object.objectNegotiation.negotiationId === parseInt(negotiation.id) && (
-                    <tr key={element.id}>
-                      {(element.attributes.photos[0]
-                        ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
-                        : <td><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></td>
-                        )}
-                      <td>{element.attributes.name}</td>
-                      <td>
-                        <form method="DEL" onSubmit={this.quitarObjeto}>
-                          <input type="hidden" name="_method" value="delete" />
-                          <input type="hidden" name="negotiationId" value={negotiation.id} />
-                          <input type="hidden" name="objectId" value={element.id} />
-                          <input type="submit" value="Quitar" className="btn float-r" disabled={(negotiation.attributes.state === 'In Progress' ? '' : 'disabled')} />
-                        </form>
-                      </td>
-                    </tr>
-                    )
-                  ))
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="neg_obj_list form">
-            <table>
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                </tr>
-              </thead>
-              <tbody>
-                { other_data.map((element) => (
-                  element.attributes.negotiations.map((object) => (
-                    // eslint-disable-next-line radix
-                    negotiation.attributes.state !== 'Cancelled' && object.objectNegotiation.negotiationId === parseInt(negotiation.id) && (
-                    <tr key={element.id}>
-                      {(element.attributes.photos[0]
-                        ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
-                        : <td><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></td>
-                       )}
-                      <td>{element.attributes.name}</td>
-                    </tr>
-                    )
-                  ))
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <AvailableObjectList data={data} negotiation={negotiation} quitarObjeto={this.quitarObjeto} />
+          <AvailableObjectList data={otherData} negotiation={negotiation} />
         </div>
-        <br />
+        <br/>
         <div className="neg_layout">
-          <div className="neg_obj_list">
-            <table className="form">
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Categoria</th>
-                  <th>Añadir a la Negociación</th>
-                </tr>
-              </thead>
-              <tbody>
-                { data.map((element) => (
-                  <tr key={element.id}>
-                    {(element.attributes.photos[0]
-                      ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
-                      : <td><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></td>
-                    )}
-                    <td>{element.attributes.name}</td>
-                    <td>{element.attributes.category.name}</td>
-                    <td>
-                      <form method="POST" onSubmit={this.añadirObjeto}>
-                        <input type="hidden" name="negotiationId" value={negotiation.id} />
-                        <input type="hidden" name="objectId" value={element.id} />
-                        <ActualButton disabled={this.ActualObjects(element.id)} />
-                      </form>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="neg_obj_list">
-            <table className="form">
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Categoria</th>
-                </tr>
-              </thead>
-              <tbody>
-                { other_data.map((element) => (
-                  <tr key={element.id}>
-                    {(element.attributes.photos[0]
-                      ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
-                      : <td><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></td>
-                    )}
-                    <td>{element.attributes.name}</td>
-                    <td>{element.attributes.category.name}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <TradingObjectList data={data} negotiation={negotiation} ActualObjects={this.ActualObjects} añadirObjeto={this.añadirObjeto} />
+          <TradingObjectList data={otherData} negotiation={negotiation} ActualObjects={this.ActualObjects} />
         </div>
       </div>
-    );
-  }
-}
-
-class ActualButton extends Component {
-  // eslint-disable-next-line react/require-render-return
-  render() {
-    // eslint-disable-next-line react/prop-types
-    const { disabled } = this.props;
-    return (
-      <input type="submit" name="add" value="Añadir" className="btn float-r" disabled={disabled} />
     );
   }
 }
