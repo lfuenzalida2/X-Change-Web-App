@@ -84,7 +84,7 @@ router.post('negotiations.create', '/', async (ctx) => {
     ctx.body = {
       customerId,
       negotiationId: negotiation.id,
-      redirect: ctx.router.url('negotiations.show', { id: negotiation.id }),
+      redirect: ctx.router.url('negotiations.list'),
     };
   } catch (validationError) {
     await ctx.redirect('back'); // Not displaying errors
