@@ -1,3 +1,6 @@
+/* eslint-disable no-shadow */
+/* eslint-disable radix */
+/* eslint-disable react/sort-comp */
 /* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-nested-ternary */
@@ -18,7 +21,6 @@ export default class negotiations extends Component {
 
     this.state = {
       loading: true,
-      socket: io(),
       negotiations: null,
       currentUser: null,
       actualNegotiation: null,
@@ -56,7 +58,6 @@ export default class negotiations extends Component {
   openNegotiation(event) {
     event.preventDefault();
     this.setState({ actualNegotiation: event.target.negotiationId.value });
-    console.log(this.state.actualNegotiation);
   }
 
   render() {
@@ -73,15 +74,280 @@ export default class negotiations extends Component {
           <Negotiations negotiationsList={negotiations} currentUser={currentUser} negotiation={actualNegotiation} openNegotiation={this.openNegotiation} />
         </div>
         {actualNegotiation
-          ? <Negotiation id={actualNegotiation} url={url} />
+          ? <Negotiation id={actualNegotiation} url={url} currentUser={currentUser} />
           : <p>Escoge alguna negociacion que quieras abrir</p> }
       </div>
     );
   }
 }
 
-class Negotiations extends Component {
+class Negotiation extends Component {
+  constructor(props) {
+    super(props);
 
+    this.state = {
+      data: null,
+      otherData: null,
+      otherUser: null,
+      negotiation: null,
+      messages: null,
+      loading: true,
+      socket: io(),
+    };
+    this.añadirObjeto = this.añadirObjeto.bind(this);
+    this.quitarObjeto = this.quitarObjeto.bind(this);
+    this.ActualObjects = this.ActualObjects.bind(this);
+    this.myObjects = this.myObjects.bind(this);
+    this.otherObjects = this.otherObjects.bind(this);
+    this.getMessages = this.getMessages.bind(this);
+    this.whenMounting = this.whenMounting.bind(this);
+  }
+
+  async componentDidMount() {
+    await this.whenMounting();
+  }
+
+  async componentDidUpdate(prevProps) {
+    if (this.props.id !== prevProps.id) {
+      await this.whenMounting();
+    }
+  }
+
+  async whenMounting() {
+    // API calls to get my objects, the other's object and messagges
+    await this.myObjects();
+    await this.otherObjects();
+    await this.getMessages();
+
+    // object socket connection
+    this.state.socket.emit('join negotiation', { negotiationId: this.props.id });
+    this.state.socket.on('add object', this.otherObjects);
+    this.state.socket.on('remove object', this.otherObjects);
+
+    // negotiation info, only request
+    await axios({
+      method: 'get',
+      url: `${this.props.url}/api/negotiation/${this.props.id}`,
+    })
+      .then(async (res) => {
+        this.setState({ negotiation: res.data.data });
+      }, (err) => {
+        console.log(err);
+      })
+      .then(() => {
+        // Get otherUser of the negotiation
+        if (this.state.negotiation) {
+          if (this.props.currentUser.id === this.state.negotiation.attributes['seller-id']) {
+            this.setState({ otherUser: this.state.negotiation.attributes['customer-id'], loading: false });
+          } else {
+            this.setState({ otherUser: this.state.negotiation.attributes['seller-id'], loading: false });
+          }
+        }
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+  async getMessages() {
+    // Obtain messages
+    await axios({
+      method: 'get',
+      url: `${this.props.url}/api/messagges/${this.props.id}`,
+    })
+      .then(async (res) => {
+        const { data } = res.data;
+        this.setState({ messages: data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  async myObjects() {
+    await axios({
+      method: 'get',
+      url: `${this.props.url}/api/${this.props.id}`,
+    })
+      .then(async (res) => {
+        this.setState({ data: res.data.data });
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+  async otherObjects() {
+    await axios({
+      method: 'get',
+      url: `${this.props.url}/api/other/${this.props.id}`,
+    })
+      .then(async (res) => {
+        this.setState({ otherData: res.data.data });
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+  ActualObjects(id) {
+    // eslint-disable-next-line no-var
+    var value = '';
+    const { data, negotiation } = this.state;
+    // eslint-disable-next-line array-callback-return
+    data.map((element) => {
+      // eslint-disable-next-line consistent-return
+      // eslint-disable-next-line array-callback-return
+      element.attributes.negotiations.map((negotiationObjects) => {
+        // eslint-disable-next-line max-len
+        if ((negotiation.id === negotiationObjects.id.toString() || element.attributes.state === false) && id === element.id) {
+          value = 'disabled';
+        } else if (negotiation.attributes.state === 'Cancelled' || negotiation.attributes.state === 'Accepted') {
+          value = 'disabled';
+        }
+      });
+    });
+    return value;
+  }
+
+  async añadirObjeto(event) {
+    event.preventDefault();
+    const negotiationId = event.target.negotiationId.value;
+    const objectId = event.target.objectId.value;
+    const url = `${this.props.url}/api/${negotiationId}/object`;
+    const body = { negotiationId, objectId, add: 'Añadir' };
+    await axios.post(url, body)
+      .then(async (res) => {
+        this.setState({ data: res.data.data });
+      })
+      .then(async () => {
+        this.state.socket.emit('add object', negotiationId);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+
+  async quitarObjeto(event) {
+    event.preventDefault();
+    const negotiationId = event.target.negotiationId.value;
+    const objectId = event.target.objectId.value;
+    const url = `${this.props.url}/api/${negotiationId}/object`;
+    const body = { negotiationId, objectId, _method: 'delete' };
+    await axios.post(url, body)
+      .then((res) => {
+        this.setState({ data: res.data.data });
+      })
+      .then(async () => {
+        this.state.socket.emit('remove object', negotiationId);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  render() {
+    const {
+      loading, data, otherData, otherUser, negotiation, socket, messages,
+    } = this.state;
+
+    if (loading) return <p>Loading...</p>;
+    return (
+      <div>
+        <div>
+          <Messages url={this.props.url} messages={messages} socket={socket} negotiation={negotiation} currentUser={this.props.currentUser} otherUser={otherUser} owner={negotiation.attributes['seller-id']} />
+        </div>
+        <h2 className="center">Lista de Objetos</h2>
+        <div className="neg_layout">
+          <AvailableObjectList data={data} negotiation={negotiation} quitarObjeto={this.quitarObjeto} />
+          <AvailableObjectList data={otherData} negotiation={negotiation} />
+        </div>
+        <br />
+        <div className="neg_layout">
+          <TradingObjectList data={data} negotiation={negotiation} ActualObjects={this.ActualObjects} añadirObjeto={this.añadirObjeto} />
+          <TradingObjectList data={otherData} negotiation={negotiation} ActualObjects={this.ActualObjects} />
+        </div>
+      </div>
+    );
+  }
+}
+
+class Messages extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: true,
+    };
+    this.sendMessage = this.sendMessage.bind(this);
+  }
+
+  async componentDidMount() {
+    // object socket connection
+    this.props.socket.emit('join negotiation', { negotiationId: this.props.id });
+    this.props.socket.on('chat message', (msg) => {
+      console.log(msg);
+    });
+    this.setState({ loading: false });
+  }
+
+  async sendMessage(event) {
+    event.preventDefault();
+    const url = `${this.props.url}/messages/`;
+    const senderId = this.props.currentUser.id;
+    const negotiationId = this.props.negotiation.id;
+    const receiverId = this.props.otherUser;
+    const text = event.target.m.value;
+    const body = {
+      negotiationId, senderId, receiverId, text,
+    };
+    await axios.post(url, body)
+      .then(async (res) => {
+        this.props.socket.emit('chat message', { negotiationId, msg: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  render() {
+    const { loading } = this.state;
+    const { messages, currentUser, otherUser, negotiation, owner, socket } = this.props;
+
+    if (loading) return <p>Loading Messages...</p>;
+
+    return (
+      <div id="chat">
+        <div id="messages">
+          { messages.map((message) => {
+            <div>
+              { (message['sender-id'] === currentUser.id)
+                ? (
+                  <div className="me">
+                    {message.text}
+                    <div className="time">{message.createdAt}</div>
+                  </div>
+                )
+                : (
+                  <div className="other">
+                    {message.text}
+                    <div className="time">{message.createdAt}</div>
+                  </div>
+                )}
+            </div>;
+          })}
+        </div>
+
+        <div id="send">
+          <form id="send-message" onSubmit={this.sendMessage} method="POST">
+            <div className="wrapper-textarea"><textarea name="text" id="m" type="text" /></div>
+            <input type="submit" id="send-btn" values="Enviar" className="btn" disabled={negotiation.attributes.state === 'Cancelled' ? 'disabled' : ''} />
+          </form>
+        </div>
+      </div>
+    );
+  }
+}
+
+class Negotiations extends Component {
   render() {
     const { negotiationsList, currentUser, openNegotiation } = this.props;
     return (
@@ -214,176 +480,6 @@ class ActualButton extends Component {
     const { disabled } = this.props;
     return (
       <input type="submit" name="add" value="Añadir" className="btn float-r" disabled={disabled} />
-    );
-  }
-}
-
-class Negotiation extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      data: null,
-      otherData: null,
-      negotiation: null,
-      loading: true,
-      socket: io(),
-    };
-    this.añadirObjeto = this.añadirObjeto.bind(this);
-    this.quitarObjeto = this.quitarObjeto.bind(this);
-    this.ActualObjects = this.ActualObjects.bind(this);
-    this.myObjects = this.myObjects.bind(this);
-    this.otherObjects = this.otherObjects.bind(this);
-  }
-
-  async componentDidMount() {
-    // API calls to get my objects and the other's object
-    await this.myObjects();
-    await this.otherObjects();
-
-    // object socket connection
-    this.state.socket.emit('join negotiation', { negotiationId: this.props.id });
-    this.state.socket.on('add object', await this.otherObjects);
-    this.state.socket.on('remove object', await this.otherObjects);
-
-    // negotiation info, only request
-    await axios({
-      method: 'get',
-      url: `${this.props.url}/api/negotiation/${this.props.id}`,
-    })
-      .then(async (res) => {
-        this.setState({ negotiation: res.data.data, loading: false });
-      }, (err) => {
-        console.log(err);
-      });
-  }
-
-  async componentDidUpdate(prevProps) {
-    if (this.props.id !== prevProps.id) {
-      // API calls to get my objects and the other's object
-      await this.myObjects();
-      await this.otherObjects();
-
-      // object socket connection
-      this.state.socket.emit('join negotiation', { negotiationId: this.props.id });
-      this.state.socket.on('add object', await this.otherObjects);
-      this.state.socket.on('remove object', await this.otherObjects);
-
-      // negotiation info, only request
-      await axios({
-        method: 'get',
-        url: `${this.props.url}/api/negotiation/${this.props.id}`,
-      })
-        .then(async (res) => {
-          this.setState({ negotiation: res.data.data, loading: false });
-        }, (err) => {
-          console.log(err);
-        });
-    }
-  }
-
-  async myObjects() {
-    await axios({
-      method: 'get',
-      url: `${this.props.url}/api/${this.props.id}`,
-    })
-      .then(async (res) => {
-        this.setState({ data: res.data.data });
-      }, (err) => {
-        console.log(err);
-      });
-  }
-
-  async otherObjects() {
-    await axios({
-      method: 'get',
-      url: `${this.props.url}/api/other/${this.props.id}`,
-    })
-      .then(async (res) => {
-        this.setState({ otherData: res.data.data });
-      }, (err) => {
-        console.log(err);
-      });
-  }
-
-  ActualObjects(id) {
-    // eslint-disable-next-line no-var
-    var value = '';
-    const { data, negotiation } = this.state;
-    // eslint-disable-next-line array-callback-return
-    data.map((element) => {
-      // eslint-disable-next-line consistent-return
-      // eslint-disable-next-line array-callback-return
-      element.attributes.negotiations.map((negotiationObjects) => {
-        // eslint-disable-next-line max-len
-        if ((negotiation.id === negotiationObjects.id.toString() || element.attributes.state === false) && id === element.id) {
-          value = 'disabled';
-        } else if (negotiation.attributes.state === 'Cancelled' || negotiation.attributes.state === 'Accepted') {
-          value = 'disabled';
-        }
-      });
-    });
-    return value;
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  async añadirObjeto(event) {
-    event.preventDefault();
-    const negotiationId = event.target.negotiationId.value;
-    const objectId = event.target.objectId.value;
-    const url = `${this.props.url}/api/${negotiationId}/object`;
-    const body = { negotiationId, objectId, add: 'Añadir' };
-    await axios.post(url, body)
-      .then(async (res) => {
-        this.setState({ data: res.data.data });
-      })
-      .then(async () => {
-        this.state.socket.emit('add object', negotiationId);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-
-  // eslint-disable-next-line class-methods-use-this
-  async quitarObjeto(event) {
-    event.preventDefault();
-    const negotiationId = event.target.negotiationId.value;
-    const objectId = event.target.objectId.value;
-    const url = `${this.props.url}/api/${negotiationId}/object`;
-    const body = { negotiationId, objectId, _method: 'delete' };
-    await axios.post(url, body)
-      .then((res) => {
-        this.setState({ data: res.data.data });
-      })
-      .then(async () => {
-        this.state.socket.emit('remove object', negotiationId);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  render() {
-    const {
-      loading, data, otherData, negotiation,
-    } = this.state;
-
-    if (loading) return <p>Loading...</p>;
-    return (
-      <div>
-        <h2 className="center">Lista de Objetos</h2>
-        <div className="neg_layout">
-          <AvailableObjectList data={data} negotiation={negotiation} quitarObjeto={this.quitarObjeto} />
-          <AvailableObjectList data={otherData} negotiation={negotiation} />
-        </div>
-        <br/>
-        <div className="neg_layout">
-          <TradingObjectList data={data} negotiation={negotiation} ActualObjects={this.ActualObjects} añadirObjeto={this.añadirObjeto} />
-          <TradingObjectList data={otherData} negotiation={negotiation} ActualObjects={this.ActualObjects} />
-        </div>
-      </div>
     );
   }
 }

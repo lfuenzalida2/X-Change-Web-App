@@ -30,6 +30,14 @@ router.get('api.current.user', '/current_user', async (ctx) => {
   }).serialize(currentUser);
 });
 
+router.get('api.negotiation.messagges', '/messagges/:id', async (ctx) => {
+  const negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
+  const messaggesList = await negotiation.getMessages();
+  ctx.body = ctx.jsonSerializer('messagge', {
+    attributes: ['senderId', 'receiverId', 'text'],
+  }).serialize(messaggesList);
+});
+
 router.get('api.objects.list', '/:id', async (ctx) => {
   const { currentUser } = ctx.state;
   const categories = ctx.orm.category;

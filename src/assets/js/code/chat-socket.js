@@ -11,18 +11,19 @@ if ($('#chat').length > 0) {
         const url = window.location.pathname;
         const owner = $('#currentUser').val();
         const id = url.substring(url.lastIndexOf('/') + 1);
+
         if (!ownerList[id]) {
           ownerList[id] = owner;
         }
-        socket.emit('join negotiation', { negotiationId: id, owner }); // agregar el owner aca
+        socket.emit('join negotiation', { negotiationId: id }); // agregar el owner aca
       });
-      console.log(socket);
       $('#send-message').submit(function (e) {
         e.preventDefault(); // prevents page reloading
         $.post(
           $(this).attr('action'), // The URL to send form data to
           $(this).serialize(),
           (data) => {
+            console.log(data);
             const url = window.location.pathname;
             const id = url.substring(url.lastIndexOf('/') + 1);
             socket.emit('chat message', { negotiationId: id, msg: data });
