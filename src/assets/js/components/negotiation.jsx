@@ -317,23 +317,25 @@ class Messages extends Component {
     return (
       <div id="chat">
         <div id="messages">
-          { messages.map((message) => {
-            <div>
-              { (message['sender-id'] === currentUser.id)
+          { messages.map((message) => (
+            <div key={message.id}>
+              { (message.attributes['sender-id'] === currentUser.id)
                 ? (
-                  <div className="me">
-                    {message.text}
-                    <div className="time">{message.createdAt}</div>
+                  <div className="wrapper-me">
+                    <div className="me">
+                      {message.attributes.text}
+                      <div className="time">{message.attributes['created-at'].toLocaleString('es-CL', { hour12: false }).slice('11', '16')}</div>
+                    </div>
                   </div>
                 )
                 : (
                   <div className="other">
-                    {message.text}
-                    <div className="time">{message.createdAt}</div>
+                    {message.attributes.text}
+                    <div className="time">{message.attributes['created-at'].toLocaleString('es-CL', { hour12: false }).slice('11', '16')}</div>
                   </div>
                 )}
-            </div>;
-          })}
+            </div>
+          ))}
         </div>
 
         <div id="send">

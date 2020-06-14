@@ -34,7 +34,7 @@ router.get('api.negotiation.messagges', '/messagges/:id', async (ctx) => {
   const negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
   const messaggesList = await negotiation.getMessages();
   ctx.body = ctx.jsonSerializer('messagge', {
-    attributes: ['senderId', 'receiverId', 'text'],
+    attributes: ['senderId', 'receiverId', 'text', 'createdAt'],
   }).serialize(messaggesList);
 });
 
