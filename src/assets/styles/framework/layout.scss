@@ -231,6 +231,10 @@ td{
   width: 100%;
 }
 
+.clickable:hover {
+  cursor: pointer;
+}
+
 table{
   height: inherit;
 }
@@ -486,4 +490,19 @@ a.see-all-notifications:hover {
 
 .logout {
   margin-left: 14px;
+}
+
+.dropdown {
+  padding: 10px;
+  background-color: grey;
+  position: absolute;
+  top: 44px;
+  display: block;
+  border-radius: 15px;
+}
+
+input, select {
+  font-size: 20px;
+  width: 100%;
+
 }

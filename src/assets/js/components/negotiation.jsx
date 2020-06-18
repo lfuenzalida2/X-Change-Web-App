@@ -1,25 +1,25 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-var */
-/* eslint-disable array-callback-return */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-shadow */
+/* eslint-disable no-console */
+/* eslint-disable no-alert */
 /* eslint-disable radix */
-/* eslint-disable react/sort-comp */
+/* eslint-disable no-param-reassign */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable array-callback-return */
 /* eslint-disable max-len */
-/* eslint-disable class-methods-use-this */
-/* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-expressions */
+/* eslint-disable react/no-access-state-in-setstate */
+/* eslint-disable no-var */
 /* eslint-disable react/prop-types */
-/* eslint-disable react/prefer-stateless-function */
-/* eslint-disable react/react-in-jsx-scope */
-/* eslint-disable max-classes-per-file */
+/* eslint-disable react/sort-comp */
 /* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/prefer-stateless-function */
+/* eslint-disable max-classes-per-file */
 import React, { Component } from 'react';
 import io from '../../../../node_modules/socket.io-client/dist/socket.io';
 
 const axios = require('axios');
 
-export default class NegotiationsList extends Component {
+class NegotiationsList extends Component {
   constructor(props) {
     super(props);
 
@@ -162,27 +162,46 @@ class Negotiation extends Component {
     }
   }
 
-  async whenMounting() {
-    // API calls to get my objects, the other's object, negotiations info and messagges
-    await this.myObjects();
-    await this.otherObjects();
-    await this.getNegotiation();
-    await this.getMessages();
+  async getReview() {
+    // Obtain messages
+    await axios({
+      method: 'get',
+      url: `${this.props.url}/api/review/${this.props.id}/${this.props.currentUser.id}/${this.state.otherUser}`,
+    })
+      .then(async (res) => {
+        const { data } = res.data;
+        this.setState({ review: data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
-    // object socket connection
-    this.state.socket.emit('join negotiation', { negotiationId: this.props.id });
-    this.state.socket.on('add object', this.otherObjects);
-    this.state.socket.on('remove object', this.otherObjects);
+  async getMessages() {
+    // Obtain messages
+    await axios({
+      method: 'get',
+      url: `${this.props.url}/api/messagges/${this.props.id}`,
+    })
+      .then(async (res) => {
+        const { data } = res.data;
+        this.setState({ messages: data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
-    // Get otherUser of the negotiation
-    if (this.state.negotiation) {
-      if (this.props.currentUser.id === this.state.negotiation.attributes['seller-id']) {
-        this.setState({ otherUser: this.state.negotiation.attributes['customer-id'], loading: false });
-      } else {
-        this.setState({ otherUser: this.state.negotiation.attributes['seller-id'], loading: false });
-      }
-      await this.getReview();
-    }
+  async getNegotiation() {
+    await axios({
+      method: 'get',
+      url: `${this.props.url}/api/negotiation/${this.props.id}`,
+    })
+      .then(async (res) => {
+        this.setState({ negotiation: res.data.data });
+      }, (err) => {
+        console.log(err);
+      });
   }
 
   async myObjects() {
@@ -209,46 +228,27 @@ class Negotiation extends Component {
       });
   }
 
-  async getNegotiation() {
-    await axios({
-      method: 'get',
-      url: `${this.props.url}/api/negotiation/${this.props.id}`,
-    })
-      .then(async (res) => {
-        this.setState({ negotiation: res.data.data });
-      }, (err) => {
-        console.log(err);
-      });
-  }
+  async whenMounting() {
+    // API calls to get my objects, the other's object, negotiations info and messagges
+    await this.myObjects();
+    await this.otherObjects();
+    await this.getNegotiation();
+    await this.getMessages();
 
-  async getMessages() {
-    // Obtain messages
-    await axios({
-      method: 'get',
-      url: `${this.props.url}/api/messagges/${this.props.id}`,
-    })
-      .then(async (res) => {
-        const { data } = res.data;
-        this.setState({ messages: data });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+    // object socket connection
+    this.state.socket.emit('join negotiation', { negotiationId: this.props.id });
+    this.state.socket.on('add object', this.otherObjects);
+    this.state.socket.on('remove object', this.otherObjects);
 
-  async getReview() {
-    // Obtain messages
-    await axios({
-      method: 'get',
-      url: `${this.props.url}/api/review/${this.props.id}/${this.props.currentUser.id}/${this.state.otherUser}`,
-    })
-      .then(async (res) => {
-        const { data } = res.data;
-        this.setState({ review: data });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // Get otherUser of the negotiation
+    if (this.state.negotiation) {
+      if (this.props.currentUser.id === this.state.negotiation.attributes['seller-id']) {
+        this.setState({ otherUser: this.state.negotiation.attributes['customer-id'], loading: false });
+      } else {
+        this.setState({ otherUser: this.state.negotiation.attributes['seller-id'], loading: false });
+      }
+      await this.getReview();
+    }
   }
 
   async submitReview(event) {
@@ -277,7 +277,7 @@ class Negotiation extends Component {
     const url = `${this.props.url}/negotiations/${negotiation.id}`;
     const body = { state: state.value };
     await axios.patch(url, body)
-      .then(async (res) => {
+      .then(async () => {
         await this.getNegotiation();
         // this.setState({ data: res.data.data });
       })
@@ -677,3 +677,5 @@ class ActualButton extends Component {
     );
   }
 }
+
+export default NegotiationsList;

@@ -37,12 +37,9 @@ router.get('objects.new', '/new', async (ctx) => {
 router.post('objects.create', '/', async (ctx) => {
   const object = ctx.orm.object.build(ctx.request.body);
   const categoryList = await ctx.orm.category.findAll();
-  const values = await ctx.orm.category.findAll({ where: { id: parseInt(object.categoryId, 10) } });
   const user = ctx.state.currentUser;
   try {
-    if (!values.length) {
-      throw new MyError('CategoryIdError', 'Esta categoría no existe, inténtalo nuevamente.');
-    }
+    object.userId = user.id;
     await object.save({ fields: ['views', 'userId', 'categoryId', 'name', 'state', 'description'] });
     ctx.redirect(ctx.router.url('inventory.list', { id: user.id }));
   } catch (validationError) {

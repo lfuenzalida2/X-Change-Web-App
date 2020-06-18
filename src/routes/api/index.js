@@ -48,6 +48,26 @@ router.get('api.negotiation.messagges', '/messagges/:id', async (ctx) => {
   }).serialize(messaggesList);
 });
 
+router.get('api.categories', '/categories', async (ctx) => {
+  const categories = await ctx.orm.category.findAll();
+  ctx.body = ctx.jsonSerializer('categories', {
+    attributes: ['id', 'name'],
+  }).serialize(categories);
+});
+
+router.post('api.objects.create', '/object_create', async (ctx) => {
+  const object = ctx.orm.object.build(ctx.request.body);
+  const user = ctx.state.currentUser;
+  try {
+    object.userId = user.id;
+    await object.save({ fields: ['views', 'userId', 'categoryId', 'name', 'state', 'description'] });
+    ctx.redirect(ctx.router.url('inventory.list', { id: user.id }));
+  } catch (validationError) {
+    ctx.body = validationError;
+    ctx.status = 400;
+  }
+});
+
 router.get('api.objects.list', '/:id', async (ctx) => {
   const { currentUser } = ctx.state;
   const categories = ctx.orm.category;
@@ -86,7 +106,6 @@ router.get('api.objects.list_other', '/other/:id', async (ctx) => {
     }).serialize(objectsList);
   }
 });
-
 
 router.get('api.negotiation.get', '/negotiation/:id', async (ctx) => {
   const negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);

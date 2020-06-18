@@ -37,10 +37,6 @@ function didReview(ctx, reviews) {
   return false;
 }
 
-function sortByDateDesc(a, b) {
-  return -(new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime());
-}
-
 router.get('negotiations.list', '/', async (ctx) => {
   await ctx.render('negotiations/index');
 });

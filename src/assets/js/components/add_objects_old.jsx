@@ -2,7 +2,7 @@
 /* eslint-disable react/destructuring-assignment */
 // eslint-disable-next-line max-classes-per-file
 import React, { Component } from 'react';
-import io from '../../../../node_modules/socket.io-client/dist/socket.io';
+import io from 'socket.io-client/dist/socket.io';
 
 const axios = require('axios');
 
