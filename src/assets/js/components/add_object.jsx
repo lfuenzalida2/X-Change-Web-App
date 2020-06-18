@@ -30,6 +30,7 @@ class ObjectForm extends Component {
 
   async getCategories() {
     const { url } = this.props;
+    console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
     await axios({
       method: 'get',
       url: `${url}/api/categories`,
@@ -60,8 +61,7 @@ class ObjectForm extends Component {
       name: name.value, categoryId: categoryId.value, description: description.value,
     };
     await axios.post(ur, body)
-      .then(async (res) => {
-        console.log(res);
+      .then(async () => {
         this.ToogleForm();
         alert('Se ha agregado correctamente su articulo');
       })
@@ -79,6 +79,8 @@ class ObjectForm extends Component {
     const {
       form, categories, loading, errors,
     } = this.state;
+
+    console.log(form);
     if (!form) {
       return (
         <div className="header clickable">
@@ -91,7 +93,6 @@ class ObjectForm extends Component {
     }
 
     if (loading) return ('');
-    console.log(errors);
     return (
       <>
         <div className="header clickable">
@@ -106,14 +107,14 @@ class ObjectForm extends Component {
               <p>{error}</p>
             ))}
           </div>
-          <DropdownForm categories={categories} submitForm={this.submitForm} />
+          <Form categories={categories} submitForm={this.submitForm} />
         </div>
       </>
     );
   }
 }
 
-class DropdownForm extends Component {
+class Form extends Component {
   render() {
     const { categories, submitForm } = this.props;
     return (
