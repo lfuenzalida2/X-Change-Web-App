@@ -30,7 +30,6 @@ class ObjectForm extends Component {
 
   async getCategories() {
     const { url } = this.props;
-    console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
     await axios({
       method: 'get',
       url: `${url}/api/categories`,
@@ -61,9 +60,9 @@ class ObjectForm extends Component {
       name: name.value, categoryId: categoryId.value, description: description.value,
     };
     await axios.post(ur, body)
-      .then(async () => {
-        this.ToogleForm();
-        alert('Se ha agregado correctamente su articulo');
+      .then(async (res) => {
+        const { id } = res.data;
+        window.location.replace(`${url}/inventory/${id}`);
       })
       .catch((err) => {
         const { errors } = err.response.data;
@@ -80,7 +79,6 @@ class ObjectForm extends Component {
       form, categories, loading, errors,
     } = this.state;
 
-    console.log(form);
     if (!form) {
       return (
         <div className="header clickable">
@@ -104,7 +102,7 @@ class ObjectForm extends Component {
         <div className={form ? ('dropdown') : ('hidden')}>
           <div>
             {errors.map((error) => (
-              <p>{error}</p>
+              <p key={error}>{error}</p>
             ))}
           </div>
           <Form categories={categories} submitForm={this.submitForm} />
@@ -120,10 +118,6 @@ class Form extends Component {
     return (
       <div className="form">
         <form onSubmit={submitForm}>
-          <input type="hidden" name="_method" value="patch" />
-          <input type="hidden" name="views" value="0" />
-          <input type="hidden" name="state" value="true" />
-          <input type="hidden" name="userId" value="currentUser.id" />
           <div className="field">
             <input type="text" name="name" placeholder="Ingrese el nombre del objeto" className="float-r" />
           </div>

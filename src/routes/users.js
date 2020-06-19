@@ -63,11 +63,8 @@ router.post('users.create', '/', async (ctx) => {
     await sendRegistrationEmail(ctx, { user: newUser });
     ctx.redirect(ctx.router.url('session.new'));
   } catch (validationError) {
-    await ctx.render('users/new', {
-      newUser,
-      errors: validationError.errors,
-      submitVariable: ctx.router.url('users.create', { id: newUser.id }),
-    });
+    ctx.body = validationError;
+    ctx.status = 400;
   }
 });
 

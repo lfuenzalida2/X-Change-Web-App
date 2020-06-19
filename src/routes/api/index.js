@@ -61,7 +61,7 @@ router.post('api.objects.create', '/object_create', async (ctx) => {
   try {
     object.userId = user.id;
     await object.save({ fields: ['views', 'userId', 'categoryId', 'name', 'state', 'description'] });
-    ctx.redirect(ctx.router.url('inventory.list', { id: user.id }));
+    ctx.body = { id: user.id };
   } catch (validationError) {
     ctx.body = validationError;
     ctx.status = 400;
