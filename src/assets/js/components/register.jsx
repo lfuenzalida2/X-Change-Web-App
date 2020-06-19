@@ -25,13 +25,12 @@ class RegisterForm extends Component {
     event.preventDefault();
     const { url } = this.props;
     const {
-      username, mail, password, confirm_password, number, region, profile_picture, confirm_mail,
+      username, mail, password, confirm_password, number, region, profile_picture,
     } = event.target;
     const ur = `${url}/users`;
     const body = {
       username: username.value,
       mail: mail.value,
-      confirm_mail: confirm_mail.value,
       password: password.value,
       confirm_password: confirm_password.value,
       number: number.value,
@@ -72,6 +71,12 @@ class RegisterForm extends Component {
             <br />
             <br />
             <div>
+              <label htmlFor="mail">Correo electrónico</label>
+              <input type="text" name="mail" className="float-r" />
+            </div>
+            <br />
+            <br />
+            <div>
               <label htmlFor="password">Contraseña</label>
               <input type="password" name="password" className="float-r" />
             </div>
@@ -84,18 +89,6 @@ class RegisterForm extends Component {
             <br />
             <br />
             <div>
-              <label htmlFor="mail">Correo electrónico</label>
-              <input type="text" name="mail" className="float-r" />
-            </div>
-            <br />
-            <br />
-            <div>
-              <label htmlFor="confirm_mail">Confirmar correo electrónico</label>
-              <input type="text" name="confirm_mail" className="float-r" />
-            </div>
-            <br />
-            <br />
-            <div>
               <label htmlFor="number">Número de teléfono</label>
               <input type="number" name="number" className="float-r" />
             </div>
@@ -104,6 +97,7 @@ class RegisterForm extends Component {
             <div>
               <label htmlFor="region">Región</label>
               <select name="region" id="region" className="float-r">
+                <option value="Metropolitana de Santiago">Metropolitana de Santiago</option>
                 <option value="Aisen del G. Carlos Ibáñez del Campo">Aisén del G. Carlos Ibáñez del Campo</option>
                 <option value="Antofagasta">Antofagasta</option>
                 <option value="Arica y Parinacota">Arica y Parinacota</option>
@@ -115,7 +109,6 @@ class RegisterForm extends Component {
                 <option value="Los Lagos">Los Lagos</option>
                 <option value="Los Rios">Los Ríos</option>
                 <option value="Magallanes y de la Antartica Chilena">Magallanes y de la Antártica Chilena</option>
-                <option value="Metropolitana de Santiago">Metropolitana de Santiago</option>
                 <option value="Nuble">Ñuble</option>
                 <option value="Tarapaca">Tarapacá</option>
                 <option value="Valparaiso">Valparaíso</option>

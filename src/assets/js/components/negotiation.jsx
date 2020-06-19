@@ -391,6 +391,7 @@ class Submit extends Component {
 
     const { reviewForm } = this.state;
 
+    // Aqui se ponen las estrellas
     if (reviewForm) {
       return (
         <div className="form">
@@ -484,7 +485,6 @@ class Messages extends Component {
       await this.getMessages();
       this.scrollBottom();
     });
-
     await this.whenMounting();
   }
 
@@ -623,7 +623,6 @@ class AvailableObjectList extends Component {
     );
   }
 }
-
 
 class TradingObjectList extends Component {
   render() {

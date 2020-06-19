@@ -54,8 +54,6 @@ router.post('users.create', '/', async (ctx) => {
   try {
     if (values.password !== values.confirm_password) {
       throw new MyError('PasswordError', 'Las contraseñas no coinciden. Inténtalo nuevamente.');
-    } else if (values.mail !== values.confirm_mail) {
-      throw new MyError('MailError', 'Los correos no coinciden. Inténtalo nuevamente.');
     } else if (!Valid(values.password)) {
       throw new MyError('PasswordError', 'La constraseña debe tener al menos 1 letra en mayuscula, 1 número y largo de 8 caracteres.');
     }
