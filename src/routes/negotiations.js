@@ -1,5 +1,4 @@
 const KoaRouter = require('koa-router');
-const { Op } = require('sequelize');
 const sendNegotiationEmail = require('../mailers/new_negotiation');
 
 const router = new KoaRouter();
@@ -37,25 +36,8 @@ function didReview(ctx, reviews) {
   return false;
 }
 
-function sortByDateDesc(a, b) {
-  return -(new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime());
-}
-
 router.get('negotiations.list', '/', async (ctx) => {
-  const users = await ctx.orm.user;
-  const currentUser = await ctx.state.currentUser;
-  const negotiationsList = await ctx.orm.negotiation.findAll({
-    where: {
-      [Op.or]: [{ sellerId: { [Op.eq]: currentUser.id } },
-        { customerId: { [Op.eq]: currentUser.id } }],
-    },
-    include: [{ model: users, as: 'customer' }, { model: users, as: 'seller' }],
-  });
-  negotiationsList.sort(sortByDateDesc);
-  await ctx.render('negotiations/index', {
-    negotiationsList,
-    showNegotiationPath: (negotiation) => ctx.router.url('negotiations.show', { id: negotiation.id }),
-  });
+  await ctx.render('negotiations/index');
 });
 
 router.get('negotiations.show', '/:id', loadNegotiation, async (ctx) => {
@@ -97,7 +79,7 @@ router.post('negotiations.create', '/', async (ctx) => {
     ctx.body = {
       customerId,
       negotiationId: negotiation.id,
-      redirect: ctx.router.url('negotiations.show', { id: negotiation.id }),
+      redirect: ctx.router.url('negotiations.list'),
     };
   } catch (validationError) {
     await ctx.redirect('back'); // Not displaying errors
@@ -105,9 +87,19 @@ router.post('negotiations.create', '/', async (ctx) => {
 });
 
 router.patch('negotiations.update', '/:id', loadNegotiation, async (ctx) => {
-  const { negotiation } = ctx.state;
-  const { customerId, sellerId, state } = ctx.request.body;
-  if (state === 'Accepted') {
+  const { negotiation, currentUser } = ctx.state;
+  const { state } = ctx.request.body;
+  const iAm = (currentUser.id === negotiation.customerId) ? 'Customer' : 'Seller';
+  if (negotiation.state === 'In Progress' && state !== 'Cancelled') {
+    negotiation.state = iAm;
+  } else if (negotiation.state === 'Customer' && iAm === 'Seller') {
+    negotiation.state = 'Accepted';
+  } else if (negotiation.state === 'Seller' && iAm === 'Customer') {
+    negotiation.state = 'Accepted';
+  } else if (negotiation.state !== 'Accepted') {
+    negotiation.state = state;
+  }
+  if (negotiation.state === 'Accepted') {
     const objectNegotiation = await ctx.orm.objectNegotiation.findAll({
       where: { negotiationId: negotiation.id },
     });
@@ -117,8 +109,10 @@ router.patch('negotiations.update', '/:id', loadNegotiation, async (ctx) => {
     });
   }
   try {
-    await negotiation.update({ customerId, sellerId, state });
-    ctx.redirect('back');
+    await negotiation.update({ state: negotiation.state });
+    ctx.body = ctx.jsonSerializer('negotiation', {
+      attributes: ['id'],
+    }).serialize(negotiation);
   } catch (validationError) {
     await ctx.redirect('back'); // Not displaying errors
   }

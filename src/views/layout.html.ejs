@@ -33,11 +33,7 @@
         </div>
         <hr>
         <% if (currentUser) { %>
-          <div class="separate">
-            <a href="<%= newObject %>" class="flexbox-item">
-              <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/publish.png">
-              <span class="item">Publicar</span>
-            </a>
+          <div class="separate" id="add_object" >
           </div>
           <hr>
             <div class="separate item">          
@@ -58,7 +54,6 @@
               <a href="<%= negotiations %>" class="flexbox-item">
                 <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/negotiation.png">
                 <span class="item">Negociaciones</span>
-                
               </a>
             </div>
             <hr>

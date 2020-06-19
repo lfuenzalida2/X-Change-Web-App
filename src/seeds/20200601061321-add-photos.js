@@ -103,6 +103,12 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        fileName: '21.jpg',
+        objectId: 31,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ];
     return queryInterface.bulkInsert('photos', photosData);
   },

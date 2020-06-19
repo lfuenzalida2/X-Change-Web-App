@@ -32,7 +32,6 @@ router.use(async (ctx, next) => {
     currentUser: currentSession && await currentSession.getUser(),
     newSessionPath: ctx.router.url('session.new'),
     destroySessionPath: ctx.router.url('session.destroy'),
-    negotiationsPath: ctx.router.url('negotiations.list'),
     explore: ctx.router.url('explore.list'),
     inventory: (user) => ctx.router.url('inventory.list', { id: user.id }),
     profile: (user) => ctx.router.url('users.index', { id: user.id }),

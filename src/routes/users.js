@@ -54,8 +54,6 @@ router.post('users.create', '/', async (ctx) => {
   try {
     if (values.password !== values.confirm_password) {
       throw new MyError('PasswordError', 'Las contraseñas no coinciden. Inténtalo nuevamente.');
-    } else if (values.mail !== values.confirm_mail) {
-      throw new MyError('MailError', 'Los correos no coinciden. Inténtalo nuevamente.');
     } else if (!Valid(values.password)) {
       throw new MyError('PasswordError', 'La constraseña debe tener al menos 1 letra en mayuscula, 1 número y largo de 8 caracteres.');
     }
@@ -63,11 +61,8 @@ router.post('users.create', '/', async (ctx) => {
     await sendRegistrationEmail(ctx, { user: newUser });
     ctx.redirect(ctx.router.url('session.new'));
   } catch (validationError) {
-    await ctx.render('users/new', {
-      newUser,
-      errors: validationError.errors,
-      submitVariable: ctx.router.url('users.create', { id: newUser.id }),
-    });
+    ctx.body = validationError;
+    ctx.status = 400;
   }
 });
 
@@ -89,7 +84,7 @@ router.patch('users.update', '/:id', async (ctx) => {
     await newUser.update({
       username, password, mail, number, region, profilePicture,
     });
-    ctx.redirect(ctx.router.url('users.list'));
+    ctx.redirect(ctx.router.url('users.index', { id: ctx.params.id }));
   } catch (validationError) {
     await ctx.render('users/edit', {
       newUser,
