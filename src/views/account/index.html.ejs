@@ -9,10 +9,18 @@
                 Región: <%= currentUser.region %>
             </div>
             <div>
-                Cantidad de X-Changes: 0
+                Cantidad de X-Changes: <%= xChangesCount %>
             </div>
             <div>
-                Promedio de Reseñas
+                Promedio de Reseñas:
+                <div class="ratings">
+                  <% for (var i = 0; i < avgRating; i++) { %>
+                    <div class="star active-star">★</div>
+                  <% } %>
+                  <% for (var i = 0; i < 5 - avgRating; i++) { %>
+                    <span class="star">★</span>
+                  <% } %>
+                </div>
             </div>
         </div>
     </div>

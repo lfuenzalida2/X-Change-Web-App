@@ -2,7 +2,18 @@ ul > li {
   display: inline-block;
 }
 
-#container {
+#container-search-item-1 {
+  display: inline-block;
+  max-height: 290px;
+}
+
+#container-search-item-1 > h2 {
+  padding: 0px;
+  text-align: center;
+}
+
+#container-search-item-2 {
+  display: inline-block;
 
 }
 
@@ -15,7 +26,7 @@ ul > li {
 .group {
   cursor: pointer;
   display:block;
-  width:1000px;
+  width: 600px;
   vertical-align:top;
   margin:0px;
   text-align:center;
@@ -26,10 +37,16 @@ ul > li {
 .group-item-text {
   padding: 0px;
   margin: 0px;
+  overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-line-clamp: 2; /* number of lines to show */
+   -webkit-box-orient: vertical;
 }
 
 .group-item {
-  width:1000px;
+  width: 600px;
+  height: 150px;
   background-color: rgb(224,255,255);
   border-radius: 15px;
   border: solid 5px;
@@ -41,4 +58,17 @@ ul > li {
   padding-right: 10px;
   text-align: center;
   color: black;
+}
+
+.group span{
+  padding: 5px;
+  font-weight: 501;
+}
+
+.group img {
+  vertical-align: top;
+}
+
+.group h3 {
+  padding-top: 10px;
 }

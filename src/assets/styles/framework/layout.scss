@@ -4,6 +4,16 @@ html, body {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+.horizontal-center-container {
+  width: 100%;
+  text-align: center;
+}
+
+.mv {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .flexbox-item{
   color: black;
   display: flex;
@@ -19,6 +29,11 @@ html, body {
 
 #header{
   margin-bottom: 0;
+  position: sticky;
+  top: 0;
+  background-color: rgb(242, 242, 242);
+  border-bottom: 2px solid black;
+  z-index: 9999999999999;
 }
 
 .bolder{
@@ -30,9 +45,8 @@ html, body {
 }
 
 .flexbox-container {
-  position: relative;
-  margin: 10px;
-  padding: 0;
+  margin: 0px 10px;
+  padding: 10px 0px;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
@@ -82,7 +96,7 @@ a {
 
 a:hover{
   background-color: rgb(242, 242, 242);
-  border-radius: 10px;
+  border-radius: 15px;
 }
 
 h1 {
@@ -262,7 +276,7 @@ li{
 }
 
 #search{
-  width: 70%;
+  width: 100%;
   max-width: 1000px;
 }
 

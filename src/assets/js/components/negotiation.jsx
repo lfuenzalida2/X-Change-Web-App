@@ -396,14 +396,34 @@ class Submit extends Component {
       return (
         <div className="form">
           <form onSubmit={submitReview} method="POST">
-            <input type="number" name="rating" max="5" min="1" />
-            <textarea type="text" name="text" />
+            <div className="ratings form-ratings">
+              <input name="rating" id="e5" type="radio" value="5" />
+              <label htmlFor="e5">★</label>
+              <input name="rating" id="e4" type="radio" value="4" />
+              <label htmlFor="e4">★</label>
+              <input name="rating" id="e3" type="radio" value="3" />
+              <label htmlFor="e3">★</label>
+              <input name="rating" id="e2" type="radio" value="2" />
+              <label htmlFor="e2">★</label>
+              <input name="rating" id="e1" type="radio" value="1" />
+              <label htmlFor="e1">★</label>
+            </div>
+            <textarea type="text" name="text" placeholder="Añade un comentario..." />
             <input type="submit" value="Enviar la Valoración" className="btn" />
           </form>
         </div>
       );
     }
-
+    const activeStars = [];
+    const stars = [];
+    if (review) {
+      for (let i = 0; i < review.attributes.rating; i++) {
+        activeStars.push('');
+      }
+      for (let i = 0; i < 5 - review.attributes.rating; i++) {
+        stars.push('');
+      }
+    }
     return (
       <div className="flexbox-container">
         <input type="hidden" id="currentUser" value={currentUser.id} />
@@ -442,6 +462,14 @@ class Submit extends Component {
         { review ? (
           <div className="border" id="review">
             <h3>Tu review fue</h3>
+            <div className="ratings">
+              { activeStars.map(() => (
+                <span className="star active-star">★</span>
+              ))}
+              { stars.map(() => (
+                <span className="star">★</span>
+              ))}
+            </div>
             <label htmlFor="rating">Rating:</label>
             <span name="rating">{review.attributes.rating}</span>
             <br />
@@ -573,7 +601,7 @@ class Messages extends Component {
         <div id="send">
           <form id="send-message" onSubmit={this.sendMessage} method="POST">
             <div className="wrapper-textarea"><textarea name="text" id="m" type="text" onKeyDown={this.onKeyEnter} /></div>
-            <input ref={this.send} type="submit" id="send-btn" values="Enviar" className="btn" disabled={negotiation.attributes.state === 'Cancelled' ? 'disabled' : ''} />
+            <input ref={this.send} type="submit" id="send-btn" value="Enviar" className="btn" disabled={negotiation.attributes.state === 'Cancelled' ? 'disabled' : ''} />
           </form>
         </div>
       </div>

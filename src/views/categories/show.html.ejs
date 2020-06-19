@@ -1,0 +1,32 @@
+<div class="fixed-width-lg horizontal-center-container">
+  <h1 class="mv"> Artículos de la categoría <%= category.name %> </h1>
+  <div class="form mv">
+    <div id="page">
+      <% if (!objectsList.length) { %>
+        <div class="group">
+          <a href="javascript:void(0)" class="group-item active">
+            <h4 class="group-item-heading">No hay objetos de esta categoría.</h4>
+            </a>
+          </div>
+        <% } else { %>
+          <% objectsList.forEach((object) => { %>
+        <div class="group">
+          <a href="<%= viewObjectPath(object) %>" class="group-item active">
+            <span class="float-l cursiva"><img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/account.png"><%= object.user.username %></span>
+            <span class="float-r cursiva"><img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/address.png"><%= object.user.region %></span>
+            <br>
+            <h3 class="group-item-heading underline"><%= object.name %></h3>
+            <p class="group-item-text"><%= object.description %></p>
+          </a>
+        </div>
+        <% }) %>
+        <% } %>
+      </div>
+      <nav aria-label=...>
+        <ul class=pagination>
+          <li id="previous-page"><a href="javascript:void(0)" aria-label=Previous><span aria-hidden=true>&laquo;</span></a></li>
+        </ul>
+      </nav>
+    </div>
+    <a class="btn mv" href="/">Volver</a>
+</div>

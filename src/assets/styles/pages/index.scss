@@ -1,5 +1,9 @@
-.center{
+.center {
     text-align: center;
+}
+
+.horizontal-center {
+  margin: 15px auto;
 }
 
 .search-container {
@@ -26,7 +30,6 @@
 
 .welcome-text {
    margin: 0 auto;
-   width: 1000px;
    font-size: 23px;
    color: rgb(34, 34, 34);
    opacity: 0.7;
@@ -175,4 +178,41 @@
 @keyframes fade {
   from {opacity: .4}
   to {opacity: 1}
+}
+
+.sidenav {
+  margin-left: 10px;
+  position: fixed;
+  height: 100%;
+  background-color: inherit;
+  overflow-y: scroll;
+  border-right: 1px solid black;
+}
+
+.side-title {
+  margin: 0;
+  padding: 10px 0px;
+  top: 0;
+  background-color: inherit;
+  position: sticky;
+  font-size: 25px;
+  text-align: center;
+  display: block;
+  border-bottom: solid 1px black;
+}
+
+.side-title:hover {
+  background-color: inherit;
+  border-radius: 0px;
+}
+
+.side-category {
+  display: block;
+  padding: 7px 15px;
+}
+
+.side-category:hover {
+  background-color: #CD5C5C;
+  border-radius: 0px;
+  color: white;
 }
