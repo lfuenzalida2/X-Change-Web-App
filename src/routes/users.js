@@ -1,4 +1,6 @@
 const KoaRouter = require('koa-router');
+const sequelize = require('sequelize');
+
 const sendRegistrationEmail = require('../mailers/registration');
 
 const router = new KoaRouter();
@@ -103,12 +105,19 @@ router.del('users.delete', '/:id', async (ctx) => {
 router.get('users.index', '/:id', async (ctx) => {
   const currentUser = await ctx.state.currentUser;
   const user = await ctx.orm.user;
+  const xChangesCount = await ctx.orm.review.count({ where: { reviewedId: currentUser.id } });
+  const avgQuery = await ctx.orm.review.findAll({
+    attributes: [[sequelize.fn('avg', sequelize.col('rating')), 'avgRating']], where: { reviewedId: currentUser.id },
+  });
+  const avgRating = Math.round(avgQuery[0].dataValues.avgRating);
   const reviews = await ctx.orm.review.findAll({
     where: { reviewedId: currentUser.id },
     include: [{ model: user, as: 'reviewed' }, { model: user, as: 'reviewer' }],
   });
   await ctx.render('account/index', {
     reviews,
+    avgRating,
+    xChangesCount,
     editProfile: ctx.router.url('users.edit', { id: currentUser.id }),
     otherProfile: (other) => ctx.router.url('users.view', { id: other.id }),
     viewObjects: ctx.router.url('objects.list'),

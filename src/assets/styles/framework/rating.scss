@@ -1,0 +1,39 @@
+.ratings {
+			width: 226px;
+			font-size: 25px;
+			overflow:hidden;
+      display: flex;
+		}
+.ratings.form-ratings {
+  display: block;
+}
+.ratings input {
+  float: right;
+  opacity: 0;
+  position: absolute;
+}
+    .ratings label {
+			float:right;
+			color: #aaa;
+			text-decoration: none;
+			-webkit-transition: color .4s;
+			-moz-transition: color .4s;
+			-o-transition: color .4s;
+			transition: color .4s;
+		}
+.ratings label:hover ~ label,
+.ratings input:focus ~ label,
+.ratings label:hover,
+	  {
+			color: orange;
+			cursor: pointer;
+		}
+
+.star {
+  color: #aaa;
+  position: relative;
+  display: inline-block;
+}
+.star.active-star {
+  color: orange;
+}
