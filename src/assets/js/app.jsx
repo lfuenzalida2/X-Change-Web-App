@@ -10,13 +10,13 @@ const objectFormHtml = document.getElementById('add_object');
 const registerForm = document.getElementById('register_form');
 
 if (negotiationHtml) {
-  ReactDOM.render(<NegotiationsList url={url.slice(0, url.indexOf('/', 7))} />, negotiationHtml);
+  ReactDOM.render(<NegotiationsList url={url.slice(0, url.indexOf('/', 10))} />, negotiationHtml);
 }
 
 if (objectFormHtml) {
-  ReactDOM.render(<ObjectForm url={url.slice(0, url.indexOf('/', 7))} />, objectFormHtml);
+  ReactDOM.render(<ObjectForm url={url.slice(0, url.indexOf('/', 10))} />, objectFormHtml);
 }
 
 if (registerForm) {
-  ReactDOM.render(<RegisterForm url={url.slice(0, url.indexOf('/', 7))} />, registerForm);
+  ReactDOM.render(<RegisterForm url={url.slice(0, url.indexOf('/', 10))} />, registerForm);
 }
