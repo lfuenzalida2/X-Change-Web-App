@@ -1,5 +1,4 @@
 const KoaRouter = require('koa-router');
-const { Op } = require('sequelize');
 const sendNegotiationEmail = require('../mailers/new_negotiation');
 
 const router = new KoaRouter();

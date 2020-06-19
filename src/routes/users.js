@@ -86,7 +86,7 @@ router.patch('users.update', '/:id', async (ctx) => {
     await newUser.update({
       username, password, mail, number, region, profilePicture,
     });
-    ctx.redirect(ctx.router.url('users.list'));
+    ctx.redirect(ctx.router.url('users.index', { id: ctx.params.id }));
   } catch (validationError) {
     await ctx.render('users/edit', {
       newUser,

@@ -66,37 +66,43 @@ class RegisterForm extends Component {
           </div>
           <form onSubmit={this.submitForm} method="post" className="border form">
             <div>
-              <label htmlFor="username" className="">Username</label>
+              <label htmlFor="username" className="">Nombre de usuario</label>
               <input type="text" name="username" className="float-r" />
             </div>
             <br />
+            <br />
             <div>
-              <label htmlFor="password">password</label>
+              <label htmlFor="password">Contraseña</label>
               <input type="password" name="password" className="float-r" />
             </div>
             <br />
+            <br />
             <div>
-              <label htmlFor="confirm_password">confirm password</label>
+              <label htmlFor="confirm_password">Confirmar Contraseña</label>
               <input type="password" name="confirm_password" className="float-r" />
             </div>
             <br />
+            <br />
             <div>
-              <label htmlFor="mail">mail</label>
+              <label htmlFor="mail">Correo electrónico</label>
               <input type="text" name="mail" className="float-r" />
             </div>
             <br />
+            <br />
             <div>
-              <label htmlFor="confirm_mail">confirm mail</label>
+              <label htmlFor="confirm_mail">Confirmar correo electrónico</label>
               <input type="text" name="confirm_mail" className="float-r" />
             </div>
             <br />
+            <br />
             <div>
-              <label htmlFor="number">number</label>
+              <label htmlFor="number">Número de teléfono</label>
               <input type="number" name="number" className="float-r" />
             </div>
             <br />
+            <br />
             <div>
-              <label htmlFor="region">Region</label>
+              <label htmlFor="region">Región</label>
               <select name="region" id="region" className="float-r">
                 <option value="Aisen del G. Carlos Ibáñez del Campo">Aisén del G. Carlos Ibáñez del Campo</option>
                 <option value="Antofagasta">Antofagasta</option>
@@ -117,12 +123,13 @@ class RegisterForm extends Component {
             </div>
             <br />
             <div>
-              <label htmlFor="profile_picture">picture</label>
+              <label htmlFor="profile_picture">Foto de perfil</label>
               <input type="text" name="profile_picture" className="float-r" />
             </div>
             <br />
+            <br />
             <div>
-              <input type="submit" name="create" value="Create" className="btn" />
+              <input type="submit" name="create" value="Crear cuenta!" className="btn" />
             </div>
           </form>
           <br />
