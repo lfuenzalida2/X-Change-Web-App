@@ -1,3 +1,11 @@
+<div class="vertical-align-container">
+<div class="sidenav">
+  <a class="side-title">Categorías</a>
+  <% categoriesList.forEach((category) => { %>
+    <a class="side-category" href="<%= showCategoryPath(category) %>"><%= category.name %></a>
+  <% }) %>
+</div>
+</div>
 <div>
   <h1 class="landing-title center">
     <span id="x">X</span>-Change
