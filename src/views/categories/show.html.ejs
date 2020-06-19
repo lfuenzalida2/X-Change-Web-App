@@ -1,32 +1,32 @@
 <div class="fixed-width-lg flexbox-container" id="search">
-  <h2> Artículos categoría <%= category.name %>
-  <div class="form">
-    <div id="container">
-        <nav aria-label=...>
-          <ul class=pagination>
-            <li id="previous-page"><a href="javascript:void(0)" aria-label=Previous><span aria-hidden=true>&laquo;</span></a></li>
-          </ul>
-        </nav>
-        <div id="page">
-          <% if (!objectsList.length) { %>
-            <div class="group">
-              <a href="javascript:void(0)" class="group-item active">
-                <h4 class="group-item-heading">No hay aún elementos.</h4>
-              </a>
-            </div>
-          <% } else { %>
-            <% objectsList.forEach((object) => { %>
-          <div class="group">
-            <a href="<%= viewObjectPath(object) %>" class="group-item active">
-              <h4 class="group-item-heading"><%= object.name %></h4>
-              <p class="group-item-text"><%= object.description %></p>
-              <p class="group-footer">Dueño: <%= object.user.username %></p>
-              <p class="group-footer">Ubicación: <%= object.user.region %></p>
+  <h1 class="page-title center"> Artículos de la categoría <%= category.name %> </h1>
+  <div class="form" id="container-search-item-2">
+    <div id="page">
+      <% if (!objectsList.length) { %>
+        <div class="group">
+          <a href="javascript:void(0)" class="group-item active">
+            <h4 class="group-item-heading">No hay objetos de esta categoría.</h4>
             </a>
           </div>
-          <% }) %>
-          <% } %>
+        <% } else { %>
+          <% objectsList.forEach((object) => { %>
+        <div class="group">
+          <a href="<%= viewObjectPath(object) %>" class="group-item active">
+            <span class="float-l cursiva"><img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/account.png"><%= object.user.username %></span>
+            <span class="float-r cursiva"><img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/address.png"><%= object.user.region %></span>
+            <br>
+            <h3 class="group-item-heading underline"><%= object.name %></h3>
+            <p class="group-item-text"><%= object.description %></p>
+          </a>
         </div>
+        <% }) %>
+        <% } %>
+      </div>
+      <nav aria-label=...>
+        <ul class=pagination>
+          <li id="previous-page"><a href="javascript:void(0)" aria-label=Previous><span aria-hidden=true>&laquo;</span></a></li>
+        </ul>
+      </nav>
     </div>
-  </div>
+    <a class="btn horizontal-center" href="/">Volver</a>
 </div>
