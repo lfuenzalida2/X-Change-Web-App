@@ -4,6 +4,16 @@ html, body {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+.horizontal-center-container {
+  width: 100%;
+  text-align: center;
+}
+
+.mv {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .flexbox-item{
   color: black;
   display: flex;
@@ -19,6 +29,11 @@ html, body {
 
 #header{
   margin-bottom: 0;
+  position: sticky;
+  top: 0;
+  background-color: rgb(242, 242, 242);
+  border-bottom: 2px solid black;
+  z-index: 9999999999999;
 }
 
 .bolder{
@@ -30,9 +45,8 @@ html, body {
 }
 
 .flexbox-container {
-  position: relative;
-  margin: 10px;
-  padding: 0;
+  margin: 0px 10px;
+  padding: 10px 0px;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
@@ -82,7 +96,7 @@ a {
 
 a:hover{
   background-color: rgb(242, 242, 242);
-  border-radius: 10px;
+  border-radius: 15px;
 }
 
 h1 {
@@ -101,6 +115,11 @@ h1 {
 .navbar-images{
   max-height: 30px;
   padding-right: .3rem;
+}
+
+.negotiation-images{
+  max-height: 100px;
+  height: auto;
 }
 
 .item{
@@ -149,6 +168,12 @@ input{
   max-width: 400px;
 }
 
+.fixed-width-negotiation{
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .fixed-width-xlg{
   width: 70%;
   margin-left: auto;
@@ -175,6 +200,7 @@ td{
 }
 
 #chat{
+  float: left;
   margin-top: 20px;
   display: flex;
   position: relative;
@@ -185,8 +211,8 @@ td{
   border-radius: 5px;
   background-color: rgb(242, 242, 242);
   min-height: 30px;
-  height: 300px;
-  width: 400px;
+  height: 600px;
+  width: 300px;
 }
 
 .chat-title{
@@ -204,7 +230,7 @@ td{
 }
 
 #messages {
-  max-height: 200px;
+  height: 3000px;
   overflow-y: scroll;
   margin-bottom: 10px;
 }
@@ -217,6 +243,19 @@ td{
 
 #m {
   width: 100%;
+}
+
+.clickable:hover {
+  cursor: pointer;
+}
+
+table{
+  height: inherit;
+}
+
+textarea{
+  overflow-y: hidden;
+  resize: none;
 }
 
 #send-btn {
@@ -237,7 +276,7 @@ li{
 }
 
 #search{
-  width: 70%;
+  width: 100%;
   max-width: 1000px;
 }
 
@@ -465,4 +504,14 @@ a.see-all-notifications:hover {
 
 .logout {
   margin-left: 14px;
+}
+
+.dropdown {
+  padding: 10px;
+  background-color: grey;
+  position: absolute;
+  top: 44px;
+  display: block;
+  border-radius: 15px;
+  z-index: 1;
 }

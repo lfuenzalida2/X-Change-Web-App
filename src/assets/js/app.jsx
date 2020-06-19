@@ -1,11 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/add_objects';
+import NegotiationsList from './components/negotiation';
+import ObjectForm from './components/add_object';
+import RegisterForm from './components/register';
 
-const addObject = document.getElementById('add_object');
 const url = window.location.href;
-const id = url.slice(url.lastIndexOf('/') + 1, url.length);
+const negotiationHtml = document.getElementById('negotiation');
+const objectFormHtml = document.getElementById('add_object');
+const registerForm = document.getElementById('register_form');
 
-if (addObject) {
-  ReactDOM.render(<App id={id} />, addObject);
+if (negotiationHtml) {
+  ReactDOM.render(<NegotiationsList url={url.slice(0, url.indexOf('/', 7))} />, negotiationHtml);
+}
+
+if (objectFormHtml) {
+  ReactDOM.render(<ObjectForm url={url.slice(0, url.indexOf('/', 7))} />, objectFormHtml);
+}
+
+if (registerForm) {
+  ReactDOM.render(<RegisterForm url={url.slice(0, url.indexOf('/', 7))} />, registerForm);
 }

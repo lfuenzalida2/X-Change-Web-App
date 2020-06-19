@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const { Op } = require('sequelize');
 
 const router = new KoaRouter();
 
@@ -14,6 +15,22 @@ router.get('categories.list', '/', async (ctx) => {
     newCategoryPath: ctx.router.url('categories.new'),
     editCategoryPath: (category) => ctx.router.url('categories.edit', { id: category.id }),
     deleteCategoryPath: (category) => ctx.router.url('categories.delete', { id: category.id }),
+  });
+});
+
+router.get('categories.show', '/:id', loadCategory, async (ctx) => {
+  const { category } = ctx.state;
+  const { user } = ctx.orm;
+  const currentUser = await ctx.state.currentUser;
+  const id = currentUser.id || null;
+  const objectsList = await ctx.orm.object.findAll({
+    where: { categoryId: category.id, userId: { [Op.not]: id } },
+    include: [{ model: user }],
+  });
+  await ctx.render('categories/show', {
+    objectsList,
+    category,
+    viewObjectPath: (object) => ctx.router.url('objects.view', { id: object.id }),
   });
 });
 

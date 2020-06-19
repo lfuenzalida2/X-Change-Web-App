@@ -18,12 +18,11 @@ router.get('reviews.list', '/', async (ctx) => {
 
 router.post('reviews.new', '/new', async (ctx) => {
   const {
-    reviewerId, reviewedId, reviewedName, negotiationId,
+    reviewerId, reviewedId, negotiationId,
   } = ctx.request.body;
   await ctx.render('reviews/new', {
     reviewerId,
     reviewedId,
-    reviewedName,
     negotiationId,
     showNegotiationPath: ctx.router.url('negotiations.show', { id: negotiationId }),
     submitReviewPath: ctx.router.url('reviews.create'),
@@ -31,6 +30,7 @@ router.post('reviews.new', '/new', async (ctx) => {
 });
 
 router.post('reviews.create', '/', async (ctx) => {
+  console.log(ctx.request.body);
   const reviewerId = +ctx.request.body.reviewerId;
   const reviewedId = +ctx.request.body.reviewedId;
   const negotiationId = +ctx.request.body.negotiationId;

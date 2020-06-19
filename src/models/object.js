@@ -14,14 +14,20 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
-    state: DataTypes.BOOLEAN,
     description: {
       type: DataTypes.TEXT,
       validate: {
         notEmpty: true,
       },
     },
-    views: DataTypes.INTEGER,
+    views: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    state: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
   }, {});
 
   object.associate = function associate(models) {
