@@ -105,7 +105,7 @@ class RegisterForm extends Component {
                 <option value="Biobio">Biobío</option>
                 <option value="Coquimbo">Coquimbo</option>
                 <option value="La Araucania">La Araucanía</option>
-                <option value="Libertador General Bernardo O'Higgins">Libertador General Bernardo O&#39Higgins</option>
+                <option value="Libertador General Bernardo O'Higgins">Libertador General Bernardo O'Higgins</option>
                 <option value="Los Lagos">Los Lagos</option>
                 <option value="Los Rios">Los Ríos</option>
                 <option value="Magallanes y de la Antartica Chilena">Magallanes y de la Antártica Chilena</option>
