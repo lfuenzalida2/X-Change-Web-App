@@ -35,7 +35,7 @@ class RegisterForm extends Component {
       confirm_password: confirm_password.value,
       number: number.value,
       region: region.value,
-      profile_picture: profile_picture.value,
+      // profile_picture: profile_picture.value,
     };
     await axios.post(ur, body)
       .then(async () => {
@@ -113,11 +113,6 @@ class RegisterForm extends Component {
                 <option value="Tarapaca">Tarapacá</option>
                 <option value="Valparaiso">Valparaíso</option>
               </select>
-            </div>
-            <br />
-            <div>
-              <label htmlFor="profile_picture">Foto de perfil</label>
-              <input type="text" name="profile_picture" className="float-r" />
             </div>
             <br />
             <br />
