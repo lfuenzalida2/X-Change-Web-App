@@ -25,7 +25,7 @@ router.get('categories.show', '/:id', loadCategory, async (ctx) => {
   let objectsList;
   if (currentUser) {
     objectsList = await ctx.orm.object.findAll({
-      where: { categoryId: category.id, userId: { [Op.not]: id } },
+      where: { categoryId: category.id, userId: { [Op.not]: currentUser.id } },
       include: [{ model: user }],
     });
   } else {
