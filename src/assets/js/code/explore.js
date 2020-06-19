@@ -1,7 +1,7 @@
 /* Código extraído desde: https://github.com/gugui3z24/jQuery-Pagination  */
 
 const numberOfItems = $('#page .group').length;
-const limitPerPage = 3;
+const limitPerPage = 4;
 $(`#page .group:gt(${(limitPerPage - 1)})`).hide();
 const totalPages = Math.ceil(numberOfItems / limitPerPage);
 $('.pagination').append(`<li class='current-page active'><a href='javascript:void(0)'>${1}</a></li>`);
