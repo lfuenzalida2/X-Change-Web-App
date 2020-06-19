@@ -33,7 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     region: DataTypes.STRING,
-    profilePicture: DataTypes.STRING,
+    profilePicture: {
+      type: DataTypes.STRING,
+      defaultValue: 'account.png',
+    },
 
     isModerator: DataTypes.BOOLEAN,
   }, {});
