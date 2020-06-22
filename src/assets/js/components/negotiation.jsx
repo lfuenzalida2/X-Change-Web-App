@@ -348,6 +348,7 @@ class Negotiation extends Component {
     if (loading) return <p>Loading...</p>;
     return (
       <div>
+        <p>(Si es que no puedes ver los botones de "añadir" o "quitar", haz zoomout en el navegador, esperamos arreglar eso ;) )</p>
         <div>
           <Submit key={review} submitNegotiation={this.submitNegotiation} submitReview={this.submitReview} negotiation={negotiation} currentUser={currentUser} review={review} />
         </div>
