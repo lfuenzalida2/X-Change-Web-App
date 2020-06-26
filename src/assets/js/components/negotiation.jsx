@@ -16,8 +16,22 @@
 /* eslint-disable max-classes-per-file */
 import React, { Component } from 'react';
 import io from '../../../../node_modules/socket.io-client/dist/socket.io';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#add_object');
 
 const axios = require('axios');
+
+const modalStyle = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
 
 class NegotiationsList extends Component {
   constructor(props) {
@@ -382,7 +396,9 @@ class Submit extends Component {
 
   openReviewSubmit(event) {
     event.preventDefault();
-    this.setState({ reviewForm: true });
+    this.setState((prevState) => ({
+      reviewForm: !prevState.reviewForm,
+    }));
   }
 
   render() {
@@ -395,24 +411,26 @@ class Submit extends Component {
     // Aqui se ponen las estrellas
     if (reviewForm) {
       return (
-        <div className="form">
-          <form onSubmit={submitReview} method="POST">
-            <div className="ratings form-ratings">
-              <input name="rating" id="e5" type="radio" value="5" />
-              <label htmlFor="e5">★</label>
-              <input name="rating" id="e4" type="radio" value="4" />
-              <label htmlFor="e4">★</label>
-              <input name="rating" id="e3" type="radio" value="3" />
-              <label htmlFor="e3">★</label>
-              <input name="rating" id="e2" type="radio" value="2" />
-              <label htmlFor="e2">★</label>
-              <input name="rating" id="e1" type="radio" value="1" />
-              <label htmlFor="e1">★</label>
-            </div>
-            <textarea type="text" name="text" placeholder="Añade un comentario..." />
-            <input type="submit" value="Enviar la Valoración" className="btn" />
-          </form>
-        </div>
+        <Modal isOpen={reviewForm} style={modalStyle} onRequestClose={this.openReviewSubmit}>
+          <div className="form">
+            <form onSubmit={submitReview} method="POST">
+              <div className="ratings form-ratings">
+                <input name="rating" id="e5" type="radio" value="5" />
+                <label htmlFor="e5">★</label>
+                <input name="rating" id="e4" type="radio" value="4" />
+                <label htmlFor="e4">★</label>
+                <input name="rating" id="e3" type="radio" value="3" />
+                <label htmlFor="e3">★</label>
+                <input name="rating" id="e2" type="radio" value="2" />
+                <label htmlFor="e2">★</label>
+                <input name="rating" id="e1" type="radio" value="1" />
+                <label htmlFor="e1">★</label>
+              </div>
+              <textarea type="text" name="text" placeholder="Añade un comentario..." />
+              <input type="submit" value="Enviar la Valoración" className="btn" />
+            </form>
+          </div>
+        </Modal>
       );
     }
     const activeStars = [];
