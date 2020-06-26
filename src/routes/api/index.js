@@ -3,6 +3,14 @@ const { Op } = require('sequelize');
 
 const router = new KoaRouter();
 
+function otherRole(ctx, customer, seller) {
+  const { currentUser } = ctx.state;
+  if (currentUser.id === customer.id) {
+    return seller;
+  }
+  return customer;
+}
+
 function sortByDateDesc(a, b) {
   return -(new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime());
 }
@@ -108,10 +116,18 @@ router.get('api.objects.list_other', '/other/:id', async (ctx) => {
 });
 
 router.get('api.negotiation.get', '/negotiation/:id', async (ctx) => {
+  const { currentUser } = ctx.state;
   const negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
+  let other;
+  if (negotiation.customerId === currentUser.id) {
+    other = await negotiation.getSeller();
+  } else {
+    other = await negotiation.getCustomer();
+  }
   ctx.body = ctx.jsonSerializer('negotiation', {
     attributes: ['customerId', 'sellerId', 'state'],
   }).serialize(negotiation);
+  ctx.body.other = other.username;
 });
 
 router.del('api.object_del', '/:id/object', async (ctx) => {
