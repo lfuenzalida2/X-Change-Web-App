@@ -366,8 +366,7 @@ class Negotiation extends Component {
       <div>
         <p>(Si es que no puedes ver los botones de "añadir" o "quitar", haz zoomout en el navegador, esperamos arreglar eso ;) )</p>
         <h3>
-          Negociación con
-          {otherName}
+          Negociación con {otherName}
         </h3>
         <div>
           <Submit key={review} submitNegotiation={this.submitNegotiation} submitReview={this.submitReview} negotiation={negotiation} currentUser={currentUser} review={review} />
