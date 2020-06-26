@@ -1,5 +1,7 @@
 <div class="fixed-width-lg">
-    <%= currentUser.profilePicture %>
+  <div id="image_profile">
+    <img src="https://xchangestorage.s3.us-east-2.amazonaws.com/<%= currentUser.profilePicture %>">
+  </div>
     <h1 class="center"><%= currentUser.username %></h1>
     <div class="form">
         <div>
@@ -26,11 +28,11 @@
     <a href="<%= editProfile %>">Editar perfil</a>
 
     <div class="form">
+      <div>
+          <h3 class="flexbox-item">Reviews</h3>
+      </div>
         <% if (reviews.length > 0) { %>
             <% if (currentUser.id == reviews[0].reviewedId) {%>
-            <div>
-                <h3 class="flexbox-item">Reviews</h1>
-            </div>
             <div class="flex-container border">
                 <table>
                     <thead>

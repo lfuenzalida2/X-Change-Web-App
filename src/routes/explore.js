@@ -13,10 +13,13 @@ const options = {
 };
 
 router.get('explore.list', '/', async (ctx) => {
+  const users = await ctx.orm.user;
   const categoryList = await ctx.orm.category.findAll();
+  const objectsList = await ctx.orm.object.findAll({
+    include: [{ model: users }],
+  });
   const fuse = new Fuse(objectsList, options);
-  const result = fuse.search('');
-  const { user, category } = ctx.orm;
+  const result = fuse.search(' ');
   try {
     await ctx.render('explore/explore_list_object', {
       result,
