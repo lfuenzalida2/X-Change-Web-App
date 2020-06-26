@@ -18,8 +18,6 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import io from '../../../../node_modules/socket.io-client/dist/socket.io';
 
-Modal.setAppElement('#add_object');
-
 const axios = require('axios');
 
 const modalStyle = {

@@ -12,8 +12,6 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
 
-Modal.setAppElement('#add_object');
-
 const axios = require('axios');
 
 const modalStyle = {

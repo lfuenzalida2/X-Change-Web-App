@@ -5,6 +5,27 @@ import React, { Component } from 'react';
 
 const axios = require('axios');
 
+function Valid(string) {
+  if (string.length < 8) {
+    return false;
+  }
+  let cap = false;
+  let num = false;
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < string.length; i++) {
+    const element = string[i];
+
+    if (element === element.toUpperCase()) {
+      cap = true;
+    } else if (typeof Number(element) === 'number') {
+      num = true;
+    }
+  }
+  if (cap && num) {
+    return true;
+  }
+}
+
 class RegisterForm extends Component {
   constructor(props) {
     super(props);
@@ -12,13 +33,77 @@ class RegisterForm extends Component {
     this.state = {
       loading: true,
       errors: [],
+      samePassword: '',
     };
+
+    this.passwordRef = React.createRef();
+    this.passwordConfirmRef = React.createRef();
     this.componentDidMount = this.componentDidMount.bind(this);
     this.submitForm = this.submitForm.bind(this);
+    this.checkPassword = this.checkPassword.bind(this);
+    this.validPassword = this.validPassword.bind(this);
+    this.validEmail = this.validEmail.bind(this);
+    this.validUsername = this.validUsername.bind(this);
+    this.validNumber = this.validNumber.bind(this);
   }
 
   componentDidMount() {
     this.setState({ loading: false });
+  }
+
+  validNumber(event) {
+    const number = event.target.value;
+    const list = [];
+    if (number.length !== 8) {
+      list.push('El numero de telefono utilizado es muy corto, debe tener 8 numeros');
+    }
+    this.setState({ errors: list });
+  }
+
+  validUsername(event) {
+    const username = event.target.value;
+    const list = [];
+    if (username.length < 4) {
+      list.push('El nombre de usuario elegido es muy corto, debe tener mas de 4 caracteres');
+    } else if (username.length > 50) {
+      list.push('El nombre de usuario elegido es muy largo, debe tener menos de 50 caracteres');
+    }
+    this.setState({ errors: list });
+  }
+
+  validEmail(event) {
+    const mail = event.target.value;
+    const list = [];
+    if (mail.indexOf('@') === -1) {
+      list.push('El correo electronico ingresado no es valido');
+    }
+
+    // Setting errors
+    this.setState({ errors: list });
+  }
+
+  validPassword() {
+    const password = this.passwordRef.current.value;
+    const list = [];
+    if (password.length < 8) {
+      list.push('La contraseña es muy corta, esta debe tener mínimo 8 caracteres');
+    } if (!Valid(password)) {
+      list.push('La contraseña debe contener almenos un caracter en mayúscula y un número');
+    }
+
+    // Setting errors
+    this.setState({ errors: list });
+  }
+
+  checkPassword() {
+    this.validPassword();
+    if (this.passwordRef.current.value === '' || this.passwordConfirmRef.current.value === '') {
+      this.setState({ samePassword: '' });
+    } else if (this.passwordConfirmRef.current.value !== this.passwordRef.current.value) {
+      this.setState({ samePassword: 'diffPassword' });
+    } else {
+      this.setState({ samePassword: 'samePassword' });
+    }
   }
 
   async submitForm(event) {
@@ -52,7 +137,7 @@ class RegisterForm extends Component {
   }
 
   render() {
-    const { loading, errors } = this.state;
+    const { loading, errors, samePassword } = this.state;
     if (loading) return ('');
 
     return (
@@ -65,32 +150,32 @@ class RegisterForm extends Component {
           </div>
           <form onSubmit={this.submitForm} method="post" className="border form">
             <div>
-              <label htmlFor="username" className="">Nombre de usuario</label>
-              <input type="text" name="username" className="float-r" />
+              <label htmlFor="username">Nombre de usuario</label>
+              <input type="text" name="username" className="float-r" onBlurCapture={this.validUsername} />
             </div>
             <br />
             <br />
             <div>
               <label htmlFor="mail">Correo electrónico</label>
-              <input type="text" name="mail" className="float-r" />
+              <input type="text" name="mail" className="float-r" onBlurCapture={this.validEmail} />
             </div>
             <br />
             <br />
             <div>
               <label htmlFor="password">Contraseña</label>
-              <input type="password" name="password" className="float-r" />
+              <input type="password" name="password" className={`${samePassword} float-r`} ref={this.passwordRef} onBlurCapture={this.checkPassword} />
             </div>
             <br />
             <br />
             <div>
               <label htmlFor="confirm_password">Confirmar Contraseña</label>
-              <input type="password" name="confirm_password" className="float-r" />
+              <input type="password" name="confirm_password" className={`${samePassword} float-r`} ref={this.passwordConfirmRef} onChange={this.checkPassword} />
             </div>
             <br />
             <br />
             <div>
               <label htmlFor="number">Número de teléfono</label>
-              <input type="number" name="number" className="float-r" />
+              <input type="number" name="number" className="float-r" onBlurCapture={this.validNumber} />
             </div>
             <br />
             <br />
