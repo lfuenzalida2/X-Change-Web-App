@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { Component } from 'react';
@@ -110,17 +109,16 @@ class RegisterForm extends Component {
     event.preventDefault();
     const { url } = this.props;
     const {
-      username, mail, password, confirm_password, number, region, profile_picture,
+      username, mail, password, confirmPassword, number, region,
     } = event.target;
     const ur = `${url}/users`;
     const body = {
       username: username.value,
       mail: mail.value,
       password: password.value,
-      confirm_password: confirm_password.value,
+      confirm_password: confirmPassword.value,
       number: number.value,
       region: region.value,
-      // profile_picture: profile_picture.value,
     };
     await axios.post(ur, body)
       .then(async () => {
@@ -168,8 +166,8 @@ class RegisterForm extends Component {
             <br />
             <br />
             <div>
-              <label htmlFor="confirm_password">Confirmar Contraseña</label>
-              <input type="password" name="confirm_password" className={`${samePassword} float-r`} ref={this.passwordConfirmRef} onChange={this.checkPassword} />
+              <label htmlFor="confirmPassword">Confirmar Contraseña</label>
+              <input type="password" name="confirmPassword" className={`${samePassword} float-r`} ref={this.passwordConfirmRef} onChange={this.checkPassword} />
             </div>
             <br />
             <br />
@@ -190,7 +188,7 @@ class RegisterForm extends Component {
                 <option value="Biobio">Biobío</option>
                 <option value="Coquimbo">Coquimbo</option>
                 <option value="La Araucania">La Araucanía</option>
-                <option value="Libertador General Bernardo O'Higgins">Libertador General Bernardo O'Higgins</option>
+                <option value="Libertador General Bernardo O'Higgins">Libertador General Bernardo O&apos;Higgins</option>
                 <option value="Los Lagos">Los Lagos</option>
                 <option value="Los Rios">Los Ríos</option>
                 <option value="Magallanes y de la Antartica Chilena">Magallanes y de la Antártica Chilena</option>
