@@ -1,11 +1,24 @@
 const KoaRouter = require('koa-router');
 const { Op } = require('sequelize');
+const fileStorage = require('../../services/file-storage');
 
 const router = new KoaRouter();
 
 function sortByDateDesc(a, b) {
   return -(new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime());
 }
+
+router.patch('api.upload', '/upload', async (ctx) => {
+  console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+  const { list } = ctx.request;
+  console.log(ctx.request);
+  // const currentUser = await ctx.state.currentUser;
+  // const profilePicture = list.name;
+  // await currentUser.update({ profilePicture });
+  await fileStorage.upload(list);
+
+  ctx.status = 200;
+});
 
 router.get('api.negotiation.get.negotiations', '/negotiations', async (ctx) => {
   const users = await ctx.orm.user;
