@@ -3,14 +3,6 @@ const { Op } = require('sequelize');
 
 const router = new KoaRouter();
 
-function otherRole(ctx, customer, seller) {
-  const { currentUser } = ctx.state;
-  if (currentUser.id === customer.id) {
-    return seller;
-  }
-  return customer;
-}
-
 function sortByDateDesc(a, b) {
   return -(new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime());
 }
