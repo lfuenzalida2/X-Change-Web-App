@@ -15,21 +15,9 @@
 /* eslint-disable react/prefer-stateless-function */
 /* eslint-disable max-classes-per-file */
 import React, { Component } from 'react';
-import Modal from 'react-modal';
 import io from '../../../../node_modules/socket.io-client/dist/socket.io';
 
 const axios = require('axios');
-
-const modalStyle = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-};
 
 class NegotiationsList extends Component {
   constructor(props) {
