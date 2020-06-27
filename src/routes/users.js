@@ -57,7 +57,7 @@ router.post('users.create', '/', async (ctx) => {
     if (values.password !== values.confirm_password) {
       throw new MyError('PasswordError', 'Las contraseñas no coinciden. Inténtalo nuevamente.');
     } else if (!Valid(values.password)) {
-      throw new MyError('PasswordError', 'La constraseña debe tener al menos 1 letra en mayuscula, 1 número y largo de 8 caracteres.');
+      throw new MyError('PasswordError', 'La contraseña es muy corta, esta debe tener mínimo 8 caracteres');
     }
     await newUser.save({ fields: ['username', 'password', 'mail', 'number', 'region', 'profilePicture'] });
     await sendRegistrationEmail(ctx, { user: newUser });

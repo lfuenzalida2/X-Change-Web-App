@@ -108,10 +108,18 @@ router.get('api.objects.list_other', '/other/:id', async (ctx) => {
 });
 
 router.get('api.negotiation.get', '/negotiation/:id', async (ctx) => {
+  const { currentUser } = ctx.state;
   const negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
+  let other;
+  if (negotiation.customerId === currentUser.id) {
+    other = await negotiation.getSeller();
+  } else {
+    other = await negotiation.getCustomer();
+  }
   ctx.body = ctx.jsonSerializer('negotiation', {
     attributes: ['customerId', 'sellerId', 'state'],
   }).serialize(negotiation);
+  ctx.body.other = other.username;
 });
 
 router.del('api.object_del', '/:id/object', async (ctx) => {

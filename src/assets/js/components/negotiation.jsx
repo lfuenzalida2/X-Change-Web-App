@@ -15,9 +15,21 @@
 /* eslint-disable react/prefer-stateless-function */
 /* eslint-disable max-classes-per-file */
 import React, { Component } from 'react';
+import Modal from 'react-modal';
 import io from '../../../../node_modules/socket.io-client/dist/socket.io';
 
 const axios = require('axios');
+
+const modalStyle = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
 
 class NegotiationsList extends Component {
   constructor(props) {
@@ -132,6 +144,7 @@ class Negotiation extends Component {
     this.state = {
       data: null,
       otherData: null,
+      otherName: null,
       otherUser: null,
       negotiation: null,
       loading: true,
@@ -139,9 +152,10 @@ class Negotiation extends Component {
       review: null,
       socket: io(),
     };
+
     this.añadirObjeto = this.añadirObjeto.bind(this);
     this.quitarObjeto = this.quitarObjeto.bind(this);
-    this.ActualObjects = this.ActualObjects.bind(this);
+    this.actualObjects = this.actualObjects.bind(this);
     this.getNegotiation = this.getNegotiation.bind(this);
     this.getMessages = this.getMessages.bind(this);
     this.getReview = this.getReview.bind(this);
@@ -198,6 +212,7 @@ class Negotiation extends Component {
       url: `${this.props.url}/api/negotiation/${this.props.id}`,
     })
       .then(async (res) => {
+        this.setState({ otherName: res.data.other });
         this.setState({ negotiation: res.data.data });
       }, (err) => {
         console.log(err);
@@ -230,15 +245,17 @@ class Negotiation extends Component {
 
   async whenMounting() {
     // API calls to get my objects, the other's object, negotiations info and messagges
+    const { socket } = this.state;
+
     await this.myObjects();
     await this.otherObjects();
     await this.getNegotiation();
     await this.getMessages();
 
     // object socket connection
-    this.state.socket.emit('join negotiation', { negotiationId: this.props.id });
-    this.state.socket.on('add object', this.otherObjects);
-    this.state.socket.on('remove object', this.otherObjects);
+    socket.emit('join negotiation', { negotiationId: this.props.id });
+    socket.on('add object', this.otherObjects);
+    socket.on('remove object', this.otherObjects);
 
     // Get otherUser of the negotiation
     if (this.state.negotiation) {
@@ -286,7 +303,7 @@ class Negotiation extends Component {
       });
   }
 
-  ActualObjects(id) {
+  actualObjects(id) {
     var value = '';
     const { data, negotiation } = this.state;
     data.map((element) => {
@@ -319,7 +336,6 @@ class Negotiation extends Component {
       });
   }
 
-
   async quitarObjeto(event) {
     event.preventDefault();
     const negotiationId = event.target.negotiationId.value;
@@ -340,7 +356,7 @@ class Negotiation extends Component {
 
   render() {
     const {
-      loading, data, otherData, otherUser, negotiation, socket, messages, review,
+      loading, data, otherData, otherUser, negotiation, socket, messages, review, otherName,
     } = this.state;
 
     const { currentUser, url } = this.props;
@@ -349,6 +365,9 @@ class Negotiation extends Component {
     return (
       <div>
         <p>(Si es que no puedes ver los botones de "añadir" o "quitar", haz zoomout en el navegador, esperamos arreglar eso ;) )</p>
+        <h3>
+          Negociación con {otherName}
+        </h3>
         <div>
           <Submit key={review} submitNegotiation={this.submitNegotiation} submitReview={this.submitReview} negotiation={negotiation} currentUser={currentUser} review={review} />
         </div>
@@ -362,8 +381,8 @@ class Negotiation extends Component {
         </div>
         <br />
         <div className="neg_layout">
-          <TradingObjectList data={data} negotiation={negotiation} ActualObjects={this.ActualObjects} añadirObjeto={this.añadirObjeto} />
-          <TradingObjectList data={otherData} negotiation={negotiation} ActualObjects={this.ActualObjects} />
+          <TradingObjectList data={data} negotiation={negotiation} actualObjects={this.actualObjects} añadirObjeto={this.añadirObjeto} />
+          <TradingObjectList data={otherData} negotiation={negotiation} actualObjects={this.actualObjects} />
         </div>
       </div>
     );
@@ -382,7 +401,9 @@ class Submit extends Component {
 
   openReviewSubmit(event) {
     event.preventDefault();
-    this.setState({ reviewForm: true });
+    this.setState((prevState) => ({
+      reviewForm: !prevState.reviewForm,
+    }));
   }
 
   render() {
@@ -395,24 +416,26 @@ class Submit extends Component {
     // Aqui se ponen las estrellas
     if (reviewForm) {
       return (
-        <div className="form">
-          <form onSubmit={submitReview} method="POST">
-            <div className="ratings form-ratings">
-              <input name="rating" id="e5" type="radio" value="5" />
-              <label htmlFor="e5">★</label>
-              <input name="rating" id="e4" type="radio" value="4" />
-              <label htmlFor="e4">★</label>
-              <input name="rating" id="e3" type="radio" value="3" />
-              <label htmlFor="e3">★</label>
-              <input name="rating" id="e2" type="radio" value="2" />
-              <label htmlFor="e2">★</label>
-              <input name="rating" id="e1" type="radio" value="1" />
-              <label htmlFor="e1">★</label>
-            </div>
-            <textarea type="text" name="text" placeholder="Añade un comentario..." />
-            <input type="submit" value="Enviar la Valoración" className="btn" />
-          </form>
-        </div>
+        <Modal isOpen={reviewForm} style={modalStyle} onRequestClose={this.openReviewSubmit}>
+          <div className="form">
+            <form onSubmit={submitReview} method="POST">
+              <div className="ratings form-ratings">
+                <input name="rating" id="e5" type="radio" value="5" />
+                <label htmlFor="e5">★</label>
+                <input name="rating" id="e4" type="radio" value="4" />
+                <label htmlFor="e4">★</label>
+                <input name="rating" id="e3" type="radio" value="3" />
+                <label htmlFor="e3">★</label>
+                <input name="rating" id="e2" type="radio" value="2" />
+                <label htmlFor="e2">★</label>
+                <input name="rating" id="e1" type="radio" value="1" />
+                <label htmlFor="e1">★</label>
+              </div>
+              <textarea type="text" name="text" placeholder="Añade un comentario..." />
+              <input type="submit" value="Enviar la Valoración" className="btn" />
+            </form>
+          </div>
+        </Modal>
       );
     }
     const activeStars = [];
@@ -656,7 +679,7 @@ class AvailableObjectList extends Component {
 class TradingObjectList extends Component {
   render() {
     const {
-      data, negotiation, ActualObjects, añadirObjeto,
+      data, negotiation, actualObjects, añadirObjeto,
     } = this.props;
     return (
       <div className="neg_obj_list">
@@ -682,7 +705,7 @@ class TradingObjectList extends Component {
                   <form method="POST" onSubmit={añadirObjeto}>
                     <input type="hidden" name="negotiationId" value={negotiation.id} />
                     <input type="hidden" name="objectId" value={element.id} />
-                    <ActualButton disabled={ActualObjects(element.id)} />
+                    <ActualButton disabled={actualObjects(element.id)} />
                   </form>
                 </td>
                 )}

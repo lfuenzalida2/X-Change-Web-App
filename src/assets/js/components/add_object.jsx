@@ -10,8 +10,21 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
+import Modal from 'react-modal';
 
 const axios = require('axios');
+
+const modalStyle = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+
 
 class ObjectForm extends Component {
   constructor(props) {
@@ -99,14 +112,14 @@ class ObjectForm extends Component {
             <span className="item">Publicar</span>
           </a>
         </div>
-        <div className={form ? ('dropdown') : ('hidden')}>
+        <Modal isOpen={form} style={modalStyle} onRequestClose={this.ToogleForm}>
           <div>
             {errors.map((error) => (
               <p key={error}>{error}</p>
             ))}
           </div>
           <Form categories={categories} submitForm={this.submitForm} />
-        </div>
+        </Modal>
       </>
     );
   }
@@ -116,33 +129,25 @@ class Form extends Component {
   render() {
     const { categories, submitForm } = this.props;
     return (
-      <div className="form">
-        <form onSubmit={submitForm}>
-          <div className="field">
-            <input type="text" name="name" placeholder="Ingrese el nombre del objeto" className="float-r" />
-          </div>
-          <br />
-          <br />
-          <div>
-            <select name="categoryId" id="categoryId" className="float-r" defaultValue="">
-              <option value="" disabled>Selecciones una categoria</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.attributes.id}>{category.attributes.name}</option>
-              ))}
-            </select>
-          </div>
-          <br />
-          <br />
-          <div className="field">
-            <input type="textarea" name="description" placeholder="Ingrese una descripción" className="float-r" />
-          </div>
-          <br />
-          <br />
-          <div className="field">
-            <input type="submit" name="create" value="Crear" />
-          </div>
-        </form>
-      </div>
+      <form onSubmit={submitForm}>
+        <div className="field">
+          <input type="text" name="name" placeholder="Ingrese el nombre del objeto" className="float-r" />
+        </div>
+        <div>
+          <select name="categoryId" id="categoryId" className="float-r" defaultValue="">
+            <option value="" disabled>Selecciones una categoria</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.attributes.id}>{category.attributes.name}</option>
+            ))}
+          </select>
+        </div>
+        <div className="field">
+          <input type="textarea" name="description" placeholder="Ingrese una descripción" className="float-r" />
+        </div>
+        <div className="field">
+          <input type="submit" name="create" value="Crear" />
+        </div>
+      </form>
     );
   }
 }
