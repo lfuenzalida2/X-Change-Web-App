@@ -10,21 +10,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
-import Modal from 'react-modal';
 
 const axios = require('axios');
-
-const modalStyle = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-};
-
 
 class ObjectForm extends Component {
   constructor(props) {
