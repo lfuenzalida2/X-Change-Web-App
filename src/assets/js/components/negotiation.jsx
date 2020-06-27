@@ -416,26 +416,29 @@ class Submit extends Component {
     // Aqui se ponen las estrellas
     if (reviewForm) {
       return (
-        <Modal isOpen={reviewForm} style={modalStyle} onRequestClose={this.openReviewSubmit}>
-          <div className="form">
-            <form onSubmit={submitReview} method="POST">
-              <div className="ratings form-ratings">
-                <input name="rating" id="e5" type="radio" value="5" />
-                <label htmlFor="e5">★</label>
-                <input name="rating" id="e4" type="radio" value="4" />
-                <label htmlFor="e4">★</label>
-                <input name="rating" id="e3" type="radio" value="3" />
-                <label htmlFor="e3">★</label>
-                <input name="rating" id="e2" type="radio" value="2" />
-                <label htmlFor="e2">★</label>
-                <input name="rating" id="e1" type="radio" value="1" />
-                <label htmlFor="e1">★</label>
-              </div>
-              <textarea type="text" name="text" placeholder="Añade un comentario..." />
-              <input type="submit" value="Enviar la Valoración" className="btn" />
-            </form>
+        <div className={reviewForm ? ('modal') : ('hidden')}>
+          <div className="modal-content">
+            <span className="close" onClick={this.openReviewSubmit}>Close</span>
+            <div className="form">
+              <form onSubmit={submitReview} method="POST">
+                <div className="ratings form-ratings">
+                  <input name="rating" id="e5" type="radio" value="5" />
+                  <label htmlFor="e5">★</label>
+                  <input name="rating" id="e4" type="radio" value="4" />
+                  <label htmlFor="e4">★</label>
+                  <input name="rating" id="e3" type="radio" value="3" />
+                  <label htmlFor="e3">★</label>
+                  <input name="rating" id="e2" type="radio" value="2" />
+                  <label htmlFor="e2">★</label>
+                  <input name="rating" id="e1" type="radio" value="1" />
+                  <label htmlFor="e1">★</label>
+                </div>
+                <textarea type="text" name="text" placeholder="Añade un comentario..." />
+                <input type="submit" value="Enviar la Valoración" className="btn" />
+              </form>
+            </div>
           </div>
-        </Modal>
+        </div>
       );
     }
     const activeStars = [];
