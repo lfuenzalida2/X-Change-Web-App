@@ -17,7 +17,6 @@ class ProfilePic extends Component {
   async onFormSubmit(event) {
     event.preventDefault();
     const { file } = this.state;
-    console.log(file);
     await this.fileUpload(file).then((response) => {
       console.log(response.data);
     });
@@ -31,14 +30,12 @@ class ProfilePic extends Component {
     const url = 'http://localhost:3000/api/upload';
     const formData = new FormData();
     formData.append('file', file);
-    console.log(formData);
-    // const body = { list: formData };
     const config = {
       headers: {
-        'Content-type': 'multipart/form-data',
+        'type': 'image/png',
       },
     };
-    await axios.patch(url, formData, config).then((res) => {
+    await axios.post(url, formData, config).then((res) => {
       console.log(res);
     }).catch((err) => {
       console.log(err);

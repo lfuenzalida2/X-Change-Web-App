@@ -8,15 +8,13 @@ function sortByDateDesc(a, b) {
   return -(new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime());
 }
 
-router.patch('api.upload', '/upload', async (ctx) => {
+router.post('api.upload', '/upload', async (ctx) => {
   console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-  const { list } = ctx.request;
-  console.log(ctx.request);
+  const { file } = ctx.request.files;
   // const currentUser = await ctx.state.currentUser;
   // const profilePicture = list.name;
   // await currentUser.update({ profilePicture });
-  await fileStorage.upload(list);
-
+  await fileStorage.upload(file);
   ctx.status = 200;
 });
 
