@@ -112,14 +112,17 @@ class ObjectForm extends Component {
             <span className="item">Publicar</span>
           </a>
         </div>
-        <Modal isOpen={form} style={modalStyle} onRequestClose={this.ToogleForm}>
-          <div>
-            {errors.map((error) => (
-              <p key={error}>{error}</p>
-            ))}
+        <div className={form ? ('modal') : ('hidden')}>
+          <div className="modal-content">
+            <span className="close" onClick={this.ToogleForm}>Close</span>
+            <div>
+              {errors.map((error) => (
+                <p key={error}>{error}</p>
+              ))}
+            </div>
+            <Form categories={categories} submitForm={this.submitForm} />
           </div>
-          <Form categories={categories} submitForm={this.submitForm} />
-        </Modal>
+        </div>
       </>
     );
   }
