@@ -118,9 +118,12 @@ app.io.on('connection', async (socket) => {
   socket.auth = false;
   // check the auth data sent by the client
   const { sessionToken } = socket.session;
-  const currentSession = await app.context.orm.session.findOne(
-    { where: { token: sessionToken } },
-  );
+  let currentSession;
+  if (sessionToken) {
+    currentSession = await app.context.orm.session.findOne(
+      { where: { token: sessionToken } },
+    );
+  }
   if (currentSession) {
     socket.auth = true;
     socket.join(`userRoom-${currentSession.userId}`);
