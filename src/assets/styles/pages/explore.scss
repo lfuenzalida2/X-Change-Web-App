@@ -37,11 +37,6 @@ ul > li {
 .group-item-text {
   padding: 0px;
   margin: 0px;
-  overflow: hidden;
-   text-overflow: ellipsis;
-   display: -webkit-box;
-   -webkit-line-clamp: 2; /* number of lines to show */
-   -webkit-box-orient: vertical;
 }
 
 .group-item {
