@@ -525,8 +525,20 @@ a.see-all-notifications:hover {
 }
 
 #image_profile img{
+  padding: 20px;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 30%;
+  width: 40%;
+}
+
+#image_profile h3{
+  display: inline-block;
+  padding-right: 20px;
+  margin-left: 15%;
+}
+
+#image_profile form{
+  text-align: center;
+  display: inline-block;
 }

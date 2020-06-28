@@ -1,7 +1,7 @@
-<div class="fixed-width">
+<div class="fixed-width-lg">
     <a href="<%= profile(currentUser) %>">Volver</a>
-    <div class="flexbox-item center">
-        Imagen
+    <div id="image_profile">
+      <img src=<%=`https://xchangestorage.s3.us-east-2.amazonaws.com/${currentUser.profilePicture}`%> alt="profile" />
     </div>
     <h1 class="center"><%= reviewer.username %></h1>
     <div class="form">

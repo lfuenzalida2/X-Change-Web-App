@@ -1,11 +1,35 @@
 const KoaRouter = require('koa-router');
 const { Op } = require('sequelize');
+const fileStorage = require('../../services/file-storage');
 
 const router = new KoaRouter();
 
 function sortByDateDesc(a, b) {
   return -(new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime());
 }
+
+function ExceptionName(mensaje) {
+  this.mensaje = mensaje;
+  this.nombre = 'ExceptionName';
+}
+
+router.patch('api.upload', '/upload', async (ctx) => {
+  try {
+    if (!ctx.request) {
+      throw new ExceptionName('No hay archivos para subir');
+    }
+    const currentUser = await ctx.state.currentUser;
+    const { file } = ctx.request.files;
+    file.name = `${currentUser.id}_profile_${new Date().toLocaleString()}${file.name.slice(file.name.lastIndexOf('.'), file.name.length)}`;
+    const profilePicture = file.name;
+    await fileStorage.upload(file);
+    await currentUser.update({ profilePicture });
+    ctx.body = ctx.jsonSerializer('res', 'upload succesful');
+  } catch (validationError) {
+    ctx.body = validationError;
+    ctx.status = 400;
+  }
+});
 
 router.get('api.negotiation.get.negotiations', '/negotiations', async (ctx) => {
   const users = await ctx.orm.user;
@@ -26,7 +50,7 @@ router.get('api.negotiation.get.negotiations', '/negotiations', async (ctx) => {
 router.get('api.current.user', '/current_user', async (ctx) => {
   const currentUser = await ctx.state.currentUser;
   ctx.body = ctx.jsonSerializer('currentUser', {
-    attributes: ['id', 'username'],
+    attributes: ['id', 'username', 'profilePicture'],
   }).serialize(currentUser);
 });
 
