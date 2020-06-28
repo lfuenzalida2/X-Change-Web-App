@@ -60,15 +60,19 @@
 
 <div class="slideshow-container">
 
-<% for (var i = 0; i < photos.length; i++) { %>
-  <a class="mySlides fade" href="">
-  <div class="numbertext"><%= i+1 %> / <%= photos.length %></div>
-     <% if (photos.length) { %>
-         <img src="https://xchangestorage.s3.us-east-2.amazonaws.com/<%=photos[i].fileName%>">
-     <% } else { %>
-       <img src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg">
-     <% }%>
-  </a>
+
+<% if (photos.length) {%>
+  <% for (var i = 0; i < photos.length; i++) { %>
+    <a class="mySlides fade" href="">
+      <div class="numbertext"><%= i+1 %> / <%= photos.length %></div>
+      <img src="https://xchangestorage.s3.us-east-2.amazonaws.com/<%=photos[i].fileName%>">
+    </a>
+  <% } %>
+<% } else {%>
+    <a class="mySlides fade" href="">
+      <div class="numbertext"><%= 0 %> / <%= photos.length %></div>
+      <img src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg">
+    </a>
 <% } %>
 
  <!-- Next and previous buttons -->
