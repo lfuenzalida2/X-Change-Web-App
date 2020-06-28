@@ -105,7 +105,9 @@ router.del('users.delete', '/:id', async (ctx) => {
 router.get('users.index', '/:id', async (ctx) => {
   const currentUser = await ctx.state.currentUser;
   const user = await ctx.orm.user;
-  const xChangesCount = await ctx.orm.review.count({ where: { reviewedId: currentUser.id } });
+  const xChangesGotten = await currentUser.getNegotiationsGotten({ where: { state: 'Accepted' } });
+  const xChangesStarted = await currentUser.getNegotiationsStarted({ where: { state: 'Accepted' } });
+  const xChangesCount = xChangesGotten.length + xChangesStarted.length;
   const avgQuery = await ctx.orm.review.findAll({
     attributes: [[sequelize.fn('avg', sequelize.col('rating')), 'avgRating']], where: { reviewedId: currentUser.id },
   });
