@@ -4,11 +4,16 @@ const sequelize = require('sequelize');
 const sendRegistrationEmail = require('../mailers/registration');
 
 const router = new KoaRouter();
+const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit' });
 
 function MyError(name, message) {
   this.name = name;
   this.errors = [{ message }];
   this.stack = (new Error()).stack;
+}
+
+function sortByRateDesc(a, b) {
+  return -(a.rating - b.rating);
 }
 
 function Valid(string) {
@@ -114,10 +119,12 @@ router.get('users.index', '/:id', async (ctx) => {
     where: { reviewedId: currentUser.id },
     include: [{ model: user, as: 'reviewed' }, { model: user, as: 'reviewer' }],
   });
+  reviews.sort(sortByRateDesc);
   await ctx.render('account/index', {
     reviews,
     avgRating,
     xChangesCount,
+    dateTimeFormat,
     editProfile: ctx.router.url('users.edit', { id: currentUser.id }),
     otherProfile: (other) => ctx.router.url('users.view', { id: other.id }),
     viewObjects: ctx.router.url('objects.list'),
@@ -125,17 +132,18 @@ router.get('users.index', '/:id', async (ctx) => {
   });
 });
 
-router.post('users.view', '/:id/profile', async (ctx) => {
-  const { reviewerId } = ctx.request.body;
-  const reviewer = await ctx.orm.user.findByPk(reviewerId);
+router.get('users.view', '/:id/profile', async (ctx) => {
+  const reviewer = await ctx.orm.user.findByPk(ctx.params.id);
   const user = await ctx.orm.user;
   const reviews = await ctx.orm.review.findAll({
-    where: { reviewedId: reviewerId },
+    where: { reviewedId: ctx.params.id },
     include: [{ model: user, as: 'reviewed' }, { model: user, as: 'reviewer' }],
   });
+  reviews.sort(sortByRateDesc);
   await ctx.render('account/other', {
     reviewer,
     reviews,
+    dateTimeFormat,
     otherProfile: (other) => ctx.router.url('users.view', { id: other.id }),
   });
 });
