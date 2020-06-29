@@ -12,8 +12,8 @@ function MyError(name, message) {
   this.stack = (new Error()).stack;
 }
 
-function sortByRateDesc(a, b) {
-  return -(a.rating - b.rating);
+function sortByDateDesc(a, b) {
+  return -(new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime());
 }
 
 function Valid(string) {
@@ -119,7 +119,7 @@ router.get('users.index', '/:id', async (ctx) => {
     where: { reviewedId: currentUser.id },
     include: [{ model: user, as: 'reviewed' }, { model: user, as: 'reviewer' }],
   });
-  reviews.sort(sortByRateDesc);
+  reviews.sort(sortByDateDesc);
   await ctx.render('account/index', {
     reviews,
     avgRating,
@@ -139,7 +139,7 @@ router.get('users.view', '/:id/profile', async (ctx) => {
     where: { reviewedId: ctx.params.id },
     include: [{ model: user, as: 'reviewed' }, { model: user, as: 'reviewer' }],
   });
-  reviews.sort(sortByRateDesc);
+  reviews.sort(sortByDateDesc);
   await ctx.render('account/other', {
     reviewer,
     reviews,

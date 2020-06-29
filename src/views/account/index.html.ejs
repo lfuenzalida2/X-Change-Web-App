@@ -27,8 +27,8 @@
     <% if (reviews.length > 0) { %>
 
       <h2 class="opinions-reviews">Opiniones</h2>
-      <h2 class="relevants">Más relevantes</h2>
-
+      <h2 class="relevants">Más recientes</h2>
+      <h3 class="opinions-users">Opiniones de usuarios</h3>
       <% if (currentUser.id == reviews[0].reviewedId) {%>
         <% reviews.forEach(review => { %>
           <% const [{ value: month },,{ value: day },,{ value: year }] = dateTimeFormat .formatToParts(review.createdAt ) %>
