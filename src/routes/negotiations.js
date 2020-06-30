@@ -40,27 +40,8 @@ router.get('negotiations.list', '/', async (ctx) => {
   await ctx.render('negotiations/index');
 });
 
-router.get('negotiations.show', '/:id', loadNegotiation, async (ctx) => {
-  const { negotiation } = ctx.state;
-  const customer = await negotiation.getCustomer();
-  const seller = await negotiation.getSeller();
-  const reviews = await negotiation.getReviews();
-  await ctx.render('negotiations/show', {
-    negotiation,
-    customer,
-    seller,
-    reviews,
-    deleteObject: ctx.router.url('negotiations.object_del', { id: negotiation.id }),
-    editNegotiationPath: ctx.router.url('negotiations.update', { id: negotiation.id }),
-    messagesList: await negotiation.getMessages(),
-    newMessagePath: ctx.router.url('messages.create'),
-    newReviewPath: ctx.router.url('reviews.new'),
-    currentReview: didReview(ctx, reviews),
-    objects: await ctx.state.negotiation.getObjects(),
-    addObjectPath: ctx.router.url('negotiations.add_object', { id: negotiation.id }),
-    currentRole: currentRole(ctx, customer, seller),
-    otherRole: otherRole(ctx, customer, seller),
-  });
+router.get('negotiations.notification', '/:id', async (ctx) => {
+  await ctx.render('negotiations/index');
 });
 
 router.post('negotiations.create', '/', async (ctx) => {

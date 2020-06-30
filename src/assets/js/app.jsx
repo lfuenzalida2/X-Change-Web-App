@@ -11,8 +11,13 @@ const objectFormHtml = document.getElementById('add_object');
 const registerForm = document.getElementById('register_form');
 const profilePicForm = document.getElementById('profilePic');
 
+let idParam = url.slice(url.lastIndexOf('/') + 1, url.length);
+if (idParam === '') {
+  idParam = null;
+}
+
 if (negotiationHtml) {
-  ReactDOM.render(<NegotiationsList url={url.slice(0, url.indexOf('/', 10))} />, negotiationHtml);
+  ReactDOM.render(<NegotiationsList url={url.slice(0, url.indexOf('/', 10))} id={idParam} />, negotiationHtml);
 }
 
 if (objectFormHtml) {

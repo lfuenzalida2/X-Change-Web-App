@@ -11,7 +11,7 @@ class NegotiationsList extends Component {
       loading: true,
       negotiations: null,
       currentUser: null,
-      actualNegotiation: null,
+      actualNegotiation: this.props.id,
     };
     this.openNegotiation = this.openNegotiation.bind(this);
   }
