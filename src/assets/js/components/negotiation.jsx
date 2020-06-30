@@ -14,9 +14,19 @@ class NegotiationsList extends Component {
       actualNegotiation: this.props.id,
     };
     this.openNegotiation = this.openNegotiation.bind(this);
+    this.whenMounting = this.whenMounting.bind(this);
+    this.stateChange = this.stateChange.bind(this);
   }
 
   async componentDidMount() {
+    await this.whenMounting();
+  }
+
+  async stateChange() {
+    await this.whenMounting();
+  }
+
+  async whenMounting() {
     const { url } = this.props;
     await axios({
       method: 'get',
@@ -61,9 +71,10 @@ class NegotiationsList extends Component {
       <div>
         <div>
           <Negotiations
+            key={negotiations}
             negotiationsList={negotiations}
             currentUser={currentUser}
-            negotiation={actualNegotiation}
+            actualNegotiation={actualNegotiation}
             openNegotiation={this.openNegotiation}
           />
         </div>
@@ -73,6 +84,7 @@ class NegotiationsList extends Component {
               id={actualNegotiation}
               url={url}
               currentUser={currentUser}
+              stateChange={this.stateChange}
             />
           )
           : <p>Escoge alguna negociacion que quieras abrir</p> }
@@ -82,7 +94,12 @@ class NegotiationsList extends Component {
 }
 
 function Negotiations(props) {
-  const { negotiationsList, currentUser, openNegotiation } = props;
+  const {
+    negotiationsList,
+    currentUser,
+    openNegotiation,
+    actualNegotiation,
+  } = props;
   return (
     <div className="fixed-width float-l" id="negotiations-list">
       <h2>Mis Negociaciones</h2>
@@ -99,7 +116,7 @@ function Negotiations(props) {
             </thead>
             <tbody>
               { negotiationsList.map((negotiation) => (
-                <tr key={negotiation.id}>
+                <tr key={negotiation.id} className={actualNegotiation === negotiation.id ? 'actual' : ''}>
                   { negotiation.attributes.customer.id !== currentUser.id
                     ? <td>{negotiation.attributes.customer.username}</td>
                     : <td>{negotiation.attributes.seller.username}</td> }
@@ -283,7 +300,7 @@ class Negotiation extends Component {
 
   async submitNegotiation(event) {
     event.preventDefault();
-    const { url } = this.props;
+    const { url, stateChange } = this.props;
     const { state } = event.target;
     const { negotiation } = this.state;
     const ur = `${url}/negotiations/${negotiation.id}`;
@@ -291,6 +308,7 @@ class Negotiation extends Component {
     await axios.patch(ur, body)
       .then(async () => {
         await this.getNegotiation();
+        stateChange();
         // this.setState({ data: res.data.data });
       })
       .catch((err) => {
