@@ -39,6 +39,12 @@ router.get('explore.list', '/', async (ctx) => {
 
 router.post('objects.search', '/', async (ctx) => {
   const search = ctx.request.body;
+  let keywords;
+  if (search.keywords === '') {
+    keywords = ' ';
+  } else {
+    keywords = search.keywords;
+  }
   const users = await ctx.orm.user;
   const categoryList = await ctx.orm.category.findAll();
   let objectsList = null;
@@ -72,7 +78,7 @@ router.post('objects.search', '/', async (ctx) => {
     );
   }
   const fuse = new Fuse(objectsList, options);
-  const result = fuse.search(search.keywords);
+  const result = fuse.search(keywords);
   await ctx.render('explore/explore_list_object', {
     result,
     categoryList,
