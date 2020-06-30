@@ -112,7 +112,6 @@ router.get('api.objects.list_other', '/other/:id', async (ctx) => {
   const categories = ctx.orm.category;
   const negotiations = ctx.orm.negotiation;
   const photos = ctx.orm.photo;
-  console.log(negotiation);
   if (negotiation.sellerId === currentUser.id) {
     const objectsList = await ctx.orm.object.findAll({
       where: { userId: negotiation.customerId },

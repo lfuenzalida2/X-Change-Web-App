@@ -120,7 +120,11 @@ function Negotiations(props) {
                   { negotiation.attributes.customer.id !== currentUser.id
                     ? <td>{negotiation.attributes.customer.username}</td>
                     : <td>{negotiation.attributes.seller.username}</td> }
-                  <td>{negotiation.attributes.state === 'Accepted' ? 'Aceptada' : negotiation.attributes.state === 'Cancelled' ? 'Cancelada' : 'En Progreso'}</td>
+                  <td>
+                    {negotiation.attributes.state === 'Accepted'
+                      ? 'Aceptada'
+                      : negotiation.attributes.state === 'Cancelled' ? 'Cancelada' : 'En Progreso'}
+                  </td>
                   <td>
                     <form onSubmit={openNegotiation}>
                       <input type="hidden" name="negotiationId" value={negotiation.id} />
@@ -696,7 +700,6 @@ class Messages extends Component {
 
 function AvailableObjectList(props) {
   const { data, negotiation, quitarObjeto } = props;
-  console.log(data);
   return (
     <div className="neg_obj_list form">
       <table>

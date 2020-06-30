@@ -28,7 +28,6 @@ router.post('reviews.new', '/new', async (ctx) => {
 });
 
 router.post('reviews.create', '/', async (ctx) => {
-  console.log(ctx.request.body);
   const reviewerId = +ctx.request.body.reviewerId;
   const reviewedId = +ctx.request.body.reviewedId;
   const negotiationId = +ctx.request.body.negotiationId;
@@ -38,6 +37,7 @@ router.post('reviews.create', '/', async (ctx) => {
   });
   try {
     await review.save({ fields: ['reviewerId', 'reviewedId', 'negotiationId', 'rating', 'text'] });
+    ctx.status = 200;
   } catch (validationError) {
     await ctx.render('reviews/new', {
       reviewerId,
