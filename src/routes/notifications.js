@@ -38,7 +38,7 @@ router.patch('notifications.update', '/:id', loadNotification, async (ctx) => {
   const { notification } = ctx.state;
   try {
     await notification.update({ seen: true });
-    ctx.redirect(ctx.router.url('negotiations.notification', { id: ctx.params.id }));
+    ctx.redirect(ctx.router.url('negotiations.notification', { id: notification.negotiationId }));
   } catch (validationError) {
     ctx.redirect('back');
   }

@@ -308,7 +308,7 @@ class Negotiation extends Component {
     await axios.patch(ur, body)
       .then(async () => {
         await this.getNegotiation();
-        stateChange();
+        await stateChange();
         // this.setState({ data: res.data.data });
       })
       .catch((err) => {
@@ -696,6 +696,7 @@ class Messages extends Component {
 
 function AvailableObjectList(props) {
   const { data, negotiation, quitarObjeto } = props;
+  console.log(data);
   return (
     <div className="neg_obj_list form">
       <table>
