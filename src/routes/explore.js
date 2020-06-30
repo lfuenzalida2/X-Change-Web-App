@@ -21,6 +21,12 @@ router.get('explore.list', '/', async (ctx) => {
   const fuse = new Fuse(objectsList, options);
   const result = fuse.search(' ');
   try {
+    /*
+    result.forEach((element) => {
+      console.log(element.item.dataValues.name);
+      console.log(element.item.dataValues.description);
+    });
+    */
     await ctx.render('explore/explore_list_object', {
       result,
       categoryList,

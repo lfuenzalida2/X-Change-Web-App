@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import io from '../../../../node_modules/socket.io-client/dist/socket.io';
 
 const axios = require('axios');
+const translatorConfig = require('../../../config/translator');
 
 class NegotiationsList extends Component {
   constructor(props) {
@@ -554,6 +555,8 @@ class Messages extends Component {
     this.state = {
       loading: true,
       messages: null,
+      sourceLanguage: 'es',
+      targetLanguage: 'es',
     };
     // This lets us refer to a Html element
     this.send = React.createRef();
@@ -563,6 +566,9 @@ class Messages extends Component {
     this.getMessages = this.getMessages.bind(this);
     this.whenMounting = this.whenMounting.bind(this);
     this.scrollBottom = this.scrollBottom.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.translateMessage = this.translateMessage.bind(this);
   }
 
   async componentDidMount() {
@@ -595,6 +601,48 @@ class Messages extends Component {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  handleChange(event) {
+    this.setState({
+      targetLanguage: event.target.value,
+    });
+  }
+
+  async handleSubmit(event) {
+    event.preventDefault();
+    const { targetLanguage, sourceLanguage } = this.state;
+    console.log(sourceLanguage);
+    console.log(targetLanguage);
+    await this.translateMessage().then(() => {
+      this.setState({
+        loading: false,
+        sourceLanguage: targetLanguage,
+      });
+    });
+  }
+
+  async translateMessage() {
+    this.setState({ loading: true });
+    const { messages, targetLanguage, sourceLanguage } = this.state;
+    messages.forEach(async (item) => {
+      axios({
+        method: 'GET',
+        url: 'https://systran-systran-platform-for-language-processing-v1.p.rapidapi.com/translation/text/translate',
+        headers: translatorConfig,
+        params: {
+          source: sourceLanguage,
+          target: targetLanguage,
+          input: item.attributes.text,
+        },
+      })
+        .then((response) => {
+          item.attributes.text = response.data.outputs[0].output;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
   }
 
   scrollBottom() {
@@ -643,6 +691,17 @@ class Messages extends Component {
 
     return (
       <div id="chat">
+        <form onSubmit={this.handleSubmit}>
+          <select value={this.state.targetLanguage} onChange={this.handleChange}>
+            <option value="es">Español</option>
+            <option value="en">Inglés</option>
+            <option value="de">Alemán</option>
+            <option value="fr">Francés</option>
+            <option value="it">Italiano</option>
+            <option value="pt">Portugués</option>
+          </select>
+          <input type="submit" value="Traducir" />
+        </form>
         <div id="messages" ref={this.messagesRef}>
           { messages.map((message) => (
             <div key={message.id}>
