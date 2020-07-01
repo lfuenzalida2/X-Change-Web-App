@@ -9,10 +9,16 @@
   }
 
 .fixed-width-negotiation {
-    max-width: 400px;
+    max-width: 300px;
     margin: 0;
     margin-left: 50px;
     margin-right: 50px;
+}
+
+.full-width h3 {
+    margin: 0;
+    margin-left: 5px;
+    margin-bottom: 5px;
 }
 
 .form h3 {
@@ -26,6 +32,10 @@
     height: 250px;
     overflow-y: scroll;
     overflow-x: hidden;
+}
+
+.full-width {
+    width: 100%;
 }
 
 .negotiation_layout {
@@ -68,6 +78,20 @@ tr{
     background-color: #EE3D3D;
 }
 
+.dot-display {
+    display: block;
+}
+
+.negotiation-alternative {
+    margin: 5%;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: rgb(235, 235, 235);
+    border-radius: 10px;
+    width: 100%;
+}
+
 .negotiation {
     cursor: pointer;
     padding-top: 7px;
@@ -108,7 +132,7 @@ tr{
     margin-left: 0;
     margin-right: 0;
     border-radius: 7px;
-    width: 380px;
+    width: 280px;
     height: 40px;
 }
 

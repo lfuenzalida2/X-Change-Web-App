@@ -87,7 +87,28 @@ class NegotiationsList extends Component {
               stateChange={this.stateChange}
             />
           )
-          : <p>Escoge alguna negociacion que quieras abrir</p> }
+          : (
+            <div className="negotiation-alternative center">
+              <h3>Hola!</h3>
+              <p>Haz click sobre cualquier negociación que tengas</p>
+              <p>
+                El estado de una negociación se
+                traduce en el color del punto junto a esta, donde:
+              </p>
+              <div className="dot-display">
+                <span className="dot green" />
+                <span>: significa que la negociación está &quot;En Progreso&quot;</span>
+              </div>
+              <div className="dot-display">
+                <span className="dot blue" />
+                <span>: significa que la negociación está &quot;Aceptada&quot;</span>
+              </div>
+              <div className="dot-display">
+                <span className="dot red" />
+                <span>: significa que la negociación está &quot;Cancelada&quot;</span>
+              </div>
+            </div>
+          )}
       </>
     );
   }
@@ -405,29 +426,41 @@ class Negotiation extends Component {
         </>
         <h2 className="center">Lista de Objetos</h2>
         <div className="neg_layout">
-          <AvailableObjectList
-            data={data}
-            negotiation={negotiation}
-            quitarObjeto={this.quitarObjeto}
-          />
-          <AvailableObjectList
-            data={otherData}
-            negotiation={negotiation}
-          />
+          <div className="full-width">
+            <h3>Mis objetos a cambiar</h3>
+            <AvailableObjectList
+              data={data}
+              negotiation={negotiation}
+              quitarObjeto={this.quitarObjeto}
+            />
+          </div>
+          <div className="full-width">
+            <h3>Objetos de {otherName} a cambiar</h3>
+            <AvailableObjectList
+              data={otherData}
+              negotiation={negotiation}
+            />
+          </div>
         </div>
         <br />
         <div className="neg_layout">
-          <TradingObjectList
-            data={data}
-            negotiation={negotiation}
-            actualObjects={this.actualObjects}
-            añadirObjeto={this.añadirObjeto}
-          />
-          <TradingObjectList
-            data={otherData}
-            negotiation={negotiation}
-            actualObjects={this.actualObjects}
-          />
+          <div className="full-width">
+            <h3>Mi Inventario</h3>
+            <TradingObjectList
+              data={data}
+              negotiation={negotiation}
+              actualObjects={this.actualObjects}
+              añadirObjeto={this.añadirObjeto}
+            />
+          </div>
+          <div className="full-width">
+            <h3>Inventario de {otherName}</h3>
+            <TradingObjectList
+              data={otherData}
+              negotiation={negotiation}
+              actualObjects={this.actualObjects}
+            />
+          </div>
         </div>
       </div>
     );
@@ -564,7 +597,7 @@ class Submit extends Component {
         )}
         { review ? (
           <div className="form" id="review">
-            <h3>Tu review fue</h3>
+            <h3>Tu review</h3>
             <div className="ratings">
               { activeStars.map(() => (
                 <span className="star active-star">★</span>
@@ -573,10 +606,10 @@ class Submit extends Component {
                 <span className="star">★</span>
               ))}
             </div>
-            <label htmlFor="rating">Rating:</label>
+            <label htmlFor="rating" className="text-style">Rating:</label>
             <span name="rating">{review.attributes.rating}</span>
             <br />
-            <label htmlFor="text">Texto:</label>
+            <label htmlFor="text" className="text-style">Texto:</label>
             <span name="text">{review.attributes.text}</span>
           </div>
         ) : ((negotiation.attributes.state === 'Accepted' || negotiation.attributes.state === 'Cancelled') && (
