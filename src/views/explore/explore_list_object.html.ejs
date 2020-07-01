@@ -6,7 +6,6 @@
           <label for="keywords">Palabras Clave: </label>
           <input type="text" name="keywords"  class="float-r">
         </div>
-        <br>
         <div>
           <label for="state">Estado: </label>
           <select name="state" id="state" class="float-r">
@@ -14,7 +13,6 @@
             <option value="false">No disponible</option>
           </select>
         </div>
-        <br>
         <div>
           <label for="region">Region: </label>
           <select name="region" id="region" class="float-r">
@@ -36,7 +34,6 @@
             <option value="Valparaiso">Valparaíso</option>
           </select>
         </div>
-        <br>
         <div>
           <label for="categoryId">Categoria: </label>
           <select name="categoryId" id="categoryId" class="float-r">
@@ -46,7 +43,17 @@
             <% }) %>
           </select>
         </div>
-        <br>
+        <div>
+          <label for="language">Idioma: </label>
+          <select name="language" id="language" class="float-r">
+            <option value="es">Español</option>
+            <option value="en">Inglés</option>
+            <option value="de">Alemán</option>
+            <option value="fr">Francés</option>
+            <option value="it">Italiano</option>
+            <option value="pt">Portugués</option>
+          </select>
+        </div>
         <div>
           <input type="submit" name="Submit"  value="Buscar" class="btn">
         </div>
