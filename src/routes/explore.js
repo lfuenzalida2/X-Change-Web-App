@@ -1,6 +1,5 @@
 const KoaRouter = require('koa-router');
 const Fuse = require('fuse.js');
-const { Op } = require('sequelize');
 const axios = require('axios');
 const translatorConfig = require('../config/translator');
 
@@ -23,12 +22,6 @@ router.get('explore.list', '/', async (ctx) => {
   const fuse = new Fuse(objectsList, options);
   const result = fuse.search(' ');
   try {
-    /*
-    result.forEach((element) => {
-      console.log(element.item.dataValues.name);
-      console.log(element.item.dataValues.description);
-    });
-    */
     await ctx.render('explore/explore_list_object', {
       result,
       categoryList,
@@ -97,10 +90,12 @@ router.post('objects.search', '/', async (ctx) => {
           params: {
             source: 'es',
             target: search.language,
-            input: objectsList[i].dataValues.description,
+            input: `${objectsList[i].dataValues.name}|||${objectsList[i].dataValues.description}`,
           },
         }).then((response) => {
-          objectsList[i].dataValues.description = response.data.outputs[0].output;
+          const res = response.data.outputs[0].output;
+          objectsList[i].dataValues.name = res.slice(0, res.indexOf('|||'));
+          objectsList[i].dataValues.description = res.slice(res.indexOf('|||') + 3, res.length);
         }),
       );
     }
