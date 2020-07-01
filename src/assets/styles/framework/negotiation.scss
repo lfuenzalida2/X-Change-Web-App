@@ -1,11 +1,17 @@
+:root {
+    --objects-width: auto;
+}
+
 .neg_layout{
     display: flex;
     margin: 1%;
 }
 
 .negotiation-images{
-    max-height: 100px;
-    height: auto;
+    width: 90px;
+    height: 90px;
+    border-radius: 7px;
+    object-fit: cover;
   }
 
 .fixed-width-negotiation {
@@ -58,24 +64,12 @@
     display: flex;
 }
 
-#negotiation_objects{
-    max-width: 70%;
-}
-
 td{
     width: 100%;
 }
 
 tr{
     width: 100%;
-}
-
-.samePassword {
-    background-color: greenyellow;
-}
-
-.diffPassword {
-    background-color: #EE3D3D;
 }
 
 .dot-display {
@@ -118,6 +112,10 @@ tr{
     width: inherit;
 }
 
+.trading-object-row .top {
+    width: 25%;
+}
+
 .bottom {
     padding: 5px;
     z-index: -1;
@@ -133,7 +131,57 @@ tr{
     margin-right: 0;
     border-radius: 7px;
     width: 280px;
-    height: 40px;
+    height: 30px;
+}
+
+.negotiation-object-title {
+    margin-left: 50%;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-weight: bold;
+}
+
+.margin-title {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.negotiation-object-name {
+    margin-left: 5px;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-weight: bold;
+}
+
+.negotiation-object-category {
+    margin-right: 5px;
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-weight: bold;
+}
+
+.negotiation-object-display {
+    display: flex;
+    padding: 5px;
+    padding-bottom: 0;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    opacity: 0.8;
+}
+
+.negotiation-object-display:hover {
+    opacity: 1.0;
+}
+
+.trading-object-row {
+    margin: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 0;
+    border-radius: 7px;
+    width: auto;
+    height: 100px; 
 }
 
 .red {

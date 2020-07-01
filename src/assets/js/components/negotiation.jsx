@@ -760,7 +760,8 @@ function AvailableObjectList(props) {
     <div className="neg_obj_list form">
       <div>
         <div className="head">
-          <span>Nombre</span>
+          <span className="negotiation-object-title">Nombre</span>
+          <span className="float-r margin-title">Categoria</span>
         </div>
         <div>
           { data.map((element) => (
@@ -768,19 +769,20 @@ function AvailableObjectList(props) {
               negotiation.attributes.state !== 'Cancelled'
               && object.objectNegotiation.negotiationId === parseInt(negotiation.id, 10)
               && (
-                <div key={element.id} className="row">
+                <div key={element.id} className="trading-object-row">
                   {negotiation.attributes.state === 'In Progress' && (
                     <div className="top" onClick={quitarObjeto}>
                       <input type="hidden" name="negotiationId" value={negotiation.id} />
                       <input type="hidden" name="objectId" value={element.id} />
                     </div>
                   )}
-                  <div className="bottom">
+                  <div className="bottom negotiation-object-display">
                     {(element.attributes.photos[0]
                       ? <span><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></span>
                       : <span><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></span>
                       )}
-                    <span>{element.attributes.name}</span>
+                    <span className="negotiation-object-name">{element.attributes.name}</span>
+                    <span className="negotiation-object-category">{element.attributes.category.name}</span>
                   </div>
                 </div>
               )
@@ -799,8 +801,8 @@ function TradingObjectList(props) {
   return (
     <div className="neg_obj_list form">
       <div>
-        <span>Nombre</span>
-        <span>Categoria</span>
+        <span className="negotiation-object-title">Nombre</span>
+        <span className="float-r margin-title">Categoria</span>
       </div>
       <div>
         { data.map((element) => (
@@ -808,20 +810,20 @@ function TradingObjectList(props) {
             {actualObjects(data, element.id)
             && element.attributes.state !== false
             && (
-            <div key={element.id} className="row">
+            <div key={element.id} className="trading-object-row">
               {negotiation.attributes.state === 'In Progress' && (
                 <div className="top" onClick={añadirObjeto}>
                   <input type="hidden" name="negotiationId" value={negotiation.id} />
                   <input type="hidden" name="objectId" value={element.id} />
                 </div>
               )}
-              <div className="bottom">
+              <div className="bottom negotiation-object-display">
                 {(element.attributes.photos[0]
                   ? <span><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></span>
                   : <span><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></span>
                 )}
-                <span>{element.attributes.name}</span>
-                <span>{element.attributes.category.name}</span>
+                <span className="negotiation-object-name">{element.attributes.name}</span>
+                <span className="negotiation-object-category">{element.attributes.category.name}</span>
               </div>
             </div>
             )}
