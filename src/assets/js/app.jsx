@@ -12,7 +12,7 @@ const registerForm = document.getElementById('register_form');
 const profilePicForm = document.getElementById('profilePic');
 
 let idParam = url.slice(url.lastIndexOf('/') + 1, url.length);
-if (idParam === '') {
+if (!parseInt(idParam, 10)) {
   idParam = null;
 }
 

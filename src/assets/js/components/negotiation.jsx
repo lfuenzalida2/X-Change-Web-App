@@ -56,7 +56,7 @@ class NegotiationsList extends Component {
 
   openNegotiation(event) {
     event.preventDefault();
-    this.setState({ actualNegotiation: event.target.negotiationId.value });
+    this.setState({ actualNegotiation: event.target.attributes.value.value });
   }
 
   render() {
@@ -106,35 +106,31 @@ function Negotiations(props) {
       { !negotiationsList.length
         ? <p>No tienes niguna negociacion</p>
         : (
-          <table className="form">
-            <thead>
-              <tr>
-                <th>Usuario</th>
-                <th>Estado</th>
-                <th>Ver</th>
-              </tr>
-            </thead>
-            <tbody>
+          <div className="form">
+            <div>
+              <span>Usuario</span>
+              <span>Estado</span>
+            </div>
+            <div>
               { negotiationsList.map((negotiation) => (
-                <tr key={negotiation.id} className={actualNegotiation === negotiation.id ? 'actual' : ''}>
-                  { negotiation.attributes.customer.id !== currentUser.id
-                    ? <td>{negotiation.attributes.customer.username}</td>
-                    : <td>{negotiation.attributes.seller.username}</td> }
-                  <td>
-                    {negotiation.attributes.state === 'Accepted'
-                      ? 'Aceptada'
-                      : negotiation.attributes.state === 'Cancelled' ? 'Cancelada' : 'En Progreso'}
-                  </td>
-                  <td>
-                    <form onSubmit={openNegotiation}>
-                      <input type="hidden" name="negotiationId" value={negotiation.id} />
-                      <input type="submit" value="Ver" className="btn" />
-                    </form>
-                  </td>
-                </tr>
+                <>
+                  <div key={negotiation.id} className={`${actualNegotiation === negotiation.id ? 'actual' : ''} notification seen row`}>
+                    <div className="top" onClick={openNegotiation} value={negotiation.id} />
+                    <div className="bottom">
+                      { negotiation.attributes.customer.id !== currentUser.id
+                        ? <span>{negotiation.attributes.customer.username}</span>
+                        : <span>{negotiation.attributes.seller.username}</span> }
+                      <span>
+                        {negotiation.attributes.state === 'Accepted'
+                          ? 'Aceptada'
+                          : negotiation.attributes.state === 'Cancelled' ? 'Cancelada' : 'En Progreso'}
+                      </span>
+                    </div>
+                  </div>
+                </>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
         )}
     </div>
   );
