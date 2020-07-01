@@ -314,15 +314,13 @@ class Negotiation extends Component {
       });
   }
 
-  actualObjects(id) {
+  actualObjects(data, id) {
     let value = true;
-    const { data, negotiation } = this.state;
+    const { negotiation } = this.state;
     data.map((element) => {
       element.attributes.negotiations.map((negotiationObjects) => {
         if ((negotiation.id === negotiationObjects.id.toString()
         || element.attributes.state === false) && id === element.id) {
-          value = false;
-        } else if (negotiation.attributes.state === 'Cancelled' || negotiation.attributes.state === 'Accepted') {
           value = false;
         }
       });
@@ -775,9 +773,8 @@ function TradingObjectList(props) {
         <div>
           { data.map((element) => (
             <>
-              {añadirObjeto
-              && element.state !== false
-              && actualObjects(element.id)
+              {actualObjects(data, element.id)
+              && element.attributes.state !== false
               && (
               <div key={element.id} className="row">
                 {negotiation.attributes.state === 'In Progress' && (
