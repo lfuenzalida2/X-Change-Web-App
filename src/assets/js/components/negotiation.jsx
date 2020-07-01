@@ -588,6 +588,7 @@ class Messages extends Component {
 
   async getMessages() {
     const { url, negotiation } = this.props;
+    const { targetLanguage } = this.state;
     // Obtain messages
     await axios({
       method: 'get',
@@ -595,7 +596,13 @@ class Messages extends Component {
     })
       .then(async (res) => {
         const { data } = res.data;
-        this.setState({ messages: data });
+        this.setState({
+          messages: data,
+          sourceLanguage: 'es',
+        });
+        // if (targetLanguage !== 'es') {       Traducir todos los mensajes
+        //   await this.translateMessage();
+        // }
       })
       .catch((err) => {
         console.log(err);
@@ -611,14 +618,14 @@ class Messages extends Component {
   async handleSubmit(event) {
     event.preventDefault();
     const { targetLanguage, sourceLanguage } = this.state;
-    console.log(sourceLanguage);
-    console.log(targetLanguage);
-    await this.translateMessage().then(() => {
-      this.setState({
-        loading: false,
-        sourceLanguage: targetLanguage,
+    if (sourceLanguage !== targetLanguage) {
+      await this.translateMessage().then(() => {
+        this.setState({
+          loading: false,
+          sourceLanguage: targetLanguage,
+        });
       });
-    });
+    }
   }
 
   async translateMessage() {

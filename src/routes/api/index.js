@@ -19,26 +19,31 @@ function ExceptionName(mensaje) {
 router.post('api.translate', '/translate', async (ctx) => {
   const { messages, targetLanguage, sourceLanguage } = ctx.request.body;
   const promises = [];
-  for (let i = 0; i < messages.length; i++) {
-    promises.push(
-      axios({
-        method: 'GET',
-        url: 'https://systran-systran-platform-for-language-processing-v1.p.rapidapi.com/translation/text/translate',
-        headers: translatorConfig,
-        params: {
-          source: sourceLanguage,
-          target: targetLanguage,
-          input: messages[i].attributes.text,
-        },
-      }).then((response) => {
-        messages[i].attributes.text = response.data.outputs[0].output;
-      }),
-    );
+  try {
+    for (let i = 0; i < messages.length; i++) {
+      promises.push(
+        axios({
+          method: 'GET',
+          url: 'https://systran-systran-platform-for-language-processing-v1.p.rapidapi.com/translation/text/translate',
+          headers: translatorConfig,
+          params: {
+            source: sourceLanguage,
+            target: targetLanguage,
+            input: messages[i].attributes.text.replace(/\n/g, ''),
+          },
+        }).then((response) => {
+          messages[i].attributes.text = response.data.outputs[0].output;
+        }),
+      );
+    }
+    await Promise.all(promises).then(() => {
+      ctx.body = JSON.stringify(messages);
+      ctx.status = 200;
+    });
+  } catch (error) {
+    ctx.body = error;
+    ctx.status = 400;
   }
-  await Promise.all(promises).then(() => {
-    ctx.body = JSON.stringify(messages);
-    ctx.status = 200;
-  });
 });
 
 router.patch('api.upload', '/upload', async (ctx) => {
