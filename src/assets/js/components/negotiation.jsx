@@ -113,21 +113,19 @@ function Negotiations(props) {
             </div>
             <div>
               { negotiationsList.map((negotiation) => (
-                <>
-                  <div key={negotiation.id} className={`${actualNegotiation === negotiation.id ? 'actual' : ''} notification seen row`}>
-                    <div className="top" onClick={openNegotiation} value={negotiation.id} />
-                    <div className="bottom">
-                      { negotiation.attributes.customer.id !== currentUser.id
-                        ? <span>{negotiation.attributes.customer.username}</span>
-                        : <span>{negotiation.attributes.seller.username}</span> }
-                      <span>
-                        {negotiation.attributes.state === 'Accepted'
-                          ? 'Aceptada'
-                          : negotiation.attributes.state === 'Cancelled' ? 'Cancelada' : 'En Progreso'}
-                      </span>
-                    </div>
+                <div key={negotiation.id} className={`${actualNegotiation === negotiation.id ? 'actual' : ''} notification seen row`}>
+                  <div className="top" onClick={openNegotiation} value={negotiation.id} />
+                  <div className="bottom">
+                    { negotiation.attributes.customer.id !== currentUser.id
+                      ? <span>{negotiation.attributes.customer.username}</span>
+                      : <span>{negotiation.attributes.seller.username}</span> }
+                    <span>
+                      {negotiation.attributes.state === 'Accepted'
+                        ? 'Aceptada'
+                        : negotiation.attributes.state === 'Cancelled' ? 'Cancelada' : 'En Progreso'}
+                    </span>
                   </div>
-                </>
+                </div>
               ))}
             </div>
           </div>
@@ -317,15 +315,15 @@ class Negotiation extends Component {
   }
 
   actualObjects(id) {
-    let value = '';
+    let value = true;
     const { data, negotiation } = this.state;
     data.map((element) => {
       element.attributes.negotiations.map((negotiationObjects) => {
         if ((negotiation.id === negotiationObjects.id.toString()
         || element.attributes.state === false) && id === element.id) {
-          value = 'disabled';
+          value = false;
         } else if (negotiation.attributes.state === 'Cancelled' || negotiation.attributes.state === 'Accepted') {
-          value = 'disabled';
+          value = false;
         }
       });
     });
@@ -336,8 +334,8 @@ class Negotiation extends Component {
     event.preventDefault();
     const { url } = this.props;
     const { socket } = this.state;
-    const negotiationId = event.target.negotiationId.value;
-    const objectId = event.target.objectId.value;
+    const negotiationId = event.target.childNodes[0].value;
+    const objectId = event.target.childNodes[1].value;
     const ur = `${url}/api/${negotiationId}/object`;
     const body = { negotiationId, objectId, add: 'Añadir' };
     await axios.post(ur, body)
@@ -356,8 +354,8 @@ class Negotiation extends Component {
     event.preventDefault();
     const { url } = this.props;
     const { socket } = this.state;
-    const negotiationId = event.target.negotiationId.value;
-    const objectId = event.target.objectId.value;
+    const negotiationId = event.target.childNodes[0].value;
+    const objectId = event.target.childNodes[1].value;
     const ur = `${url}/api/${negotiationId}/object`;
     const body = { negotiationId, objectId, _method: 'delete' };
     await axios.post(ur, body)
@@ -444,8 +442,21 @@ class Submit extends Component {
 
     this.state = {
       reviewForm: false,
+      other: null,
+      loading: true,
     };
     this.openReviewSubmit = this.openReviewSubmit.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
+  }
+
+  componentDidMount() {
+    const { negotiation, currentUser } = this.props;
+    if (negotiation.attributes['customer-id'] === currentUser.id) {
+      this.setState({ other: 'Seller' });
+    } else if (negotiation.attributes['seller-id'] === currentUser.id) {
+      this.setState({ other: 'Customer' });
+    }
+    this.setState({ loading: false });
   }
 
   openReviewSubmit(event) {
@@ -460,7 +471,9 @@ class Submit extends Component {
       negotiation, currentUser, review, submitReview, submitNegotiation,
     } = this.props;
 
-    const { reviewForm } = this.state;
+    const { reviewForm, other, loading } = this.state;
+
+    if (loading) return <p />;
 
     // Aqui se ponen las estrellas
     if (reviewForm) {
@@ -500,10 +513,11 @@ class Submit extends Component {
         stars.push('');
       }
     }
+
     return (
       <div className="flexbox-container">
         <input type="hidden" id="currentUser" value={currentUser.id} />
-        { negotiation.attributes.state === 'In Progress' ? (
+        { (negotiation.attributes.state === 'In Progress') ? (
           <>
             <form onSubmit={submitNegotiation} method="POST">
               <input type="hidden" name="state" value="Accepted" />
@@ -513,6 +527,19 @@ class Submit extends Component {
             <form onSubmit={submitNegotiation} method="POST">
               <input type="hidden" name="state" value="Cancelled" />
               <input type="submit" value="Cancelar Negociación" className="btn" />
+            </form>
+          </>
+        ) : (negotiation.attributes.state === other ? (
+          <>
+            <span>La otra persona esta esperando a que aceptes</span>
+            <form onSubmit={submitNegotiation} method="POST">
+              <input type="hidden" name="state" value="Accepted" />
+              <input type="submit" value="Aceptar Oferta" className="btn" />
+            </form>
+
+            <form onSubmit={submitNegotiation} method="POST">
+              <input type="hidden" name="state" value="In Progress" />
+              <input type="submit" value="Quiero hacer cambios" className="btn" />
             </form>
           </>
         ) : (negotiation.attributes.state === 'Accepted' ? (
@@ -525,7 +552,9 @@ class Submit extends Component {
           <div className="form">
             Es una pena que no haya funcionado el X-Change ;(
           </div>
-        ) : (negotiation.attributes.state !== 'In Progress' && negotiation.attributes.state !== 'Cancelled' && negotiation.attributes.state !== 'Accepted' && (
+        ) : (negotiation.attributes.state !== 'In Progress'
+        && negotiation.attributes.state !== 'Cancelled'
+        && negotiation.attributes.state !== 'Accepted' && (
           <div className="form">
             Ahora debes esperar a que acepte la negociación
             <form onSubmit={submitNegotiation} method="POST">
@@ -533,7 +562,7 @@ class Submit extends Component {
               <input type="submit" value="No estoy Listo" className="btn" />
             </form>
           </div>
-        )))
+        ))))
         )}
         { review ? (
           <div className="border" id="review">
@@ -698,39 +727,36 @@ function AvailableObjectList(props) {
   const { data, negotiation, quitarObjeto } = props;
   return (
     <div className="neg_obj_list form">
-      <table>
-        <thead className="head">
-          <tr>
-            <th>Nombre</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div>
+        <div className="head">
+          <span>Nombre</span>
+        </div>
+        <div>
           { data.map((element) => (
             element.attributes.negotiations.map((object) => (
-              // eslint-disable-next-line radix
-              negotiation.attributes.state !== 'Cancelled' && object.objectNegotiation.negotiationId === parseInt(negotiation.id) && (
-              <tr key={element.id}>
-                {(element.attributes.photos[0]
-                  ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
-                  : <td><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></td>
-                  )}
-                <td>{element.attributes.name}</td>
-                {quitarObjeto && (
-                  <td>
-                    <form method="DEL" onSubmit={quitarObjeto}>
-                      <input type="hidden" name="_method" value="delete" />
+              negotiation.attributes.state !== 'Cancelled'
+              && object.objectNegotiation.negotiationId === parseInt(negotiation.id, 10)
+              && (
+                <div key={element.id} className="row">
+                  {negotiation.attributes.state === 'In Progress' && (
+                    <div className="top" onClick={quitarObjeto}>
                       <input type="hidden" name="negotiationId" value={negotiation.id} />
                       <input type="hidden" name="objectId" value={element.id} />
-                      <input type="submit" value="Quitar" className="btn float-r" disabled={(negotiation.attributes.state === 'In Progress' ? '' : 'disabled')} />
-                    </form>
-                  </td>
-                )}
-              </tr>
+                    </div>
+                  )}
+                  <div className="bottom">
+                    {(element.attributes.photos[0]
+                      ? <span><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></span>
+                      : <span><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></span>
+                      )}
+                    <span>{element.attributes.name}</span>
+                  </div>
+                </div>
               )
             ))
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 }
@@ -741,44 +767,40 @@ function TradingObjectList(props) {
   } = props;
   return (
     <div className="neg_obj_list">
-      <table className="form">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Categoria</th>
-            <th>Añadir a la Negociación</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div className="form">
+        <div>
+          <span>Nombre</span>
+          <span>Categoria</span>
+        </div>
+        <div>
           { data.map((element) => (
-            <tr key={element.id}>
-              {(element.attributes.photos[0]
-                ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
-                : <td><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></td>
+            <>
+              {añadirObjeto
+              && element.state !== false
+              && actualObjects(element.id)
+              && (
+              <div key={element.id} className="row">
+                {negotiation.attributes.state === 'In Progress' && (
+                  <div className="top" onClick={añadirObjeto}>
+                    <input type="hidden" name="negotiationId" value={negotiation.id} />
+                    <input type="hidden" name="objectId" value={element.id} />
+                  </div>
+                )}
+                <div className="bottom">
+                  {(element.attributes.photos[0]
+                    ? <span><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></span>
+                    : <span><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></span>
+                  )}
+                  <span>{element.attributes.name}</span>
+                  <span>{element.attributes.category.name}</span>
+                </div>
+              </div>
               )}
-              <td>{element.attributes.name}</td>
-              <td>{element.attributes.category.name}</td>
-              {añadirObjeto && element.state !== false && (
-              <td>
-                <form method="POST" onSubmit={añadirObjeto}>
-                  <input type="hidden" name="negotiationId" value={negotiation.id} />
-                  <input type="hidden" name="objectId" value={element.id} />
-                  <ActualButton disabled={actualObjects(element.id)} />
-                </form>
-              </td>
-              )}
-            </tr>
+            </>
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
-  );
-}
-
-function ActualButton(props) {
-  const { disabled } = props;
-  return (
-    <input type="submit" name="add" value="Añadir" className="btn float-r" disabled={disabled} />
   );
 }
 

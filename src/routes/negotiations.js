@@ -73,12 +73,14 @@ router.patch('negotiations.update', '/:id', loadNegotiation, async (ctx) => {
   const iAm = (currentUser.id === negotiation.customerId) ? 'Customer' : 'Seller';
   if (negotiation.state === 'In Progress' && state !== 'Cancelled') {
     negotiation.state = iAm;
-  } else if (negotiation.state === 'Customer' && iAm === 'Seller') {
-    negotiation.state = 'Accepted';
+  } else if (negotiation.state !== 'Accepted' && state === 'In Progress') {
+    negotiation.state = state;
   } else if (negotiation.state === 'Seller' && iAm === 'Customer') {
     negotiation.state = 'Accepted';
-  } else if (negotiation.state !== 'Accepted') {
-    negotiation.state = state;
+  } else if (negotiation.state === 'Customer' && iAm === 'Seller') {
+    negotiation.state = 'Accepted';
+  } else if (state === 'Cancelled') {
+    negotiation.state = 'Cancelled';
   }
   if (negotiation.state === 'Accepted') {
     const objectNegotiation = await ctx.orm.objectNegotiation.findAll({
