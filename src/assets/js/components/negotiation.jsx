@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import io from '../../../../node_modules/socket.io-client/dist/socket.io';
 
 const axios = require('axios');
-const translatorConfig = require('../../../config/translator');
 
 class NegotiationsList extends Component {
   constructor(props) {
@@ -624,24 +623,19 @@ class Messages extends Component {
 
   async translateMessage() {
     this.setState({ loading: true });
+    let { url } = this.props;
     const { messages, targetLanguage, sourceLanguage } = this.state;
-    messages.forEach(async (item) => {
-      axios({
-        method: 'GET',
-        url: 'https://systran-systran-platform-for-language-processing-v1.p.rapidapi.com/translation/text/translate',
-        headers: translatorConfig,
-        params: {
-          source: sourceLanguage,
-          target: targetLanguage,
-          input: item.attributes.text,
-        },
-      })
-        .then((response) => {
-          item.attributes.text = response.data.outputs[0].output;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    url = `${url}/api/translate`;
+    const data = {
+      messages,
+      targetLanguage,
+      sourceLanguage,
+    };
+    await axios.post(url, data).then((res) => {
+      this.setState({
+        loading: false,
+        messages: res.data,
+      });
     });
   }
 

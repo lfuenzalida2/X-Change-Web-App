@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 module.exports = {
   'content-type': 'application/octet-stream',
   'x-rapidapi-host': process.env.RAPIDAPI_HOST,
