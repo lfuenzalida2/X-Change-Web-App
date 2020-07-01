@@ -3,16 +3,49 @@
     margin: 1%;
 }
 
-#negotiations-list{
-    margin-left: 100px;
+.negotiation-images{
+    max-height: 100px;
+    height: auto;
+  }
+
+.fixed-width-negotiation {
+    max-width: 400px;
+    margin: 0;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.form h3 {
+    margin: 0;
 }
 
 .neg_obj_list{
+    background-color: #cccccc;
     width: 100%;
     margin: 1%;
     height: 250px;
     overflow-y: scroll;
     overflow-x: hidden;
+}
+
+.negotiation_layout {
+    padding: 10px;
+    padding-top: 0;
+    background-color: rgb(235, 235, 235);
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+.submit-container {
+    display: flex;
+    width: 600px;
+}
+
+#negotiation {
+    display: flex;
 }
 
 #negotiation_objects{
@@ -35,8 +68,22 @@ tr{
     background-color: #EE3D3D;
 }
 
+.negotiation {
+    cursor: pointer;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border-bottom: 2px solid gray;
+    background-color: white;
+    color: black;
+    opacity: 1.0;
+  }
+
+.negotiation:hover {
+    opacity: 0.6;
+}
+
 .actual {
-    background-color: #cccccc;
+    opacity: 0.6;
 }
 
 .top {
@@ -48,13 +95,31 @@ tr{
 }
 
 .bottom {
+    padding: 5px;
     z-index: -1;
     height: inherit;
     width: inherit;
+    display: flex;
 }
 
 .row {
     padding: 0;
+    margin: 10px;
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 7px;
     width: 380px;
     height: 40px;
+}
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: green;
+}
+
+.blue {
+    background-color: blue;
 }

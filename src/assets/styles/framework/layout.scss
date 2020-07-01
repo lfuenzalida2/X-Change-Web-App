@@ -125,11 +125,6 @@ h1 {
   padding-right: .3rem;
 }
 
-.negotiation-images{
-  max-height: 100px;
-  height: auto;
-}
-
 .item{
   margin: auto;
 }
@@ -145,7 +140,7 @@ h1 {
 .form{
   border-radius: 15px;
   padding: 10px;
-  background-color: lightgray;
+  background-color: rgb(235, 235, 235);
 }
 
 .center{
@@ -167,19 +162,6 @@ h1 {
 
 input{
   border-radius: 5px;
-}
-
-.fixed-width-form{
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 400px;
-}
-
-.fixed-width-negotiation{
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .fixed-width-xlg{
@@ -267,7 +249,7 @@ textarea{
 }
 
 #send-btn {
-  width: 20%;
+  height: auto;
 }
 
 .wrapper-textarea {
@@ -286,11 +268,6 @@ li{
 #search{
   width: 100%;
   max-width: 1000px;
-}
-
-#review{
-  padding: 10px;
-  padding-top: 0;
 }
 
 .wrapper-me {
