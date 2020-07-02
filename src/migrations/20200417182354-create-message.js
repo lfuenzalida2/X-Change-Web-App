@@ -15,6 +15,9 @@ module.exports = {
     text: {
       type: Sequelize.TEXT,
     },
+    language: {
+      type: Sequelize.STRING,
+    },
     negotiationId: {
       type: Sequelize.INTEGER,
     },

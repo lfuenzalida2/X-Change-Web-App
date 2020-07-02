@@ -17,24 +17,26 @@ function ExceptionName(mensaje) {
 }
 
 router.post('api.translate', '/translate', async (ctx) => {
-  const { messages, targetLanguage, sourceLanguage } = ctx.request.body;
+  const { messages, targetLanguage } = ctx.request.body;
   const promises = [];
   try {
     for (let i = 0; i < messages.length; i++) {
-      promises.push(
-        axios({
-          method: 'GET',
-          url: 'https://systran-systran-platform-for-language-processing-v1.p.rapidapi.com/translation/text/translate',
-          headers: translatorConfig,
-          params: {
-            source: sourceLanguage,
-            target: targetLanguage,
-            input: messages[i].attributes.text.replace(/\n/g, ''),
-          },
-        }).then((response) => {
-          messages[i].attributes.text = response.data.outputs[0].output;
-        }),
-      );
+      if (messages[i].attributes.language !== targetLanguage) {
+        promises.push(
+          axios({
+            method: 'GET',
+            url: 'https://systran-systran-platform-for-language-processing-v1.p.rapidapi.com/translation/text/translate',
+            headers: translatorConfig,
+            params: {
+              source: messages[i].attributes.language,
+              target: targetLanguage,
+              input: messages[i].attributes.text.replace(/\n/g, ''),
+            },
+          }).then((response) => {
+            messages[i].attributes.text = response.data.outputs[0].output;
+          }),
+        );
+      }
     }
     await Promise.all(promises).then(() => {
       ctx.body = JSON.stringify(messages);
@@ -101,7 +103,7 @@ router.get('api.negotiation.messagges', '/messagges/:id', async (ctx) => {
   const negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
   const messaggesList = await negotiation.getMessages();
   ctx.body = ctx.jsonSerializer('messagge', {
-    attributes: ['senderId', 'receiverId', 'text', 'createdAt'],
+    attributes: ['senderId', 'receiverId', 'text', 'language', 'createdAt'],
   }).serialize(messaggesList);
 });
 

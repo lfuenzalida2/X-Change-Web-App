@@ -566,7 +566,7 @@ class Messages extends Component {
     this.whenMounting = this.whenMounting.bind(this);
     this.scrollBottom = this.scrollBottom.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChangeTarget = this.handleChangeTarget.bind(this);
     this.translateMessage = this.translateMessage.bind(this);
   }
 
@@ -588,7 +588,6 @@ class Messages extends Component {
 
   async getMessages() {
     const { url, negotiation } = this.props;
-    const { targetLanguage } = this.state;
     // Obtain messages
     await axios({
       method: 'get',
@@ -598,18 +597,15 @@ class Messages extends Component {
         const { data } = res.data;
         this.setState({
           messages: data,
-          sourceLanguage: 'es',
         });
-        if (targetLanguage !== 'es') {
-          await this.translateMessage();
-        }
+        await this.translateMessage();
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  handleChange(event) {
+  handleChangeTarget(event) {
     this.setState({
       targetLanguage: event.target.value,
     });
@@ -621,7 +617,6 @@ class Messages extends Component {
     if (sourceLanguage !== targetLanguage) {
       await this.translateMessage().then(() => {
         this.setState({
-          loading: false,
           sourceLanguage: targetLanguage,
         });
       });
@@ -630,12 +625,11 @@ class Messages extends Component {
 
   async translateMessage() {
     let { url } = this.props;
-    const { messages, targetLanguage, sourceLanguage } = this.state;
+    const { messages, targetLanguage } = this.state;
     url = `${url}/xchange/translate`;
     const data = {
       messages,
       targetLanguage,
-      sourceLanguage,
     };
     await axios.post(url, data).then((res) => {
       this.setState({
@@ -664,13 +658,15 @@ class Messages extends Component {
       otherUser,
       socket,
     } = this.props;
+    const { sourceLanguage } = this.state;
     const ur = `${url}/messages/`;
     const senderId = currentUser.id;
     const negotiationId = negotiation.id;
     const receiverId = otherUser;
     const text = event.target.m.value;
+    const language = sourceLanguage;
     const body = {
-      negotiationId, senderId, receiverId, text,
+      negotiationId, senderId, receiverId, text, language,
     };
     event.target.m.value = '';
     await axios.post(ur, body)
@@ -691,14 +687,22 @@ class Messages extends Component {
     return (
       <div id="chat">
         <form onSubmit={this.handleSubmit}>
-          <select value={this.state.targetLanguage} onChange={this.handleChange}>
-            <option value="es">Español</option>
-            <option value="en">Inglés</option>
-            <option value="de">Alemán</option>
-            <option value="fr">Francés</option>
-            <option value="it">Italiano</option>
-            <option value="pt">Portugués</option>
-          </select>
+          <div>
+            <p>Desde: {this.state.sourceLanguage}</p>
+          </div>
+          <div>
+            <label>
+              Hacia:
+              <select value={this.state.targetLanguage} onChange={this.handleChangeTarget}>
+                <option value="es">Español</option>
+                <option value="en">Inglés</option>
+                <option value="de">Alemán</option>
+                <option value="fr">Francés</option>
+                <option value="it">Italiano</option>
+                <option value="pt">Portugués</option>
+              </select>
+            </label>
+          </div>
           <input type="submit" value="Traducir" />
         </form>
         <div id="messages" ref={this.messagesRef}>
