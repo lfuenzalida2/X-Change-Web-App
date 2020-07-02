@@ -556,6 +556,7 @@ class Messages extends Component {
       messages: null,
       sourceLanguage: 'es',
       targetLanguage: 'es',
+      translate: false,
     };
     // This lets us refer to a Html element
     this.send = React.createRef();
@@ -588,6 +589,7 @@ class Messages extends Component {
 
   async getMessages() {
     const { url, negotiation } = this.props;
+    const { translate } = this.state;
     // Obtain messages
     await axios({
       method: 'get',
@@ -598,7 +600,9 @@ class Messages extends Component {
         this.setState({
           messages: data,
         });
-        await this.translateMessage();
+        if (translate) {
+          await this.translateMessage();
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -618,6 +622,7 @@ class Messages extends Component {
       await this.translateMessage().then(() => {
         this.setState({
           sourceLanguage: targetLanguage,
+          translate: true,
         });
       });
     }
@@ -687,9 +692,6 @@ class Messages extends Component {
     return (
       <div id="chat">
         <form onSubmit={this.handleSubmit}>
-          <div>
-            <p>Desde: {this.state.sourceLanguage}</p>
-          </div>
           <div>
             <label>
               Hacia:
