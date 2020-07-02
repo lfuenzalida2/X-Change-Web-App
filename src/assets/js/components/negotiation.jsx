@@ -20,7 +20,7 @@ class NegotiationsList extends Component {
     const { url } = this.props;
     await axios({
       method: 'get',
-      url: `${url}/api/negotiations/`,
+      url: `${url}/xchange/negotiations/`,
     })
       .then(async (res) => {
         const { data } = res.data;
@@ -31,7 +31,7 @@ class NegotiationsList extends Component {
 
     await axios({
       method: 'get',
-      url: `${url}/api/current_user/`,
+      url: `${url}/xchange/current_user/`,
     })
       .then(async (res) => {
         const { data } = res.data;
@@ -165,7 +165,7 @@ class Negotiation extends Component {
     // Obtain messages
     await axios({
       method: 'get',
-      url: `${url}/api/review/${id}/${currentUser.id}/${otherUser}`,
+      url: `${url}/xchange/review/${id}/${currentUser.id}/${otherUser}`,
     })
       .then(async (res) => {
         const { data } = res.data;
@@ -181,7 +181,7 @@ class Negotiation extends Component {
     // Obtain messages
     await axios({
       method: 'get',
-      url: `${url}/api/messagges/${id}`,
+      url: `${url}/xchange/messagges/${id}`,
     })
       .then(async (res) => {
         const { data } = res.data;
@@ -196,7 +196,7 @@ class Negotiation extends Component {
     const { id, url } = this.props;
     await axios({
       method: 'get',
-      url: `${url}/api/negotiation/${id}`,
+      url: `${url}/xchange/negotiation/${id}`,
     })
       .then(async (res) => {
         this.setState({ otherName: res.data.other });
@@ -210,7 +210,7 @@ class Negotiation extends Component {
     const { id, url } = this.props;
     await axios({
       method: 'get',
-      url: `${url}/api/${id}`,
+      url: `${url}/xchange/${id}`,
     })
       .then(async (res) => {
         this.setState({ data: res.data.data });
@@ -223,7 +223,7 @@ class Negotiation extends Component {
     const { id, url } = this.props;
     await axios({
       method: 'get',
-      url: `${url}/api/other/${id}`,
+      url: `${url}/xchange/other/${id}`,
     })
       .then(async (res) => {
         this.setState({ otherData: res.data.data });
@@ -320,7 +320,7 @@ class Negotiation extends Component {
     const { socket } = this.state;
     const negotiationId = event.target.negotiationId.value;
     const objectId = event.target.objectId.value;
-    const ur = `${url}/api/${negotiationId}/object`;
+    const ur = `${url}/xchange/${negotiationId}/object`;
     const body = { negotiationId, objectId, add: 'Añadir' };
     await axios.post(ur, body)
       .then(async (res) => {
@@ -340,7 +340,7 @@ class Negotiation extends Component {
     const { socket } = this.state;
     const negotiationId = event.target.negotiationId.value;
     const objectId = event.target.objectId.value;
-    const ur = `${url}/api/${negotiationId}/object`;
+    const ur = `${url}/xchange/${negotiationId}/object`;
     const body = { negotiationId, objectId, _method: 'delete' };
     await axios.post(ur, body)
       .then((res) => {
@@ -586,7 +586,7 @@ class Messages extends Component {
     // Obtain messages
     await axios({
       method: 'get',
-      url: `${url}/api/messagges/${negotiation.id}`,
+      url: `${url}/xchange/messagges/${negotiation.id}`,
     })
       .then(async (res) => {
         const { data } = res.data;
