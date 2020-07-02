@@ -32,7 +32,7 @@ class ObjectForm extends Component {
     const { url } = this.props;
     await axios({
       method: 'get',
-      url: `${url}/api/categories`,
+      url: `${url}/xchange/categories`,
     })
       .then(async (res) => {
         this.setState({ categories: res.data.data, loading: false });
@@ -55,7 +55,7 @@ class ObjectForm extends Component {
     event.preventDefault();
     const { url } = this.props;
     const { name, categoryId, description } = event.target;
-    const ur = `${url}/api/object_create`;
+    const ur = `${url}/xchange/object_create`;
     const body = {
       name: name.value, categoryId: categoryId.value, description: description.value,
     };
