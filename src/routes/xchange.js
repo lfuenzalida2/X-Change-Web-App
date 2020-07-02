@@ -5,8 +5,6 @@ const fileStorage = require('../services/file-storage');
 const translatorConfig = require('../config/translator');
 
 const router = new KoaRouter();
-
-
 function sortByDateDesc(a, b) {
   return -(new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime());
 }
@@ -48,7 +46,7 @@ router.post('api.translate', '/translate', async (ctx) => {
   }
 });
 
-router.patch('api.upload', '/upload', async (ctx) => {
+router.patch('xchange.upload', '/upload', async (ctx) => {
   try {
     if (!ctx.request) {
       throw new ExceptionName('No hay archivos para subir');
@@ -66,7 +64,8 @@ router.patch('api.upload', '/upload', async (ctx) => {
   }
 });
 
-router.get('api.negotiation.get.negotiations', '/negotiations', async (ctx) => {
+
+router.get('xchange.negotiation.get.negotiations', '/negotiations', async (ctx) => {
   const users = await ctx.orm.user;
   const currentUser = await ctx.state.currentUser;
   const negotiationsList = await ctx.orm.negotiation.findAll({
@@ -82,14 +81,14 @@ router.get('api.negotiation.get.negotiations', '/negotiations', async (ctx) => {
   }).serialize(negotiationsList);
 });
 
-router.get('api.current.user', '/current_user', async (ctx) => {
+router.get('xchange.current.user', '/current_user', async (ctx) => {
   const currentUser = await ctx.state.currentUser;
   ctx.body = ctx.jsonSerializer('currentUser', {
     attributes: ['id', 'username', 'profilePicture'],
   }).serialize(currentUser);
 });
 
-router.get('api.negotiation.review', '/review/:id/:rid/:red', async (ctx) => {
+router.get('xchange.negotiation.review', '/review/:id/:rid/:red', async (ctx) => {
   const { id, rid, red } = ctx.params;
   const review = await ctx.orm.review.findOne({
     where: { negotiationId: id, reviewerId: rid, reviewedId: red },
@@ -99,7 +98,7 @@ router.get('api.negotiation.review', '/review/:id/:rid/:red', async (ctx) => {
   }).serialize(review);
 });
 
-router.get('api.negotiation.messagges', '/messagges/:id', async (ctx) => {
+router.get('xchange.negotiation.messagges', '/messagges/:id', async (ctx) => {
   const negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
   const messaggesList = await negotiation.getMessages();
   ctx.body = ctx.jsonSerializer('messagge', {
@@ -107,14 +106,14 @@ router.get('api.negotiation.messagges', '/messagges/:id', async (ctx) => {
   }).serialize(messaggesList);
 });
 
-router.get('api.categories', '/categories', async (ctx) => {
+router.get('xchange.categories', '/categories', async (ctx) => {
   const categories = await ctx.orm.category.findAll();
   ctx.body = ctx.jsonSerializer('categories', {
     attributes: ['id', 'name'],
   }).serialize(categories);
 });
 
-router.post('api.objects.create', '/object_create', async (ctx) => {
+router.post('xchange.objects.create', '/object_create', async (ctx) => {
   const object = ctx.orm.object.build(ctx.request.body);
   const user = ctx.state.currentUser;
   try {
@@ -127,7 +126,7 @@ router.post('api.objects.create', '/object_create', async (ctx) => {
   }
 });
 
-router.get('api.objects.list', '/:id', async (ctx) => {
+router.get('xchange.objects.list', '/:id', async (ctx) => {
   const { currentUser } = ctx.state;
   const categories = ctx.orm.category;
   const negotiations = ctx.orm.negotiation;
@@ -141,7 +140,7 @@ router.get('api.objects.list', '/:id', async (ctx) => {
   }).serialize(objectsList);
 });
 
-router.get('api.objects.list_other', '/other/:id', async (ctx) => {
+router.get('xchange.objects.list_other', '/other/:id', async (ctx) => {
   const { currentUser } = ctx.state;
   const negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
   const categories = ctx.orm.category;
@@ -166,7 +165,7 @@ router.get('api.objects.list_other', '/other/:id', async (ctx) => {
   }
 });
 
-router.get('api.negotiation.get', '/negotiation/:id', async (ctx) => {
+router.get('xchange.negotiation.get', '/negotiation/:id', async (ctx) => {
   const { currentUser } = ctx.state;
   const negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
   let other;
@@ -181,14 +180,14 @@ router.get('api.negotiation.get', '/negotiation/:id', async (ctx) => {
   ctx.body.other = other.username;
 });
 
-router.del('api.object_del', '/:id/object', async (ctx) => {
+router.del('xchange.object_del', '/:id/object', async (ctx) => {
   ctx.state.negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
   const objectNegotiation = ctx.orm.objectNegotiation.build(ctx.request.body);
   await objectNegotiation.destroy();
-  ctx.redirect(ctx.router.url('api.objects.list', { id: ctx.params.id }));
+  ctx.redirect(ctx.router.url('xchange.objects.list', { id: ctx.params.id }));
 });
 
-router.post('api.object_add', '/:id/object', async (ctx) => {
+router.post('xchange.object_add', '/:id/object', async (ctx) => {
   const negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
   const objectNegotiation = ctx.orm.objectNegotiation.build(ctx.request.body);
   try {
@@ -196,7 +195,7 @@ router.post('api.object_add', '/:id/object', async (ctx) => {
     negotiation.changed('updatedAt', true);
     await negotiation.save();
     const respuesta = { status: 200, text: 'gucci la wea salió fina' };
-    ctx.redirect(ctx.router.url('api.objects.list', { id: ctx.params.id }));
+    ctx.redirect(ctx.router.url('xchange.objects.list', { id: ctx.params.id }));
   } catch (err) {
     const respuesta = { status: 400, text: 'miegda la wea se ha caido' };
     ctx.body = ctx.jsonSerializer('respuesta', {
