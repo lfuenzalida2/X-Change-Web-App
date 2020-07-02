@@ -89,7 +89,7 @@ class NegotiationsList extends Component {
           )
           : (
             <div className="negotiation-alternative center">
-              <h3>Hola!</h3>
+              <h3 className="text-style">Hola!</h3>
               <p>Haz click sobre cualquier negociación que tengas</p>
               <p>
                 El estado de una negociación se
@@ -107,6 +107,10 @@ class NegotiationsList extends Component {
                 <span className="dot red" />
                 <span>: significa que la negociación está &quot;Cancelada&quot;</span>
               </div>
+              <p className="text-style">
+                *Para agregar un objeto a la negociación haz click sobre su imagen, este luego pasará
+                a los objetos que tu estas ofreciendo!
+              </p>
             </div>
           )}
       </>
@@ -129,7 +133,7 @@ function Negotiations(props) {
         : (
           <div className="form scrollable">
             <div className="bottom">
-              <span>Usuario</span>
+              <span className="text-style">Usuario</span>
             </div>
             <div>
               { negotiationsList.map((negotiation) => (
