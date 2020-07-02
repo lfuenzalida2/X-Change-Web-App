@@ -20,7 +20,7 @@ class NegotiationsList extends Component {
     const { url } = this.props;
     await axios({
       method: 'get',
-      url: `${url}/api/negotiations/`,
+      url: `${url}/xchange/negotiations/`,
     })
       .then(async (res) => {
         const { data } = res.data;
@@ -31,7 +31,7 @@ class NegotiationsList extends Component {
 
     await axios({
       method: 'get',
-      url: `${url}/api/current_user/`,
+      url: `${url}/xchange/current_user/`,
     })
       .then(async (res) => {
         const { data } = res.data;
@@ -165,7 +165,7 @@ class Negotiation extends Component {
     // Obtain messages
     await axios({
       method: 'get',
-      url: `${url}/api/review/${id}/${currentUser.id}/${otherUser}`,
+      url: `${url}/xchange/review/${id}/${currentUser.id}/${otherUser}`,
     })
       .then(async (res) => {
         const { data } = res.data;
@@ -181,7 +181,7 @@ class Negotiation extends Component {
     // Obtain messages
     await axios({
       method: 'get',
-      url: `${url}/api/messagges/${id}`,
+      url: `${url}/xchange/messagges/${id}`,
     })
       .then(async (res) => {
         const { data } = res.data;
@@ -196,7 +196,7 @@ class Negotiation extends Component {
     const { id, url } = this.props;
     await axios({
       method: 'get',
-      url: `${url}/api/negotiation/${id}`,
+      url: `${url}/xchange/negotiation/${id}`,
     })
       .then(async (res) => {
         this.setState({ otherName: res.data.other });
@@ -210,7 +210,7 @@ class Negotiation extends Component {
     const { id, url } = this.props;
     await axios({
       method: 'get',
-      url: `${url}/api/${id}`,
+      url: `${url}/xchange/${id}`,
     })
       .then(async (res) => {
         this.setState({ data: res.data.data });
@@ -223,7 +223,7 @@ class Negotiation extends Component {
     const { id, url } = this.props;
     await axios({
       method: 'get',
-      url: `${url}/api/other/${id}`,
+      url: `${url}/xchange/other/${id}`,
     })
       .then(async (res) => {
         this.setState({ otherData: res.data.data });
@@ -233,7 +233,7 @@ class Negotiation extends Component {
   }
 
   async whenMounting() {
-    // API calls to get my objects, the other's object, negotiations info and messagges
+    // xchange calls to get my objects, the other's object, negotiations info and messagges
     await this.myObjects();
     await this.otherObjects();
     await this.getNegotiation();
@@ -320,7 +320,7 @@ class Negotiation extends Component {
     const { socket } = this.state;
     const negotiationId = event.target.negotiationId.value;
     const objectId = event.target.objectId.value;
-    const ur = `${url}/api/${negotiationId}/object`;
+    const ur = `${url}/xchange/${negotiationId}/object`;
     const body = { negotiationId, objectId, add: 'Añadir' };
     await axios.post(ur, body)
       .then(async (res) => {
@@ -340,7 +340,7 @@ class Negotiation extends Component {
     const { socket } = this.state;
     const negotiationId = event.target.negotiationId.value;
     const objectId = event.target.objectId.value;
-    const ur = `${url}/api/${negotiationId}/object`;
+    const ur = `${url}/xchange/${negotiationId}/object`;
     const body = { negotiationId, objectId, _method: 'delete' };
     await axios.post(ur, body)
       .then((res) => {
@@ -592,7 +592,7 @@ class Messages extends Component {
     // Obtain messages
     await axios({
       method: 'get',
-      url: `${url}/api/messagges/${negotiation.id}`,
+      url: `${url}/xchange/messagges/${negotiation.id}`,
     })
       .then(async (res) => {
         const { data } = res.data;
@@ -600,9 +600,9 @@ class Messages extends Component {
           messages: data,
           sourceLanguage: 'es',
         });
-        // if (targetLanguage !== 'es') {       Traducir todos los mensajes
-        //   await this.translateMessage();
-        // }
+        if (targetLanguage !== 'es') {
+          await this.translateMessage();
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -629,10 +629,9 @@ class Messages extends Component {
   }
 
   async translateMessage() {
-    this.setState({ loading: true });
     let { url } = this.props;
     const { messages, targetLanguage, sourceLanguage } = this.state;
-    url = `${url}/api/translate`;
+    url = `${url}/xchange/translate`;
     const data = {
       messages,
       targetLanguage,
@@ -640,7 +639,6 @@ class Messages extends Component {
     };
     await axios.post(url, data).then((res) => {
       this.setState({
-        loading: false,
         messages: res.data,
       });
     });

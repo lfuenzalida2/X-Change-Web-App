@@ -9,6 +9,7 @@ const options = {
   includeScore: true,
   shouldSort: true,
   includeMatches: true,
+  thereshold: 0.1,
   // Search in `name` and in 'description'
   keys: ['dataValues.name', 'dataValues.description'],
 };
