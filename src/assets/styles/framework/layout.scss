@@ -4,6 +4,11 @@ html, body {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+.topic {
+  font-weight: 600;
+  color: #24292e;
+}
+
 .max-lines {
   overflow: hidden;
    text-overflow: ellipsis;
