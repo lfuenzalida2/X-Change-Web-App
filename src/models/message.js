@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
+    language: {
+      type: DataTypes.STRING,
+      defaultValue: 'es',
+    },
   }, {});
 
   message.associate = function associate(models) {

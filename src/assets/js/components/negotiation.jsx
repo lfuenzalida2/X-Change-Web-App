@@ -233,7 +233,7 @@ class Negotiation extends Component {
   }
 
   async whenMounting() {
-    // API calls to get my objects, the other's object, negotiations info and messagges
+    // xchange calls to get my objects, the other's object, negotiations info and messagges
     await this.myObjects();
     await this.otherObjects();
     await this.getNegotiation();
@@ -554,6 +554,9 @@ class Messages extends Component {
     this.state = {
       loading: true,
       messages: null,
+      sourceLanguage: 'es',
+      targetLanguage: 'es',
+      translate: false,
     };
     // This lets us refer to a Html element
     this.send = React.createRef();
@@ -563,6 +566,9 @@ class Messages extends Component {
     this.getMessages = this.getMessages.bind(this);
     this.whenMounting = this.whenMounting.bind(this);
     this.scrollBottom = this.scrollBottom.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChangeTarget = this.handleChangeTarget.bind(this);
+    this.translateMessage = this.translateMessage.bind(this);
   }
 
   async componentDidMount() {
@@ -583,6 +589,7 @@ class Messages extends Component {
 
   async getMessages() {
     const { url, negotiation } = this.props;
+    const { translate } = this.state;
     // Obtain messages
     await axios({
       method: 'get',
@@ -590,11 +597,50 @@ class Messages extends Component {
     })
       .then(async (res) => {
         const { data } = res.data;
-        this.setState({ messages: data });
+        this.setState({
+          messages: data,
+        });
+        if (translate) {
+          await this.translateMessage();
+        }
       })
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  handleChangeTarget(event) {
+    this.setState({
+      targetLanguage: event.target.value,
+    });
+  }
+
+  async handleSubmit(event) {
+    event.preventDefault();
+    const { targetLanguage, sourceLanguage } = this.state;
+    if (sourceLanguage !== targetLanguage) {
+      await this.translateMessage().then(() => {
+        this.setState({
+          sourceLanguage: targetLanguage,
+          translate: true,
+        });
+      });
+    }
+  }
+
+  async translateMessage() {
+    let { url } = this.props;
+    const { messages, targetLanguage } = this.state;
+    url = `${url}/xchange/translate`;
+    const data = {
+      messages,
+      targetLanguage,
+    };
+    await axios.post(url, data).then((res) => {
+      this.setState({
+        messages: res.data,
+      });
+    });
   }
 
   scrollBottom() {
@@ -617,13 +663,15 @@ class Messages extends Component {
       otherUser,
       socket,
     } = this.props;
+    const { sourceLanguage } = this.state;
     const ur = `${url}/messages/`;
     const senderId = currentUser.id;
     const negotiationId = negotiation.id;
     const receiverId = otherUser;
     const text = event.target.m.value;
+    const language = sourceLanguage;
     const body = {
-      negotiationId, senderId, receiverId, text,
+      negotiationId, senderId, receiverId, text, language,
     };
     event.target.m.value = '';
     await axios.post(ur, body)
@@ -643,6 +691,22 @@ class Messages extends Component {
 
     return (
       <div id="chat">
+        <form onSubmit={this.handleSubmit}>
+          <div>
+            <label>
+              Hacia:
+              <select value={this.state.targetLanguage} onChange={this.handleChangeTarget}>
+                <option value="es">Español</option>
+                <option value="en">Inglés</option>
+                <option value="de">Alemán</option>
+                <option value="fr">Francés</option>
+                <option value="it">Italiano</option>
+                <option value="pt">Portugués</option>
+              </select>
+            </label>
+          </div>
+          <input type="submit" value="Traducir" />
+        </form>
         <div id="messages" ref={this.messagesRef}>
           { messages.map((message) => (
             <div key={message.id}>

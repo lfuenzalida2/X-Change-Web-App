@@ -1,9 +1,10 @@
 const KoaRouter = require('koa-router');
 const { Op } = require('sequelize');
+const axios = require('axios');
 const fileStorage = require('../services/file-storage');
+const translatorConfig = require('../config/translator');
 
 const router = new KoaRouter();
-
 function sortByDateDesc(a, b) {
   return -(new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime());
 }
@@ -12,6 +13,38 @@ function ExceptionName(mensaje) {
   this.mensaje = mensaje;
   this.nombre = 'ExceptionName';
 }
+
+router.post('api.translate', '/translate', async (ctx) => {
+  const { messages, targetLanguage } = ctx.request.body;
+  const promises = [];
+  try {
+    for (let i = 0; i < messages.length; i++) {
+      if (messages[i].attributes.language !== targetLanguage) {
+        promises.push(
+          axios({
+            method: 'GET',
+            url: 'https://systran-systran-platform-for-language-processing-v1.p.rapidapi.com/translation/text/translate',
+            headers: translatorConfig,
+            params: {
+              source: messages[i].attributes.language,
+              target: targetLanguage,
+              input: messages[i].attributes.text.replace(/\n/g, ''),
+            },
+          }).then((response) => {
+            messages[i].attributes.text = response.data.outputs[0].output;
+          }),
+        );
+      }
+    }
+    await Promise.all(promises).then(() => {
+      ctx.body = JSON.stringify(messages);
+      ctx.status = 200;
+    });
+  } catch (error) {
+    ctx.body = error;
+    ctx.status = 400;
+  }
+});
 
 router.patch('xchange.upload', '/upload', async (ctx) => {
   try {
@@ -30,6 +63,7 @@ router.patch('xchange.upload', '/upload', async (ctx) => {
     ctx.status = 400;
   }
 });
+
 
 router.get('xchange.negotiation.get.negotiations', '/negotiations', async (ctx) => {
   const users = await ctx.orm.user;
@@ -68,7 +102,7 @@ router.get('xchange.negotiation.messagges', '/messagges/:id', async (ctx) => {
   const negotiation = await ctx.orm.negotiation.findByPk(ctx.params.id);
   const messaggesList = await negotiation.getMessages();
   ctx.body = ctx.jsonSerializer('messagge', {
-    attributes: ['senderId', 'receiverId', 'text', 'createdAt'],
+    attributes: ['senderId', 'receiverId', 'text', 'language', 'createdAt'],
   }).serialize(messaggesList);
 });
 

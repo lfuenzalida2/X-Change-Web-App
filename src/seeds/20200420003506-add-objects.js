@@ -124,7 +124,7 @@ module.exports = {
       {
         userId: 5,
         categoryId: 5,
-        name: 'IdeaPad L340 15" Gaming - Black',
+        name: 'IdeaPad L340 15 Gaming - Black',
         state: true,
         description: 'Computador ideal para jugar. Recién comprado.',
         views: 10,
