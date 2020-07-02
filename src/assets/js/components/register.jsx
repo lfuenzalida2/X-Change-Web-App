@@ -148,32 +148,22 @@ class RegisterForm extends Component {
               <label htmlFor="username">Nombre de usuario</label>
               <input type="text" name="username" className="float-r" onBlurCapture={this.validUsername} />
             </div>
-            <br />
-            <br />
             <div>
               <label htmlFor="mail">Correo electrónico</label>
               <input type="text" name="mail" className="float-r" onBlurCapture={this.validEmail} />
             </div>
-            <br />
-            <br />
             <div>
               <label htmlFor="password">Contraseña</label>
               <input type="password" name="password" className={`${samePassword} float-r`} ref={this.passwordRef} onBlurCapture={this.checkPassword} />
             </div>
-            <br />
-            <br />
             <div>
               <label htmlFor="confirmPassword">Confirmar Contraseña</label>
               <input type="password" name="confirmPassword" className={`${samePassword} float-r`} ref={this.passwordConfirmRef} onChange={this.checkPassword} />
             </div>
-            <br />
-            <br />
             <div>
               <label htmlFor="number">Número de teléfono</label>
               <input type="number" name="number" className="float-r" onBlurCapture={this.validNumber} />
             </div>
-            <br />
-            <br />
             <div>
               <label htmlFor="region">Región</label>
               <select name="region" id="region" className="float-r">
@@ -194,13 +184,10 @@ class RegisterForm extends Component {
                 <option value="Valparaiso">Valparaíso</option>
               </select>
             </div>
-            <br />
-            <br />
             <div>
               <input type="submit" name="create" value="Crear cuenta!" className="btn" />
             </div>
           </form>
-          <br />
         </div>
       </>
     );

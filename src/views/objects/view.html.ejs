@@ -41,8 +41,8 @@
     </div>
     <% if(currentUser.id == object.userId) { %>
       <a href="<%= editObjectPath %>">Editar objeto</a>
-      <br>
-      <br>
+       
+       
     <% } %>
   </div>
 
@@ -81,7 +81,7 @@
 </div>
 
 <!-- The dots/circles -->
-<br>
+ 
 
 <div class="dots">
   <% for (var i = 0; i < photos.length; i++) { %>
@@ -89,7 +89,7 @@
  <% } %>
 </div>
 
-<br>
+ 
 
 <% if (currentUser.id == object.userId){ %>
   <form action="<%= submitObjectPath %>" enctype="multipart/form-data" method="post" >
@@ -97,7 +97,7 @@
       <label for="list">Seleccionar archivo</label>
       <input type="file" name="list" />
     </div>
-    <br>
+     
     <div class="field">
       <input type="submit" name="upload" value="Subir imagen" class="btn"/>
     </div>

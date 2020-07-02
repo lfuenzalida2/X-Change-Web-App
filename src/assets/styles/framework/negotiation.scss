@@ -1,5 +1,9 @@
 :root {
-    --objects-width: auto;
+    --color-1: #FFFFFF;
+    --color-2: rgb(235, 235, 235);
+    --color-3: #EBEBEB;
+    --color-4: ;
+    
 }
 
 .neg_layout{
@@ -36,7 +40,7 @@
 }
 
 .neg_obj_list{
-    background-color: #cccccc;
+    background-color: var(--color-1);
     width: 100%;
     margin: 1%;
     height: 250px;
@@ -51,7 +55,7 @@
 .negotiation_layout {
     padding: 10px;
     padding-top: 0;
-    background-color: rgb(235, 235, 235);
+    background-color: var(--color-2);
     width: 100%;
     border-radius: 10px;
     margin-top: 10px;
@@ -85,7 +89,7 @@ tr{
     padding: 10px;
     padding-left: 20px;
     padding-right: 20px;
-    background-color: rgb(235, 235, 235);
+    background-color: var(--color-2);
     border-radius: 10px;
     width: 100%;
 }
@@ -105,7 +109,7 @@ tr{
     padding-top: 7px;
     padding-bottom: 7px;
     border-bottom: 2px solid gray;
-    background-color: white;
+    background-color: var(--color-1);
     color: black;
     opacity: 1.0;
   }
@@ -119,7 +123,7 @@ tr{
 }
 
 .top {
-    position: fixed;
+    position: absolute;
     cursor: pointer;
     z-index: 9999;
     height: inherit;
@@ -128,6 +132,20 @@ tr{
 
 .trading-object-row .top {
     width: 25%;
+}
+
+.dropdown {
+    cursor: pointer;
+    background-color: var(--color-1);
+    border-radius: 5px;
+    border-color: var(--color-3);
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.18);
+    padding: 2px;
+    font-weight: bold;
+}
+
+.traductor {
+    margin-top: 10px;
 }
 
 .bottom {
@@ -180,7 +198,7 @@ tr{
     padding: 5px;
     padding-bottom: 0;
     border-radius: 10px;
-    background-color: #FFFFFF;
+    background-color: var(--color-1);
     opacity: 0.8;
 }
 
@@ -201,8 +219,6 @@ tr{
 .red {
     background-color: red;
 }
-
-
 
 .yellow {
     background-color: #ffd500;

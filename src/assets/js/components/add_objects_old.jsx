@@ -215,7 +215,6 @@ class Negotiation extends Component {
             </table>
           </div>
         </div>
-        <br />
         <div className="neg_layout">
           <div className="neg_obj_list">
             <table className="form">

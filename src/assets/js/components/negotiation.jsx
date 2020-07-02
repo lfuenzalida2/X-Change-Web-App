@@ -442,7 +442,6 @@ class Negotiation extends Component {
             />
           </div>
         </div>
-        <br />
         <div className="neg_layout">
           <div className="full-width">
             <h3>Mi Inventario</h3>
@@ -658,6 +657,7 @@ class Messages extends Component {
 
   async onKeyEnter(event) {
     if (event.keyCode === 13) {
+      event.preventDefault();
       this.send.current.click();
     }
   }
@@ -711,11 +711,12 @@ class Messages extends Component {
       messages,
       targetLanguage,
     };
-    await axios.post(url, data).then((res) => {
-      this.setState({
-        messages: res.data,
+    await axios.post(url, data)
+      .then((res) => {
+        this.setState({
+          messages: res.data,
+        });
       });
-    });
   }
 
   scrollBottom() {
@@ -762,15 +763,15 @@ class Messages extends Component {
     const { loading, messages, targetLanguage } = this.state;
     const { currentUser, negotiation } = this.props;
 
-    if (loading) return <p>Loading Messages...</p>;
+    if (loading) return <p>Cargando Mensajes...</p>;
 
     return (
       <div id="chat">
         <form onSubmit={this.handleSubmit}>
-          <div>
+          <div className="traductor">
             <label>
-              <span>Traducir al:</span>
-              <select value={targetLanguage} onChange={this.handleChangeTarget}>
+              <span className="text-style">Traducir al: &nbsp;</span>
+              <select value={targetLanguage} onChange={this.handleChangeTarget} className="dropdown">
                 <option value="es">Español</option>
                 <option value="en">Inglés</option>
                 <option value="de">Alemán</option>

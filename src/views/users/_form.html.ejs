@@ -7,7 +7,6 @@
         <h1>Actualiza al usuario <%= newUser.username %></h1>
         <% } %>
     </div>
-    <br>
 
     <div class="flex-item bg-gray">
         <% if (locals.errors) { %>
@@ -28,27 +27,27 @@
                 <label for="username" class="">Username</label>
                 <input type="text" name="username" value="<%= newUser.username %>" class="float-r"/>
             </div>
-            <br>
+             
             <div>
                 <label for="mail">mail</label>
                 <input type="text" name="mail" value="<%= newUser.mail %>" class="float-r"/>
             </div>
-            <br>
+             
             <div>
                 <label for="password">password</label>
                 <input type="password" name="password" class="float-r"/>
             </div>
-            <br>
+             
             <div>
                 <label for="confirm_password">confirm password</label>
                 <input type="password" name="confirm_password" value="<%= newUser.confirm_password %>" class="float-r"/>
             </div>
-            <br>
+             
             <div>
                 <label for="number">number</label>
                 <input type="number" name="number" value="<%= newUser.number %>" class="float-r"/>
             </div>
-            <br>
+             
             <div>
                 <label for="region">Region</label>
                 <select name="region" value="<%= newUser.region %>" id="region" class="float-r">
@@ -69,9 +68,9 @@
                   <option value="Valparaiso">Valparaíso</option>
                 </select>
             </div>
-            <br>
+             
 
-            <br>
+             
 
             <div>
                 <% if (newUser.isNewRecord) { %>
@@ -82,6 +81,6 @@
 
             </div>
         </form>
-        <br>
+         
     </div>
 </div>

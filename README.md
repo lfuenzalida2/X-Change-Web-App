@@ -13,17 +13,17 @@ La navegabilidad de la página se puede hacer completamente a partir de botones 
 
 # Servicios de terceros
 
-Para levantar la página Web usamos Heroku <br>
-Para almacenar las imágenes e iconos de la aplicación en la nube usamos Amazon S3<br>
-Las contraseñas estan encriptadas con el paquete `bcrypt`<br>
-Para enviar emails utilizamos los servicios de Sendgrid<br>
+Para levantar la página Web usamos Heroku  
+Para almacenar las imágenes e iconos de la aplicación en la nube usamos Amazon S3 
+Las contraseñas estan encriptadas con el paquete `bcrypt` 
+Para enviar emails utilizamos los servicios de Sendgrid 
 Utilizamos el paquete `socket.io` para establecer conexiones en tiempo real, implementadas en el chat de las negociaciones, y las notificaciones push.
 
 # A modo de Testeo
 
-Actualmente hay 2 cuentas disponibles, una de admin y una de usuario normal<br>
-Para loguearse usar:<br>
-correo: admin@xchange.com contrseña: 12345678<br>
-correo: user@example.com contraseña: 12345678<br>
+Actualmente hay 2 cuentas disponibles, una de admin y una de usuario normal 
+Para loguearse usar: 
+correo: admin@xchange.com contrseña: 12345678 
+correo: user@example.com contraseña: 12345678 
 
-Para poder ver el perfil de una persona se debe recibir una review de esta, luego en la pagina "Profile" aparecerá la review, esta te permite ver el perfil de la persona que la hizo <br>
+Para poder ver el perfil de una persona se debe recibir una review de esta, luego en la pagina "Profile" aparecerá la review, esta te permite ver el perfil de la persona que la hizo  
