@@ -109,7 +109,7 @@ router.post('api.negotiation.new.message', '/:id/messages', async (ctx) => {
         senderId, receiverId, text, negotiationId: negotiation.id,
       });
       try {
-        await message.save({ fields: ['senderId', 'receiverId', 'text', 'negotiationId'] });
+        await message.save({ fields: ['senderId', 'receiverId', 'text', 'negotiationId', 'language'] });
         ctx.body = ctx.jsonSerializer('message', {
           pluralizeType: false,
           keyForAttribute: 'camelCase',
