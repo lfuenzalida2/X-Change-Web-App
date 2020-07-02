@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { Component } from 'react';
 
 const axios = require('axios');
@@ -10,7 +8,6 @@ function Valid(string) {
   }
   let cap = false;
   let num = false;
-  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < string.length; i++) {
     const element = string[i];
 

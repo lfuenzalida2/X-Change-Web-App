@@ -1,14 +1,3 @@
-/* eslint-disable no-else-return */
-/* eslint-disable class-methods-use-this */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/prop-types */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable max-classes-per-file */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 
 const axios = require('axios');
@@ -115,32 +104,34 @@ class ObjectForm extends Component {
   }
 }
 
-class Form extends Component {
-  render() {
-    const { categories, submitForm } = this.props;
-    return (
-      <form onSubmit={submitForm}>
-        <div className="field">
-          <input type="text" name="name" placeholder="Ingrese el nombre del objeto" className="float-r" />
-        </div>
-        <div>
-          <select name="categoryId" id="categoryId" className="float-r" defaultValue="">
-            <option value="" disabled>Selecciones una categoria</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.attributes.id}>{category.attributes.name}</option>
-            ))}
-          </select>
-        </div>
-        <div className="field">
-          <input type="textarea" name="description" placeholder="Ingrese una descripción" className="float-r" />
-        </div>
-        <div className="field">
-          <input type="submit" name="create" value="Crear" />
-        </div>
-      </form>
-    );
-  }
+function Form(props) {
+  const { categories, submitForm } = props;
+  return (
+    <form onSubmit={submitForm}>
+      <div className="field">
+        <input type="text" name="name" placeholder="Ingrese el nombre del objeto" className="float-r" />
+      </div>
+      <div>
+        <select name="categoryId" id="categoryId" className="float-r" defaultValue="">
+          <option value="" disabled>Selecciones una categoria</option>
+          {categories.map((category) => (
+            <option
+              key={category.id}
+              value={category.attributes.id}
+            >
+              {category.attributes.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="field">
+        <input type="textarea" name="description" placeholder="Ingrese una descripción" className="float-r" />
+      </div>
+      <div className="field">
+        <input type="submit" name="create" value="Crear" />
+      </div>
+    </form>
+  );
 }
-
 
 export default ObjectForm;

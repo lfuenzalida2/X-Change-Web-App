@@ -32,7 +32,49 @@
     <button type="submit" class="btn">Buscar</button>
   </form>
 </div>
-<br>
+
+<h2 class="center underline">
+  X-Changers mejor valorados
+</h2>
+<table class="top-users">
+<% for (var i = 0; i < bestXChangers.length; i++) { %>
+  <tr>
+    <td><%= bestXChangers[i].username %></td>
+    <% let avgRating = Math.round(bestXChangers[i].dataValues.avgRating) %>
+    <td>
+      <div class="ratings">
+      <% for (var j = 0; j < avgRating; j++) { %>
+        <div class="star active-star">★</div>
+      <% } %>
+      <% for (var j = 0; j < 5 - avgRating; j++) { %>
+        <span class="star">★</span>
+      <% } %>
+      </div>
+    </td>
+    <td>
+      <% avgRating = Math.round((bestXChangers[i].dataValues.avgRating * 10) / 10).toFixed(1) %>
+      <div class="real-rating <%= avgRating >= 4 ? 'good' : avgRating >= 2.5 ? 'enough' : 'bad' %>"><%= avgRating %></div>
+    </td>
+  </tr>
+<% } %>
+</table>
+<h2 class="center underline">
+  <% const date = new Date(); %>
+  <% date.setMonth(date.getMonth() - 1) %>
+  <% const month = new Intl.DateTimeFormat('es-CL', { month: 'numeric' }).format(date); %>
+  <% const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'] %>
+  Más X-Changes en el mes de <%= meses[month - 1] %>
+</h2>
+<table class="top-users">
+<% for (var i = 0; i < topXChangers.length; i++) { %>
+  <tr>
+    <td><%= i == 0 ? '🥇' : i == 1 ? '🥈' : '🥉' %></td>
+    <td><%= topXChangers[i].username %></td>
+    <td><div class="xchanges"><%= topXChangers[i].xChanges %></div><td>
+  </tr>
+<% } %>
+</table>
+
 <div>
   <h2 class="center underline">
     Objetos más vistos

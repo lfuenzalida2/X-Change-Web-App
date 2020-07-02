@@ -219,3 +219,45 @@
   border-radius: 0px;
   color: white;
 }
+
+table.top-users {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+  margin: 0 auto;
+  text-align: right;
+  td {
+    width:1px;
+    white-space:nowrap;
+    word-wrap: break-word;
+  }
+  .ratings {
+      width: auto;
+      float: right;
+  }
+  .real-rating {
+    display: inline-block;
+    color: white;
+    border-radius: 2px;
+    font-size: 15px;
+    padding: 3px;
+  }
+  .good {
+    background-color: green;
+  }
+  .enough {
+    background-color: #FCE205;
+  }
+  .bad {
+    background-color: red;
+  }
+  .xchanges {
+    background-color: #CD5C5C;
+    width: 24px;
+    text-align: center;
+    color: white;
+    padding: 4px;
+    border-radius: 4px;
+  }
+}

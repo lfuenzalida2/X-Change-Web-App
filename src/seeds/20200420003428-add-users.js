@@ -2,6 +2,8 @@ const bcrypt = require('bcrypt');
 const faker = require('faker');
 
 const PASSWORD_SALT = 10;
+const date = new Date();
+date.setMonth(date.getMonth() - 1);
 
 module.exports = {
   up: (queryInterface) => {
@@ -14,8 +16,8 @@ module.exports = {
         region: 'Metropolitana de Santiago',
         profilePicture: 'account.png',
         isModerator: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: date,
+        updatedAt: date,
       },
       {
         username: faker.name.findName(),
@@ -25,8 +27,8 @@ module.exports = {
         region: 'La Araucania',
         profilePicture: 'account.png',
         isModerator: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: date,
+        updatedAt: date,
       },
       {
         username: faker.name.findName(),
@@ -36,8 +38,8 @@ module.exports = {
         region: 'Los Lagos',
         profilePicture: 'account.png',
         isModerator: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: date,
+        updatedAt: date,
       },
       {
         username: faker.name.findName(),
@@ -47,8 +49,8 @@ module.exports = {
         region: 'Los Rios',
         profilePicture: 'account.png',
         isModerator: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: date,
+        updatedAt: date,
       },
       {
         username: faker.name.findName(),
@@ -58,8 +60,8 @@ module.exports = {
         region: 'Antofagasta',
         profilePicture: 'account.png',
         isModerator: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: date,
+        updatedAt: date,
       },
       {
         username: faker.name.findName(),
@@ -69,8 +71,8 @@ module.exports = {
         region: 'Arica y Parinacota',
         profilePicture: 'account.png',
         isModerator: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: date,
+        updatedAt: date,
       },
       {
         username: faker.name.findName(),
@@ -80,8 +82,8 @@ module.exports = {
         region: 'Metropolitana de Santiago',
         profilePicture: 'account.png',
         isModerator: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: date,
+        updatedAt: date,
       },
       {
         username: faker.name.findName(),
@@ -91,8 +93,8 @@ module.exports = {
         region: 'Coquimbo',
         profilePicture: 'account.png',
         isModerator: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: date,
+        updatedAt: date,
       },
       {
         username: faker.name.findName(),
@@ -102,8 +104,8 @@ module.exports = {
         region: 'Magallanes y de la Antartica Chilena',
         profilePicture: 'account.png',
         isModerator: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: date,
+        updatedAt: date,
       },
       {
         username: faker.name.findName(),
@@ -113,8 +115,8 @@ module.exports = {
         region: 'Atacama',
         profilePicture: 'account.png',
         isModerator: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: date,
+        updatedAt: date,
       },
     ];
 

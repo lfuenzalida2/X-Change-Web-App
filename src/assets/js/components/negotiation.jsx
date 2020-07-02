@@ -1,19 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-alert */
-/* eslint-disable radix */
-/* eslint-disable no-param-reassign */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable array-callback-return */
-/* eslint-disable max-len */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable react/no-access-state-in-setstate */
-/* eslint-disable no-var */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/sort-comp */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable react/prefer-stateless-function */
-/* eslint-disable max-classes-per-file */
 import React, { Component } from 'react';
 import io from '../../../../node_modules/socket.io-client/dist/socket.io';
 
@@ -33,9 +17,10 @@ class NegotiationsList extends Component {
   }
 
   async componentDidMount() {
+    const { url } = this.props;
     await axios({
       method: 'get',
-      url: `${this.props.url}/xchange/negotiations/`,
+      url: `${url}/xchange/negotiations/`,
     })
       .then(async (res) => {
         const { data } = res.data;
@@ -46,12 +31,12 @@ class NegotiationsList extends Component {
 
     await axios({
       method: 'get',
-      url: `${this.props.url}/xchange/current_user/`,
+      url: `${url}/xchange/current_user/`,
     })
       .then(async (res) => {
         const { data } = res.data;
         this.setState({
-          currentUser: { id: parseInt(data.id), username: data.attributes.username },
+          currentUser: { id: parseInt(data.id, 10), username: data.attributes.username },
           loading: false,
         });
       }, (err) => {
@@ -75,54 +60,63 @@ class NegotiationsList extends Component {
     return (
       <div>
         <div>
-          <Negotiations negotiationsList={negotiations} currentUser={currentUser} negotiation={actualNegotiation} openNegotiation={this.openNegotiation} />
+          <Negotiations
+            negotiationsList={negotiations}
+            currentUser={currentUser}
+            negotiation={actualNegotiation}
+            openNegotiation={this.openNegotiation}
+          />
         </div>
         {actualNegotiation
-          ? <Negotiation id={actualNegotiation} url={url} currentUser={currentUser} />
+          ? (
+            <Negotiation
+              id={actualNegotiation}
+              url={url}
+              currentUser={currentUser}
+            />
+          )
           : <p>Escoge alguna negociacion que quieras abrir</p> }
       </div>
     );
   }
 }
 
-class Negotiations extends Component {
-  render() {
-    const { negotiationsList, currentUser, openNegotiation } = this.props;
-    return (
-      <div className="fixed-width float-l" id="negotiations-list">
-        <h2>Mis Negociaciones</h2>
-        { !negotiationsList.length
-          ? <p>No tienes niguna negociacion</p>
-          : (
-            <table className="form">
-              <thead>
-                <tr>
-                  <th>Usuario</th>
-                  <th>Estado</th>
-                  <th>Ver</th>
+function Negotiations(props) {
+  const { negotiationsList, currentUser, openNegotiation } = props;
+  return (
+    <div className="fixed-width float-l" id="negotiations-list">
+      <h2>Mis Negociaciones</h2>
+      { !negotiationsList.length
+        ? <p>No tienes niguna negociacion</p>
+        : (
+          <table className="form">
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Estado</th>
+                <th>Ver</th>
+              </tr>
+            </thead>
+            <tbody>
+              { negotiationsList.map((negotiation) => (
+                <tr key={negotiation.id}>
+                  { negotiation.attributes.customer.id !== currentUser.id
+                    ? <td>{negotiation.attributes.customer.username}</td>
+                    : <td>{negotiation.attributes.seller.username}</td> }
+                  <td>{negotiation.attributes.state === 'Accepted' ? 'Aceptada' : negotiation.attributes.state === 'Cancelled' ? 'Cancelada' : 'En Progreso'}</td>
+                  <td>
+                    <form onSubmit={openNegotiation}>
+                      <input type="hidden" name="negotiationId" value={negotiation.id} />
+                      <input type="submit" value="Ver" className="btn" />
+                    </form>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                { negotiationsList.map((negotiation) => (
-                  <tr key={negotiation.id}>
-                    { negotiation.attributes.customer.id !== currentUser.id
-                      ? <td>{negotiation.attributes.customer.username}</td>
-                      : <td>{negotiation.attributes.seller.username}</td> }
-                    <td>{negotiation.attributes.state === 'Accepted' ? 'Aceptada' : negotiation.attributes.state === 'Cancelled' ? 'Cancelada' : 'En Progreso'}</td>
-                    <td>
-                      <form onSubmit={openNegotiation}>
-                        <input type="hidden" name="negotiationId" value={negotiation.id} />
-                        <input type="submit" value="Ver" className="btn" />
-                      </form>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-      </div>
-    );
-  }
+              ))}
+            </tbody>
+          </table>
+        )}
+    </div>
+  );
 }
 
 class Negotiation extends Component {
@@ -159,16 +153,19 @@ class Negotiation extends Component {
   }
 
   async componentDidUpdate(prevProps) {
-    if (this.props.id !== prevProps.id) {
+    const { id } = this.props;
+    if (id !== prevProps.id) {
       await this.whenMounting();
     }
   }
 
   async getReview() {
+    const { id, url, currentUser } = this.props;
+    const { otherUser } = this.state;
     // Obtain messages
     await axios({
       method: 'get',
-      url: `${this.props.url}/xchange/review/${this.props.id}/${this.props.currentUser.id}/${this.state.otherUser}`,
+      url: `${url}/xchange/review/${id}/${currentUser.id}/${otherUser}`,
     })
       .then(async (res) => {
         const { data } = res.data;
@@ -180,10 +177,11 @@ class Negotiation extends Component {
   }
 
   async getMessages() {
+    const { id, url } = this.props;
     // Obtain messages
     await axios({
       method: 'get',
-      url: `${this.props.url}/xchange/messagges/${this.props.id}`,
+      url: `${url}/xchange/messagges/${id}`,
     })
       .then(async (res) => {
         const { data } = res.data;
@@ -195,9 +193,10 @@ class Negotiation extends Component {
   }
 
   async getNegotiation() {
+    const { id, url } = this.props;
     await axios({
       method: 'get',
-      url: `${this.props.url}/xchange/negotiation/${this.props.id}`,
+      url: `${url}/xchange/negotiation/${id}`,
     })
       .then(async (res) => {
         this.setState({ otherName: res.data.other });
@@ -208,9 +207,10 @@ class Negotiation extends Component {
   }
 
   async myObjects() {
+    const { id, url } = this.props;
     await axios({
       method: 'get',
-      url: `${this.props.url}/xchange/${this.props.id}`,
+      url: `${url}/xchange/${id}`,
     })
       .then(async (res) => {
         this.setState({ data: res.data.data });
@@ -220,9 +220,10 @@ class Negotiation extends Component {
   }
 
   async otherObjects() {
+    const { id, url } = this.props;
     await axios({
       method: 'get',
-      url: `${this.props.url}/xchange/other/${this.props.id}`,
+      url: `${url}/xchange/other/${id}`,
     })
       .then(async (res) => {
         this.setState({ otherData: res.data.data });
@@ -233,24 +234,25 @@ class Negotiation extends Component {
 
   async whenMounting() {
     // API calls to get my objects, the other's object, negotiations info and messagges
-    const { socket } = this.state;
-
     await this.myObjects();
     await this.otherObjects();
     await this.getNegotiation();
     await this.getMessages();
 
+    const { socket, negotiation } = this.state;
+    const { id, currentUser } = this.props;
+
     // object socket connection
-    socket.emit('join negotiation', { negotiationId: this.props.id });
+    socket.emit('join negotiation', { negotiationId: id });
     socket.on('add object', this.otherObjects);
     socket.on('remove object', this.otherObjects);
 
     // Get otherUser of the negotiation
-    if (this.state.negotiation) {
-      if (this.props.currentUser.id === this.state.negotiation.attributes['seller-id']) {
-        this.setState({ otherUser: this.state.negotiation.attributes['customer-id'], loading: false });
+    if (negotiation) {
+      if (currentUser.id === negotiation.attributes['seller-id']) {
+        this.setState({ otherUser: negotiation.attributes['customer-id'], loading: false });
       } else {
-        this.setState({ otherUser: this.state.negotiation.attributes['seller-id'], loading: false });
+        this.setState({ otherUser: negotiation.attributes['seller-id'], loading: false });
       }
       await this.getReview();
     }
@@ -261,14 +263,18 @@ class Negotiation extends Component {
     event.preventDefault();
     const { rating, text } = event.target;
     const { otherUser, negotiation } = this.state;
-    const { currentUser } = this.props;
-    const url = `${this.props.url}/reviews/`;
+    const { currentUser, url } = this.props;
+    const ur = `${url}/reviews/`;
     const body = {
-      reviewerId: currentUser.id, reviewedId: otherUser, negotiationId: negotiation.id, rating: rating.value, text: text.value,
+      reviewerId: currentUser.id,
+      reviewedId: otherUser,
+      negotiationId: negotiation.id,
+      rating: rating.value,
+      text: text.value,
     };
-    await axios.post(url, body)
-      .then(async (res) => {
-        (res.status === 200) ? this.getReview() : alert(res);
+    await axios.post(ur, body)
+      .then(async () => {
+        this.getReview();
       })
       .catch((err) => {
         console.log(err);
@@ -277,11 +283,12 @@ class Negotiation extends Component {
 
   async submitNegotiation(event) {
     event.preventDefault();
+    const { url } = this.props;
     const { state } = event.target;
     const { negotiation } = this.state;
-    const url = `${this.props.url}/negotiations/${negotiation.id}`;
+    const ur = `${url}/negotiations/${negotiation.id}`;
     const body = { state: state.value };
-    await axios.patch(url, body)
+    await axios.patch(ur, body)
       .then(async () => {
         await this.getNegotiation();
         // this.setState({ data: res.data.data });
@@ -292,11 +299,12 @@ class Negotiation extends Component {
   }
 
   actualObjects(id) {
-    var value = '';
+    let value = '';
     const { data, negotiation } = this.state;
     data.map((element) => {
       element.attributes.negotiations.map((negotiationObjects) => {
-        if ((negotiation.id === negotiationObjects.id.toString() || element.attributes.state === false) && id === element.id) {
+        if ((negotiation.id === negotiationObjects.id.toString()
+        || element.attributes.state === false) && id === element.id) {
           value = 'disabled';
         } else if (negotiation.attributes.state === 'Cancelled' || negotiation.attributes.state === 'Accepted') {
           value = 'disabled';
@@ -308,16 +316,18 @@ class Negotiation extends Component {
 
   async añadirObjeto(event) {
     event.preventDefault();
+    const { url } = this.props;
+    const { socket } = this.state;
     const negotiationId = event.target.negotiationId.value;
     const objectId = event.target.objectId.value;
-    const url = `${this.props.url}/xchange/${negotiationId}/object`;
+    const ur = `${url}/xchange/${negotiationId}/object`;
     const body = { negotiationId, objectId, add: 'Añadir' };
-    await axios.post(url, body)
+    await axios.post(ur, body)
       .then(async (res) => {
         this.setState({ data: res.data.data });
       })
       .then(async () => {
-        this.state.socket.emit('add object', negotiationId);
+        socket.emit('add object', negotiationId);
       })
       .catch((err) => {
         console.log(err);
@@ -326,16 +336,18 @@ class Negotiation extends Component {
 
   async quitarObjeto(event) {
     event.preventDefault();
+    const { url } = this.props;
+    const { socket } = this.state;
     const negotiationId = event.target.negotiationId.value;
     const objectId = event.target.objectId.value;
-    const url = `${this.props.url}/xchange/${negotiationId}/object`;
+    const ur = `${url}/xchange/${negotiationId}/object`;
     const body = { negotiationId, objectId, _method: 'delete' };
-    await axios.post(url, body)
+    await axios.post(ur, body)
       .then((res) => {
         this.setState({ data: res.data.data });
       })
       .then(async () => {
-        this.state.socket.emit('remove object', negotiationId);
+        socket.emit('remove object', negotiationId);
       })
       .catch((err) => {
         console.log(err);
@@ -357,20 +369,51 @@ class Negotiation extends Component {
           Negociación con {otherName}
         </h3>
         <div>
-          <Submit key={review} submitNegotiation={this.submitNegotiation} submitReview={this.submitReview} negotiation={negotiation} currentUser={currentUser} review={review} />
+          <Submit
+            key={review}
+            submitNegotiation={this.submitNegotiation}
+            submitReview={this.submitReview}
+            negotiation={negotiation}
+            currentUser={currentUser}
+            review={review}
+          />
         </div>
         <div>
-          <Messages key={messages} url={url} socket={socket} negotiation={negotiation} currentUser={currentUser} otherUser={otherUser} owner={negotiation.attributes['seller-id']} />
+          <Messages
+            key={messages}
+            url={url}
+            socket={socket}
+            negotiation={negotiation}
+            currentUser={currentUser}
+            otherUser={otherUser}
+            owner={negotiation.attributes['seller-id']}
+          />
         </div>
         <h2 className="center">Lista de Objetos</h2>
         <div className="neg_layout">
-          <AvailableObjectList data={data} negotiation={negotiation} quitarObjeto={this.quitarObjeto} />
-          <AvailableObjectList data={otherData} negotiation={negotiation} />
+          <AvailableObjectList
+            data={data}
+            negotiation={negotiation}
+            quitarObjeto={this.quitarObjeto}
+          />
+          <AvailableObjectList
+            data={otherData}
+            negotiation={negotiation}
+          />
         </div>
         <br />
         <div className="neg_layout">
-          <TradingObjectList data={data} negotiation={negotiation} actualObjects={this.actualObjects} añadirObjeto={this.añadirObjeto} />
-          <TradingObjectList data={otherData} negotiation={negotiation} actualObjects={this.actualObjects} />
+          <TradingObjectList
+            data={data}
+            negotiation={negotiation}
+            actualObjects={this.actualObjects}
+            añadirObjeto={this.añadirObjeto}
+          />
+          <TradingObjectList
+            data={otherData}
+            negotiation={negotiation}
+            actualObjects={this.actualObjects}
+          />
         </div>
       </div>
     );
@@ -523,30 +566,27 @@ class Messages extends Component {
   }
 
   async componentDidMount() {
+    const { socket } = this.props;
     // object socket connection
-    this.props.socket.on('chat message', async () => {
+    socket.on('chat message', async () => {
       await this.getMessages();
       this.scrollBottom();
     });
     await this.whenMounting();
   }
 
-  async whenMounting() {
-    // get Messages
-    await this.getMessages();
-    this.setState({ loading: false });
-    this.scrollBottom();
-  }
-
-  scrollBottom() {
-    this.messagesRef.current.scrollTo({ top: 9999999999999999 });
+  async onKeyEnter(event) {
+    if (event.keyCode === 13) {
+      this.send.current.click();
+    }
   }
 
   async getMessages() {
+    const { url, negotiation } = this.props;
     // Obtain messages
     await axios({
       method: 'get',
-      url: `${this.props.url}/xchange/messagges/${this.props.negotiation.id}`,
+      url: `${url}/xchange/messagges/${negotiation.id}`,
     })
       .then(async (res) => {
         const { data } = res.data;
@@ -557,26 +597,38 @@ class Messages extends Component {
       });
   }
 
-  async onKeyEnter(event) {
-    if (event.keyCode === 13) {
-      this.send.current.click();
-    }
+  scrollBottom() {
+    this.messagesRef.current.scrollTo({ top: 9999999999999999 });
+  }
+
+  async whenMounting() {
+    // get Messages
+    await this.getMessages();
+    this.setState({ loading: false });
+    this.scrollBottom();
   }
 
   async sendMessage(event) {
     event.preventDefault();
-    const url = `${this.props.url}/messages/`;
-    const senderId = this.props.currentUser.id;
-    const negotiationId = this.props.negotiation.id;
-    const receiverId = this.props.otherUser;
+    const {
+      url,
+      currentUser,
+      negotiation,
+      otherUser,
+      socket,
+    } = this.props;
+    const ur = `${url}/messages/`;
+    const senderId = currentUser.id;
+    const negotiationId = negotiation.id;
+    const receiverId = otherUser;
     const text = event.target.m.value;
     const body = {
       negotiationId, senderId, receiverId, text,
     };
     event.target.m.value = '';
-    await axios.post(url, body)
+    await axios.post(ur, body)
       .then(async () => {
-        this.props.socket.emit('chat message', { negotiationId });
+        socket.emit('chat message', { negotiationId });
       })
       .catch((err) => {
         console.log(err);
@@ -624,100 +676,92 @@ class Messages extends Component {
   }
 }
 
-class AvailableObjectList extends Component {
-  render() {
-    const { data, negotiation, quitarObjeto } = this.props;
-    return (
-      <div className="neg_obj_list form">
-        <table>
-          <thead className="head">
-            <tr>
-              <th>Nombre</th>
-            </tr>
-          </thead>
-          <tbody>
-            { data.map((element) => (
-              element.attributes.negotiations.map((object) => (
-                // eslint-disable-next-line radix
-                negotiation.attributes.state !== 'Cancelled' && object.objectNegotiation.negotiationId === parseInt(negotiation.id) && (
-                <tr key={element.id}>
-                  {(element.attributes.photos[0]
-                    ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
-                    : <td><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></td>
-                    )}
-                  <td>{element.attributes.name}</td>
-                  {quitarObjeto && (
-                    <td>
-                      <form method="DEL" onSubmit={quitarObjeto}>
-                        <input type="hidden" name="_method" value="delete" />
-                        <input type="hidden" name="negotiationId" value={negotiation.id} />
-                        <input type="hidden" name="objectId" value={element.id} />
-                        <input type="submit" value="Quitar" className="btn float-r" disabled={(negotiation.attributes.state === 'In Progress' ? '' : 'disabled')} />
-                      </form>
-                    </td>
-                  )}
-                </tr>
-                )
-              ))
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-}
-
-class TradingObjectList extends Component {
-  render() {
-    const {
-      data, negotiation, actualObjects, añadirObjeto,
-    } = this.props;
-    return (
-      <div className="neg_obj_list">
-        <table className="form">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Categoria</th>
-              <th>Añadir a la Negociación</th>
-            </tr>
-          </thead>
-          <tbody>
-            { data.map((element) => (
+function AvailableObjectList(props) {
+  const { data, negotiation, quitarObjeto } = props;
+  return (
+    <div className="neg_obj_list form">
+      <table>
+        <thead className="head">
+          <tr>
+            <th>Nombre</th>
+          </tr>
+        </thead>
+        <tbody>
+          { data.map((element) => (
+            element.attributes.negotiations.map((object) => (
+              // eslint-disable-next-line radix
+              negotiation.attributes.state !== 'Cancelled' && object.objectNegotiation.negotiationId === parseInt(negotiation.id) && (
               <tr key={element.id}>
                 {(element.attributes.photos[0]
                   ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
                   : <td><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></td>
-                )}
+                  )}
                 <td>{element.attributes.name}</td>
-                <td>{element.attributes.category.name}</td>
-                {añadirObjeto && element.state !== false && (
-                <td>
-                  <form method="POST" onSubmit={añadirObjeto}>
-                    <input type="hidden" name="negotiationId" value={negotiation.id} />
-                    <input type="hidden" name="objectId" value={element.id} />
-                    <ActualButton disabled={actualObjects(element.id)} />
-                  </form>
-                </td>
+                {quitarObjeto && (
+                  <td>
+                    <form method="DEL" onSubmit={quitarObjeto}>
+                      <input type="hidden" name="_method" value="delete" />
+                      <input type="hidden" name="negotiationId" value={negotiation.id} />
+                      <input type="hidden" name="objectId" value={element.id} />
+                      <input type="submit" value="Quitar" className="btn float-r" disabled={(negotiation.attributes.state === 'In Progress' ? '' : 'disabled')} />
+                    </form>
+                  </td>
                 )}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  }
+              )
+            ))
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
-class ActualButton extends Component {
-  // eslint-disable-next-line react/require-render-return
-  render() {
-    // eslint-disable-next-line react/prop-types
-    const { disabled } = this.props;
-    return (
-      <input type="submit" name="add" value="Añadir" className="btn float-r" disabled={disabled} />
-    );
-  }
+function TradingObjectList(props) {
+  const {
+    data, negotiation, actualObjects, añadirObjeto,
+  } = props;
+  return (
+    <div className="neg_obj_list">
+      <table className="form">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Categoria</th>
+            <th>Añadir a la Negociación</th>
+          </tr>
+        </thead>
+        <tbody>
+          { data.map((element) => (
+            <tr key={element.id}>
+              {(element.attributes.photos[0]
+                ? <td><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></td>
+                : <td><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></td>
+              )}
+              <td>{element.attributes.name}</td>
+              <td>{element.attributes.category.name}</td>
+              {añadirObjeto && element.state !== false && (
+              <td>
+                <form method="POST" onSubmit={añadirObjeto}>
+                  <input type="hidden" name="negotiationId" value={negotiation.id} />
+                  <input type="hidden" name="objectId" value={element.id} />
+                  <ActualButton disabled={actualObjects(element.id)} />
+                </form>
+              </td>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function ActualButton(props) {
+  const { disabled } = props;
+  return (
+    <input type="submit" name="add" value="Añadir" className="btn float-r" disabled={disabled} />
+  );
 }
 
 export default NegotiationsList;
