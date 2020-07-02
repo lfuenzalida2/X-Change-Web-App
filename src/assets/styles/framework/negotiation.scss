@@ -86,6 +86,16 @@ tr{
     width: 100%;
 }
 
+.scrollable {
+    overflow-y: scroll;
+    max-height: 750px;
+}
+
+.scrollable::-webkit-scrollbar {
+    display: none;
+}
+
+
 .negotiation {
     cursor: pointer;
     padding-top: 7px;

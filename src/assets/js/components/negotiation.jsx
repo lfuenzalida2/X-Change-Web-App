@@ -127,7 +127,7 @@ function Negotiations(props) {
       { !negotiationsList.length
         ? <p>No tienes niguna negociacion</p>
         : (
-          <div className="form">
+          <div className="form scrollable">
             <div className="bottom">
               <span>Usuario</span>
             </div>
