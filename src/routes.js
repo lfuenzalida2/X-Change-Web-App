@@ -14,7 +14,6 @@ const notifications = require('./routes/notifications');
 const xchange = require('./routes/xchange');
 const api = require('./routes/api');
 
-
 const router = new KoaRouter();
 
 router.use(async (ctx, next) => {
