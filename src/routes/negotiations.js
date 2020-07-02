@@ -40,27 +40,8 @@ router.get('negotiations.list', '/', async (ctx) => {
   await ctx.render('negotiations/index');
 });
 
-router.get('negotiations.show', '/:id', loadNegotiation, async (ctx) => {
-  const { negotiation } = ctx.state;
-  const customer = await negotiation.getCustomer();
-  const seller = await negotiation.getSeller();
-  const reviews = await negotiation.getReviews();
-  await ctx.render('negotiations/show', {
-    negotiation,
-    customer,
-    seller,
-    reviews,
-    deleteObject: ctx.router.url('negotiations.object_del', { id: negotiation.id }),
-    editNegotiationPath: ctx.router.url('negotiations.update', { id: negotiation.id }),
-    messagesList: await negotiation.getMessages(),
-    newMessagePath: ctx.router.url('messages.create'),
-    newReviewPath: ctx.router.url('reviews.new'),
-    currentReview: didReview(ctx, reviews),
-    objects: await ctx.state.negotiation.getObjects(),
-    addObjectPath: ctx.router.url('negotiations.add_object', { id: negotiation.id }),
-    currentRole: currentRole(ctx, customer, seller),
-    otherRole: otherRole(ctx, customer, seller),
-  });
+router.get('negotiations.notification', '/:id', async (ctx) => {
+  await ctx.render('negotiations/index');
 });
 
 router.post('negotiations.create', '/', async (ctx) => {
@@ -92,12 +73,14 @@ router.patch('negotiations.update', '/:id', loadNegotiation, async (ctx) => {
   const iAm = (currentUser.id === negotiation.customerId) ? 'Customer' : 'Seller';
   if (negotiation.state === 'In Progress' && state !== 'Cancelled') {
     negotiation.state = iAm;
-  } else if (negotiation.state === 'Customer' && iAm === 'Seller') {
-    negotiation.state = 'Accepted';
+  } else if (negotiation.state !== 'Accepted' && state === 'In Progress') {
+    negotiation.state = state;
   } else if (negotiation.state === 'Seller' && iAm === 'Customer') {
     negotiation.state = 'Accepted';
-  } else if (negotiation.state !== 'Accepted') {
-    negotiation.state = state;
+  } else if (negotiation.state === 'Customer' && iAm === 'Seller') {
+    negotiation.state = 'Accepted';
+  } else if (state === 'Cancelled') {
+    negotiation.state = 'Cancelled';
   }
   if (negotiation.state === 'Accepted') {
     const objectNegotiation = await ctx.orm.objectNegotiation.findAll({

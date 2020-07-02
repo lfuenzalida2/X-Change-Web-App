@@ -1,13 +1,38 @@
+:root {
+    --objects-width: auto;
+}
+
 .neg_layout{
     display: flex;
     margin: 1%;
 }
 
-#negotiations-list{
-    margin-left: 100px;
+.negotiation-images{
+    width: 90px;
+    height: 90px;
+    border-radius: 7px;
+    object-fit: cover;
+  }
+
+.fixed-width-negotiation {
+    max-width: 300px;
+    margin: 0;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.full-width h3 {
+    margin: 0;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+.form h3 {
+    margin: 0;
 }
 
 .neg_obj_list{
+    background-color: #cccccc;
     width: 100%;
     margin: 1%;
     height: 250px;
@@ -15,8 +40,28 @@
     overflow-x: hidden;
 }
 
-#negotiation_objects{
-    max-width: 70%;
+.full-width {
+    width: 100%;
+}
+
+.negotiation_layout {
+    padding: 10px;
+    padding-top: 0;
+    background-color: rgb(235, 235, 235);
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+.submit-container {
+    display: flex;
+    width: 600px;
+}
+
+#negotiation {
+    display: flex;
 }
 
 td{
@@ -27,10 +72,136 @@ tr{
     width: 100%;
 }
 
-.samePassword {
-    background-color: greenyellow;
+.dot-display {
+    display: block;
 }
 
-.diffPassword {
-    background-color: #EE3D3D;
+.negotiation-alternative {
+    margin: 5%;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: rgb(235, 235, 235);
+    border-radius: 10px;
+    width: 100%;
+}
+
+.scrollable {
+    overflow-y: scroll;
+    max-height: 750px;
+}
+
+.scrollable::-webkit-scrollbar {
+    display: none;
+}
+
+
+.negotiation {
+    cursor: pointer;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border-bottom: 2px solid gray;
+    background-color: white;
+    color: black;
+    opacity: 1.0;
+  }
+
+.negotiation:hover {
+    opacity: 0.6;
+}
+
+.actual {
+    opacity: 0.6;
+}
+
+.top {
+    position: fixed;
+    cursor: pointer;
+    z-index: 9999;
+    height: inherit;
+    width: inherit;
+}
+
+.trading-object-row .top {
+    width: 25%;
+}
+
+.bottom {
+    padding: 5px;
+    z-index: -1;
+    height: inherit;
+    width: inherit;
+    display: flex;
+}
+
+.row {
+    padding: 0;
+    margin: 10px;
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 7px;
+    width: 280px;
+    height: 30px;
+}
+
+.negotiation-object-title {
+    margin-left: 50%;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-weight: bold;
+}
+
+.margin-title {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.negotiation-object-name {
+    margin-left: 5px;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-weight: bold;
+}
+
+.negotiation-object-category {
+    margin-right: 5px;
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-weight: bold;
+}
+
+.negotiation-object-display {
+    display: flex;
+    padding: 5px;
+    padding-bottom: 0;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    opacity: 0.8;
+}
+
+.negotiation-object-display:hover {
+    opacity: 1.0;
+}
+
+.trading-object-row {
+    margin: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 0;
+    border-radius: 7px;
+    width: auto;
+    height: 100px; 
+}
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: green;
+}
+
+.blue {
+    background-color: blue;
 }

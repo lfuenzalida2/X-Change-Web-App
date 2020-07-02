@@ -12,7 +12,6 @@ router.get('reviews.list', '/', async (ctx) => {
   await ctx.render('reviews/index', {
     reviewsList,
     deleteReviewPath: (review) => ctx.router.url('reviews.delete', { id: review.id }),
-    showNegotiationPath: (review) => ctx.router.url('negotiations.show', { id: review.negotiationId }),
   });
 });
 
@@ -24,13 +23,11 @@ router.post('reviews.new', '/new', async (ctx) => {
     reviewerId,
     reviewedId,
     negotiationId,
-    showNegotiationPath: ctx.router.url('negotiations.show', { id: negotiationId }),
     submitReviewPath: ctx.router.url('reviews.create'),
   });
 });
 
 router.post('reviews.create', '/', async (ctx) => {
-  console.log(ctx.request.body);
   const reviewerId = +ctx.request.body.reviewerId;
   const reviewedId = +ctx.request.body.reviewedId;
   const negotiationId = +ctx.request.body.negotiationId;
@@ -40,7 +37,7 @@ router.post('reviews.create', '/', async (ctx) => {
   });
   try {
     await review.save({ fields: ['reviewerId', 'reviewedId', 'negotiationId', 'rating', 'text'] });
-    ctx.redirect(ctx.router.url('negotiations.show', { id: negotiationId }));
+    ctx.status = 200;
   } catch (validationError) {
     await ctx.render('reviews/new', {
       reviewerId,

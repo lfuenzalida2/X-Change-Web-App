@@ -10,7 +10,6 @@
           <th>ReviewedId</th>
           <th>Rating</th>
           <th>Comment</th>
-          <th>Negotiation</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -21,9 +20,6 @@
             <td><%= review.reviewedId %></td>
             <td><%= review.rating %></td>
             <td><%= review.text %></td>
-            <td>
-              <a href="<%= showNegotiationPath(review) %>">Ver Negociación</a>
-            </td>
             <td>
               <form action="<%= deleteReviewPath(review) %>" method="POST">
                 <input type="hidden" name="_method" value="delete" />
