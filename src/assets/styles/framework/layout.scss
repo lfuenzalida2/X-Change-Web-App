@@ -53,7 +53,6 @@ html, body {
 }
 
 .flexbox-container {
-  margin: 0px 10px;
   padding: 10px 0px;
   display: flex;
   flex-flow: row wrap;
@@ -254,6 +253,7 @@ textarea{
 
 .wrapper-textarea {
   width: 79%;
+  padding: 0;
 }
 
 textarea{

@@ -97,11 +97,11 @@ class NegotiationsList extends Component {
               </p>
               <div className="dot-display">
                 <span className="dot green" />
-                <span>: significa que la negociación está &quot;En Progreso&quot;</span>
+                <span>: significa que la negociación está &quot;Aceptada&quot;</span>
               </div>
               <div className="dot-display">
-                <span className="dot blue" />
-                <span>: significa que la negociación está &quot;Aceptada&quot;</span>
+                <span className="dot yellow" />
+                <span>: significa que la negociación está &quot;En Progreso&quot;</span>
               </div>
               <div className="dot-display">
                 <span className="dot red" />
@@ -138,10 +138,10 @@ function Negotiations(props) {
                   <div className="bottom">
                     <span className={`dot float-r
                     ${negotiation.attributes.state === 'Accepted'
-                      ? 'blue'
+                      ? 'green'
                       : negotiation.attributes.state === 'Cancelled'
                         ? 'red'
-                        : 'green'}`}
+                        : 'yellow'}`}
                     />
                     { negotiation.attributes.customer.id !== currentUser.id
                       ? <span>{negotiation.attributes.customer.username}</span>
@@ -606,9 +606,6 @@ class Submit extends Component {
                 <span className="star">★</span>
               ))}
             </div>
-            <label htmlFor="rating" className="text-style">Rating:</label>
-            <span name="rating">{review.attributes.rating}</span>
-            <br />
             <label htmlFor="text" className="text-style">Texto:</label>
             <span name="text">{review.attributes.text}</span>
           </div>
@@ -762,7 +759,7 @@ class Messages extends Component {
   }
 
   render() {
-    const { loading, messages } = this.state;
+    const { loading, messages, targetLanguage } = this.state;
     const { currentUser, negotiation } = this.props;
 
     if (loading) return <p>Loading Messages...</p>;
@@ -772,8 +769,8 @@ class Messages extends Component {
         <form onSubmit={this.handleSubmit}>
           <div>
             <label>
-              Hacia:
-              <select value={this.state.targetLanguage} onChange={this.handleChangeTarget}>
+              <span>Traducir al:</span>
+              <select value={targetLanguage} onChange={this.handleChangeTarget}>
                 <option value="es">Español</option>
                 <option value="en">Inglés</option>
                 <option value="de">Alemán</option>
@@ -783,7 +780,7 @@ class Messages extends Component {
               </select>
             </label>
           </div>
-          <input type="submit" value="Traducir" />
+          <input type="submit" value="Traducir" className="btn" />
         </form>
         <div id="messages" ref={this.messagesRef}>
           { messages.map((message) => (

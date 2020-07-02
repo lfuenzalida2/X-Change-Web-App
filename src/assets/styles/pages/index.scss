@@ -228,6 +228,7 @@ table.top-users {
   width: 500px;
   margin: 0 auto;
   text-align: right;
+  font-weight: bold;
   td {
     width:1px;
     white-space:nowrap;
@@ -248,7 +249,7 @@ table.top-users {
     background-color: green;
   }
   .enough {
-    background-color: #FCE205;
+    background-color: #ffd500;
   }
   .bad {
     background-color: red;
