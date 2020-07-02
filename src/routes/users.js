@@ -39,12 +39,17 @@ function Valid(string) {
 
 router.get('users.list', '/', async (ctx) => {
   const usersList = await ctx.orm.user.findAll();
-  await ctx.render('users/index', {
-    usersList,
-    newUserPath: ctx.router.url('users.new'),
-    editUserPath: (user) => ctx.router.url('users.edit', { id: user.id }),
-    delUserPath: (user) => ctx.router.url('users.delete', { id: user.id }),
-  });
+  const { currentUser } = ctx.state;
+  if (currentUser && currentUser.isAdmin) {
+    await ctx.render('users/index', {
+      usersList,
+      newUserPath: ctx.router.url('users.new'),
+      editUserPath: (user) => ctx.router.url('users.edit', { id: user.id }),
+      delUserPath: (user) => ctx.router.url('users.delete', { id: user.id }),
+    });
+  } else {
+    ctx.redirect('back');
+  }
 });
 
 router.get('users.new', '/new', async (ctx) => {

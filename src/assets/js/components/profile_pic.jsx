@@ -38,7 +38,7 @@ class ProfilePic extends Component {
 
   async loadUser() {
     let { url } = this.props;
-    url = `${url}/api/current_user`;
+    url = `${url}/xchange/current_user`;
     await axios.get(url)
       .then((response) => {
         const { data } = response.data;
@@ -66,7 +66,7 @@ class ProfilePic extends Component {
       loading: true,
     });
     let { url } = this.props;
-    url = `${url}/api/upload`;
+    url = `${url}/xchange/upload`;
     const formData = new FormData();
     formData.append('file', file);
     const config = {
