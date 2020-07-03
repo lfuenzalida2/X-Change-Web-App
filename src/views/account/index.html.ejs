@@ -3,22 +3,36 @@
     <div class="form">
         <div>
             <div>
-                Región: <%= currentUser.region %>
+              <span class="text-style">
+                Región:
+              </span>
+              <span>
+                <%= currentUser.region %>
+              </span>
             </div>
             <div>
-                Cantidad de X-Changes: <%= xChangesCount %>
+              <span class="text-style">
+                Cantidad de X-Changes:
+              </span>
+              <span>
+                <%= xChangesCount %>
+              </span>
             </div>
             <div>
+              <span class="text-style">
                 Promedio de Reseñas:
+              </span>
+              <span>
                 <div class="ratings">
-                  <% for (var i = 0; i < avgRating; i++) { %>
-                    <div class="star active-star">★</div>
+                <% for (var i = 0; i < avgRating; i++) { %>
+                  <div class="star active-star">★</div>
                   <% } %>
                   <% for (var i = 0; i < 5 - avgRating; i++) { %>
-                    <span class="star">★</span>
-                  <% } %>
-                </div>
-            </div>
+                      <span class="star">★</span>
+                    <% } %>
+                  </div>
+              </div>
+              </span>
         </div>
     </div>
      

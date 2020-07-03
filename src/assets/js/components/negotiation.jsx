@@ -431,7 +431,7 @@ class Negotiation extends Component {
         <h2 className="center">Lista de Objetos</h2>
         <div className="neg_layout">
           <div className="full-width">
-            <h3>Mis objetos a cambiar</h3>
+            <h3>Mi oferta</h3>
             <AvailableObjectList
               data={data}
               negotiation={negotiation}
@@ -439,7 +439,7 @@ class Negotiation extends Component {
             />
           </div>
           <div className="full-width">
-            <h3>Objetos de {otherName} a cambiar</h3>
+            <h3 className="triple_dot">Oferta de {otherName}</h3>
             <AvailableObjectList
               data={otherData}
               negotiation={negotiation}
@@ -457,7 +457,7 @@ class Negotiation extends Component {
             />
           </div>
           <div className="full-width">
-            <h3>Inventario de {otherName}</h3>
+            <h3 className="triple_dot">Inventario de {otherName}</h3>
             <TradingObjectList
               data={otherData}
               negotiation={negotiation}
@@ -825,10 +825,6 @@ function AvailableObjectList(props) {
   return (
     <div className="neg_obj_list form">
       <div>
-        <div className="head">
-          <span className="negotiation-object-title">Nombre</span>
-          <span className="float-r margin-title">Categoria</span>
-        </div>
         <div>
           { data.map((element) => (
             element.attributes.negotiations.map((object) => (
@@ -847,8 +843,10 @@ function AvailableObjectList(props) {
                       ? <span><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></span>
                       : <span><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></span>
                       )}
-                    <span className="negotiation-object-name">{element.attributes.name}</span>
-                    <span className="negotiation-object-category">{element.attributes.category.name}</span>
+                    <div className="negotiation-object">
+                      <span className="negotiation-object-name">{element.attributes.name}</span>
+                      <span className="negotiation-object-category">{element.attributes.category.name}</span>
+                    </div>
                   </div>
                 </div>
               )
@@ -867,10 +865,6 @@ function TradingObjectList(props) {
   return (
     <div className="neg_obj_list form">
       <div>
-        <span className="negotiation-object-title">Nombre</span>
-        <span className="float-r margin-title">Categoria</span>
-      </div>
-      <div>
         { data.map((element) => (
           <>
             {actualObjects(data, element.id)
@@ -888,8 +882,10 @@ function TradingObjectList(props) {
                   ? <span><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></span>
                   : <span><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></span>
                 )}
-                <span className="negotiation-object-name">{element.attributes.name}</span>
-                <span className="negotiation-object-category">{element.attributes.category.name}</span>
+                <div className="negotiation-object">
+                  <span className="negotiation-object-name">{element.attributes.name}</span>
+                  <span className="negotiation-object-category">{element.attributes.category.name}</span>
+                </div>
               </div>
             </div>
             )}
