@@ -89,27 +89,25 @@ class NegotiationsList extends Component {
           )
           : (
             <div className="negotiation-alternative center">
-              <h3 className="text-style">Hola!</h3>
-              <p>Haz click sobre cualquier negociación que tengas</p>
+              <h3 className="text-style">Centro de negociaciones</h3>
+              <p>Haz click en una negociación para desplegar su información</p>
               <p>
-                El estado de una negociación se
-                traduce en el color del punto junto a esta, donde:
+                A continuación, tienes los tres estados posibles de una negociación:
               </p>
               <div className="dot-display">
                 <span className="dot green" />
-                <span>: significa que la negociación está &quot;Aceptada&quot;</span>
+                <span>: &quot;Aceptada&quot;</span>
               </div>
               <div className="dot-display">
                 <span className="dot yellow" />
-                <span>: significa que la negociación está &quot;En Progreso&quot;</span>
+                <span>: &quot;En Progreso&quot;</span>
               </div>
               <div className="dot-display">
                 <span className="dot red" />
-                <span>: significa que la negociación está &quot;Cancelada&quot;</span>
+                <span>: &quot;Cancelada&quot;</span>
               </div>
               <p className="text-style">
-                *Para agregar un objeto a la negociación haz click sobre su imagen, este luego pasará
-                a los objetos que tu estas ofreciendo!
+                Para ofertar un objeto en la negociación haz click sobre su imagen
               </p>
             </div>
           )}

@@ -1,7 +1,7 @@
 <div class="fixed-width-lg">
    <div id="profilePic"></div>
-    <div class="form">
-        <div>
+    <div class="form show-container">
+        <div class="show-info">
             <div>
               <span class="text-style">
                 Región:
@@ -31,12 +31,13 @@
                   <span class="star">★</span>
                 <% } %>
               </div>
+            </span>
             </div>
-          </span>
         </div>
+        <a class="btn show-btn" href="<%= editProfile %>">Editar perfil</a>
     </div>
 
-    <a href="<%= editProfile %>">Editar perfil</a>
+
 
     <% if (reviews.length > 0) { %>
 
@@ -59,7 +60,7 @@
                 <% for (var i = 0; i < 5 - review.rating; i++) { %>
                   <span class="star">★</span>
                 <% } %>
-                <span class="review-time"><%= `${day}-${month}-${year}` %></span>
+                <span class="review-time cursiva"><%= `${day}-${month}-${year}` %></span>
               </div>
             <p><%= review.text %></p>
           </div>

@@ -4,7 +4,6 @@
     </div>
     <h1 class="center"><%= reviewer.username %></h1>
     <div class="form">
-      <h2>Información sobre <%= reviewer.username %></h2>
         <div>
             <div>
               <span class="text-style">
@@ -41,8 +40,7 @@
     </div>
 
     <% if (reviews.length > 0) { %>
-      <h2 class="opinions-reviews">Opiniones</h2>
-      <h2 class="relevants">Más recientes</h2>
+      <h2 class="opinions-reviews">Opiniones <span class="float-r relevants">Más recientes</span></h2>
       <h3 class="opinions-users">Opiniones de usuarios</h3>
       <% if (reviewer.id == reviews[0].reviewedId) {%>
         <% reviews.forEach(review => { %>
@@ -63,7 +61,7 @@
                 <% for (var i = 0; i < 5 - review.rating; i++) { %>
                   <span class="star">★</span>
                 <% } %>
-                <span class="review-time"><%= `${day}-${month}-${year}` %></span>
+                <span class="review-time cursiva"><%= `${day}-${month}-${year}` %></span>
               </div>
             </div>
             <p><%= review.text %></p>
