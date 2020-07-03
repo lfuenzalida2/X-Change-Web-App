@@ -72,8 +72,8 @@
               <% object = element.item.dataValues; %>
             <div class="group">
               <a href="<%= view(object) %>" class="group-item active">
-                <span class="float-l cursiva"><img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/account.png"><%= object.user.username %></span>
-                <span class="float-r cursiva"><img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/address.png"><%= object.user.region %></span>
+                <span class="float-l cursiva span-image-search"><img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/account.png"> <span><%= object.user.username %></span></span>
+                <span class="float-r cursiva span-image-search"><img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/address.png"> <span><%= object.user.region %></span></span>
                 <h3 class="underline"><%= object.name %></h3>
                 <p class="group-item-text max-lines"><%= object.description %></p>
               </a>
