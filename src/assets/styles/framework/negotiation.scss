@@ -1,5 +1,24 @@
 :root {
-    --objects-width: auto;
+    --color-1: #FFFFFF;
+    --color-2: rgb(235, 235, 235);
+    --color-3: #EBEBEB;
+    --color-4: ;
+    --image-size: 70px; 
+}
+
+#register_form {
+  margin-top: 50px;
+}
+
+.title-register {
+  padding: 20px;
+}
+
+.input-register {
+  font-size: .85rem;
+  color: black;
+  padding: 10px;
+  width: 65%;
 }
 
 .neg_layout{
@@ -12,8 +31,8 @@
 }
 
 .negotiation-images{
-    width: 90px;
-    height: 90px;
+    width: var(--image-size);
+    height: var(--image-size);
     border-radius: 7px;
     object-fit: cover;
   }
@@ -27,8 +46,13 @@
 
 .full-width h3 {
     margin: 0;
-    margin-left: 5px;
+    margin-left: 15px;
     margin-bottom: 5px;
+}
+
+.full-width {
+    width: 100%;
+    margin-left: 10px;
 }
 
 .form h3 {
@@ -36,7 +60,7 @@
 }
 
 .neg_obj_list{
-    background-color: #cccccc;
+    background-color: var(--color-1);
     width: 100%;
     margin: 1%;
     height: 250px;
@@ -44,14 +68,10 @@
     overflow-x: hidden;
 }
 
-.full-width {
-    width: 100%;
-}
-
 .negotiation_layout {
     padding: 10px;
     padding-top: 0;
-    background-color: rgb(235, 235, 235);
+    background-color: var(--color-2);
     width: 100%;
     border-radius: 10px;
     margin-top: 10px;
@@ -80,34 +100,33 @@ tr{
     display: block;
 }
 
+::-webkit-scrollbar {
+    border-radius: 10px;
+}
+
 .negotiation-alternative {
     margin: 5%;
     padding: 10px;
     padding-left: 20px;
     padding-right: 20px;
-    background-color: rgb(235, 235, 235);
+    background-color: var(--color-2);
     border-radius: 10px;
     width: 100%;
 }
 
 .scrollable {
     overflow-y: scroll;
+    overflow-x: hidden;
     max-height: 750px;
 }
-
-.scrollable::-webkit-scrollbar {
-    display: none;
-}
-
 
 .negotiation {
     cursor: pointer;
     padding-top: 7px;
     padding-bottom: 7px;
     border-bottom: 2px solid gray;
-    background-color: white;
+    background-color: var(--color-1);
     color: black;
-    opacity: 1.0;
   }
 
 .negotiation:hover {
@@ -119,15 +138,38 @@ tr{
 }
 
 .top {
-    position: fixed;
+    position: absolute;
     cursor: pointer;
     z-index: 9999;
     height: inherit;
     width: inherit;
+    background-color: var(--color-1);
+    opacity: 0;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.top:hover {
+    opacity: 0.2;
+}
+
+.triple_dot {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .trading-object-row .top {
-    width: 25%;
+    width: var(--image-size);
+    height: var(--image-size);
+}
+
+.trading-object-row .top {
+    width: 100px;
+}
+
+.traductor {
+    margin-top: 10px;
 }
 
 .bottom {
@@ -149,7 +191,7 @@ tr{
 }
 
 .negotiation-object-title {
-    margin-left: 50%;
+    margin-left: 100px;
     margin-top: auto;
     margin-bottom: auto;
     font-weight: bold;
@@ -160,49 +202,37 @@ tr{
     font-weight: bold;
 }
 
-.negotiation-object-name {
-    margin-left: 5px;
+.negotiation-object {
     margin-top: auto;
     margin-bottom: auto;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.negotiation-object-name {
     font-weight: bold;
 }
 
 .negotiation-object-category {
-    margin-right: 5px;
-    margin-left: auto;
-    margin-top: auto;
-    margin-bottom: auto;
-    font-weight: bold;
+    font-style: italic;
 }
 
 .negotiation-object-display {
     display: flex;
-    padding: 5px;
-    padding-bottom: 0;
     border-radius: 10px;
-    background-color: #FFFFFF;
-    opacity: 0.8;
-}
-
-.negotiation-object-display:hover {
-    opacity: 1.0;
+    background-color: var(--color-1);
 }
 
 .trading-object-row {
-    margin: 0;
-    margin-top: 5px;
-    margin-bottom: 5px;
     padding: 0;
     border-radius: 7px;
     width: auto;
-    height: 100px; 
 }
 
 .red {
     background-color: red;
 }
-
-
 
 .yellow {
     background-color: #ffd500;
@@ -211,4 +241,3 @@ tr{
 .green {
     background-color: green;
 }
-

@@ -8,7 +8,7 @@ form > div {
 
 #container-search-item-1 {
   display: inline-block;
-  max-height: 290px;
+  max-height: 315px;
 }
 
 #container-search-item-1 > h2 {
@@ -16,9 +16,21 @@ form > div {
   text-align: center;
 }
 
+.item-topic {
+  padding: 10px;
+}
+
+.input-search {
+  border-radius: 5px;
+  width: 65%;
+}
+
+.option-width-search {
+  width: 200px;
+}
+
 #container-search-item-2 {
   display: inline-block;
-
 }
 
 .pagination {
@@ -30,7 +42,7 @@ form > div {
 .group {
   cursor: pointer;
   display:block;
-  width: 600px;
+  width: 610px;
   vertical-align:top;
   margin:0px;
   text-align:center;
@@ -46,11 +58,13 @@ form > div {
 .group-item {
   width: 600px;
   height: 150px;
-  background-color: rgb(224,255,255);
   border-radius: 15px;
-  border: solid 5px;
+  background-color: white;
 }
 
+.group-item:hover {
+    opacity: 0.6;
+}
 .group-footer {
   display: inline-block;
   padding-left: 10px;
@@ -59,7 +73,7 @@ form > div {
   color: black;
 }
 
-.group span{
+.group span {
   padding: 5px;
   font-weight: 501;
 }
@@ -69,5 +83,6 @@ form > div {
 }
 
 .group h3 {
-  padding-top: 10px;
+  padding-top: 7%;
+  padding-bottom: 20px
 }

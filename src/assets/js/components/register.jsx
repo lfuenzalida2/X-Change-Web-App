@@ -144,39 +144,25 @@ class RegisterForm extends Component {
             ))}
           </div>
           <form onSubmit={this.submitForm} method="post" className="border form">
-            <div>
-              <label htmlFor="username">Nombre de usuario</label>
-              <input type="text" name="username" className="float-r" onBlurCapture={this.validUsername} />
+            <h1 className="center title-register">Regístrate</h1>
+            <div className="center">
+              <input placeholder="Nombre de usuario" className="input-register" type="text" name="username" onBlurCapture={this.validUsername} />
             </div>
-            <br />
-            <br />
-            <div>
-              <label htmlFor="mail">Correo electrónico</label>
-              <input type="text" name="mail" className="float-r" onBlurCapture={this.validEmail} />
+            <div className="center">
+              <input placeholder="Mail" className="input-register" type="text" name="mail" onBlurCapture={this.validEmail} />
             </div>
-            <br />
-            <br />
-            <div>
-              <label htmlFor="password">Contraseña</label>
-              <input type="password" name="password" className={`${samePassword} float-r`} ref={this.passwordRef} onBlurCapture={this.checkPassword} />
+            <div className="center">
+              <input placeholder="Contraseña" type="password" name="password" className={`${samePassword} input-register`} ref={this.passwordRef} onBlurCapture={this.checkPassword} />
             </div>
-            <br />
-            <br />
-            <div>
-              <label htmlFor="confirmPassword">Confirmar Contraseña</label>
-              <input type="password" name="confirmPassword" className={`${samePassword} float-r`} ref={this.passwordConfirmRef} onChange={this.checkPassword} />
+            <div className="center">
+              <input placeholder="Confirmar contraseña" type="password" name="confirmPassword" className={`${samePassword} input-register`} ref={this.passwordConfirmRef} onChange={this.checkPassword} />
             </div>
-            <br />
-            <br />
-            <div>
-              <label htmlFor="number">Número de teléfono</label>
-              <input type="number" name="number" className="float-r" onBlurCapture={this.validNumber} />
+            <div className="center">
+              <input placeholder="Teléfono" className="input-register" type="number" name="number" onBlurCapture={this.validNumber} />
             </div>
-            <br />
-            <br />
-            <div>
-              <label htmlFor="region">Región</label>
-              <select name="region" id="region" className="float-r">
+            <div className="center">
+              <select name="region" id="region" className="dropdown input-register">
+                <option disabled selected>Región</option>
                 <option value="Metropolitana de Santiago">Metropolitana de Santiago</option>
                 <option value="Aisen del G. Carlos Ibáñez del Campo">Aisén del G. Carlos Ibáñez del Campo</option>
                 <option value="Antofagasta">Antofagasta</option>
@@ -194,13 +180,10 @@ class RegisterForm extends Component {
                 <option value="Valparaiso">Valparaíso</option>
               </select>
             </div>
-            <br />
-            <br />
-            <div>
-              <input type="submit" name="create" value="Crear cuenta!" className="btn" />
+            <div className="center">
+              <input type="submit" name="create" value="Crear cuenta" className="btn" />
             </div>
           </form>
-          <br />
         </div>
       </>
     );

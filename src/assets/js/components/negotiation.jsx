@@ -89,7 +89,7 @@ class NegotiationsList extends Component {
           )
           : (
             <div className="negotiation-alternative center">
-              <h3>Hola!</h3>
+              <h3 className="text-style">Hola!</h3>
               <p>Haz click sobre cualquier negociación que tengas</p>
               <p>
                 El estado de una negociación se
@@ -107,6 +107,10 @@ class NegotiationsList extends Component {
                 <span className="dot red" />
                 <span>: significa que la negociación está &quot;Cancelada&quot;</span>
               </div>
+              <p className="text-style">
+                *Para agregar un objeto a la negociación haz click sobre su imagen, este luego pasará
+                a los objetos que tu estas ofreciendo!
+              </p>
             </div>
           )}
       </>
@@ -129,7 +133,7 @@ function Negotiations(props) {
         : (
           <div className="form scrollable">
             <div className="bottom">
-              <span>Usuario</span>
+              <span className="text-style">Usuario</span>
             </div>
             <div>
               { negotiationsList.map((negotiation) => (
@@ -427,7 +431,7 @@ class Negotiation extends Component {
         <h2 className="center">Lista de Objetos</h2>
         <div className="neg_layout">
           <div className="full-width">
-            <h3>Mis objetos a cambiar</h3>
+            <h3>Mi oferta</h3>
             <AvailableObjectList
               data={data}
               negotiation={negotiation}
@@ -435,14 +439,13 @@ class Negotiation extends Component {
             />
           </div>
           <div className="full-width">
-            <h3>Objetos de {otherName} a cambiar</h3>
+            <h3 className="triple_dot">Oferta de {otherName}</h3>
             <AvailableObjectList
               data={otherData}
               negotiation={negotiation}
             />
           </div>
         </div>
-        <br />
         <div className="neg_layout">
           <div className="full-width">
             <h3>Mi Inventario</h3>
@@ -454,7 +457,7 @@ class Negotiation extends Component {
             />
           </div>
           <div className="full-width">
-            <h3>Inventario de {otherName}</h3>
+            <h3 className="triple_dot">Inventario de {otherName}</h3>
             <TradingObjectList
               data={otherData}
               negotiation={negotiation}
@@ -511,25 +514,30 @@ class Submit extends Component {
       return (
         <div className={reviewForm ? ('modal') : ('hidden')}>
           <div className="modal-content">
-            <span className="close" onClick={this.openReviewSubmit}>Close</span>
-            <div className="form">
-              <form onSubmit={submitReview} method="POST">
-                <div className="ratings form-ratings">
-                  <input name="rating" id="e5" type="radio" value="5" />
-                  <label htmlFor="e5">★</label>
-                  <input name="rating" id="e4" type="radio" value="4" />
-                  <label htmlFor="e4">★</label>
-                  <input name="rating" id="e3" type="radio" value="3" />
-                  <label htmlFor="e3">★</label>
-                  <input name="rating" id="e2" type="radio" value="2" />
-                  <label htmlFor="e2">★</label>
-                  <input name="rating" id="e1" type="radio" value="1" />
-                  <label htmlFor="e1">★</label>
-                </div>
-                <textarea type="text" name="text" placeholder="Añade un comentario..." />
-                <input type="submit" value="Enviar la Valoración" className="btn" />
-              </form>
+            <div className="close">
+              <span onClick={this.openReviewSubmit}>✖</span>
             </div>
+            <form className="modal-form" onSubmit={submitReview} method="POST">
+              <h2 className="modal-title center">Nueva review</h2>
+              <div className="ratings form-ratings ">
+                <input name="rating" id="e5" type="radio" value="5" />
+                <label htmlFor="e5">★</label>
+                <input name="rating" id="e4" type="radio" value="4" />
+                <label htmlFor="e4">★</label>
+                <input name="rating" id="e3" type="radio" value="3" />
+                <label htmlFor="e3">★</label>
+                <input name="rating" id="e2" type="radio" value="2" />
+                <label htmlFor="e2">★</label>
+                <input name="rating" id="e1" type="radio" value="1" />
+                <label htmlFor="e1">★</label>
+              </div>
+              <div className="field center">
+                <input className="input-register" type="text" name="text" placeholder="Añade un comentario..." />
+              </div>
+              <div className="field center">
+                <input type="submit" value="Enviar la Valoración" className="btn" />
+              </div>
+            </form>
           </div>
         </div>
       );
@@ -658,6 +666,7 @@ class Messages extends Component {
 
   async onKeyEnter(event) {
     if (event.keyCode === 13) {
+      event.preventDefault();
       this.send.current.click();
     }
   }
@@ -711,11 +720,12 @@ class Messages extends Component {
       messages,
       targetLanguage,
     };
-    await axios.post(url, data).then((res) => {
-      this.setState({
-        messages: res.data,
+    await axios.post(url, data)
+      .then((res) => {
+        this.setState({
+          messages: res.data,
+        });
       });
-    });
   }
 
   scrollBottom() {
@@ -762,15 +772,15 @@ class Messages extends Component {
     const { loading, messages, targetLanguage } = this.state;
     const { currentUser, negotiation } = this.props;
 
-    if (loading) return <p>Loading Messages...</p>;
+    if (loading) return <p>Cargando Mensajes...</p>;
 
     return (
       <div id="chat">
         <form onSubmit={this.handleSubmit}>
-          <div>
+          <div className="traductor">
             <label>
-              <span>Traducir al:</span>
-              <select value={targetLanguage} onChange={this.handleChangeTarget}>
+              <span className="text-style">Traducir al: &nbsp;</span>
+              <select value={targetLanguage} onChange={this.handleChangeTarget} className="dropdown">
                 <option value="es">Español</option>
                 <option value="en">Inglés</option>
                 <option value="de">Alemán</option>
@@ -820,10 +830,6 @@ function AvailableObjectList(props) {
   return (
     <div className="neg_obj_list form">
       <div>
-        <div className="head">
-          <span className="negotiation-object-title">Nombre</span>
-          <span className="float-r margin-title">Categoria</span>
-        </div>
         <div>
           { data.map((element) => (
             element.attributes.negotiations.map((object) => (
@@ -842,8 +848,10 @@ function AvailableObjectList(props) {
                       ? <span><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></span>
                       : <span><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></span>
                       )}
-                    <span className="negotiation-object-name">{element.attributes.name}</span>
-                    <span className="negotiation-object-category">{element.attributes.category.name}</span>
+                    <div className="negotiation-object">
+                      <span className="negotiation-object-name">{element.attributes.name}</span>
+                      <span className="negotiation-object-category">{element.attributes.category.name}</span>
+                    </div>
                   </div>
                 </div>
               )
@@ -862,10 +870,6 @@ function TradingObjectList(props) {
   return (
     <div className="neg_obj_list form">
       <div>
-        <span className="negotiation-object-title">Nombre</span>
-        <span className="float-r margin-title">Categoria</span>
-      </div>
-      <div>
         { data.map((element) => (
           <>
             {actualObjects(data, element.id)
@@ -883,8 +887,10 @@ function TradingObjectList(props) {
                   ? <span><img className="negotiation-images" src={`https://xchangestorage.s3.us-east-2.amazonaws.com/${element.attributes.photos[0].fileName}`} alt="" /></span>
                   : <span><img className="negotiation-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg" alt="" /></span>
                 )}
-                <span className="negotiation-object-name">{element.attributes.name}</span>
-                <span className="negotiation-object-category">{element.attributes.category.name}</span>
+                <div className="negotiation-object">
+                  <span className="negotiation-object-name">{element.attributes.name}</span>
+                  <span className="negotiation-object-category">{element.attributes.category.name}</span>
+                </div>
               </div>
             </div>
             )}

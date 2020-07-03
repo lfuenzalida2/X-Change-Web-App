@@ -3,32 +3,44 @@
     <div class="form">
         <div>
             <div>
-                Región: <%= currentUser.region %>
+              <span class="text-style">
+                Región:
+              </span>
+              <span>
+                <%= currentUser.region %>
+              </span>
             </div>
             <div>
-                Cantidad de X-Changes: <%= xChangesCount %>
+              <span class="text-style">
+                Cantidad de X-Changes:
+              </span>
+              <span>
+                <%= xChangesCount %>
+              </span>
             </div>
             <div>
+              <span class="text-style">
                 Promedio de Reseñas:
+              </span>
+              <span>
                 <div class="ratings">
-                  <% for (var i = 0; i < avgRating; i++) { %>
-                    <div class="star active-star">★</div>
-                  <% } %>
-                  <% for (var i = 0; i < 5 - avgRating; i++) { %>
-                    <span class="star">★</span>
-                  <% } %>
-                </div>
+                <% for (var i = 0; i < avgRating; i++) { %>
+                  <div class="star active-star">★</div>
+                <% } %>
+                <% for (var i = 0; i < 5 - avgRating; i++) { %>
+                  <span class="star">★</span>
+                <% } %>
+              </div>
             </div>
+          </span>
         </div>
     </div>
-    <br>
+
     <a href="<%= editProfile %>">Editar perfil</a>
 
     <% if (reviews.length > 0) { %>
 
-      <h2 class="opinions-reviews">Opiniones</h2>
-      <h2 class="relevants">Más recientes</h2>
-      <h3 class="opinions-users">Opiniones de usuarios</h3>
+      <h2 class="opinions-reviews">Opiniones <span class="float-r relevants">Más recientes</span></h2>
       <% if (currentUser.id == reviews[0].reviewedId) {%>
         <% reviews.forEach(review => { %>
           <% const [{ value: month },,{ value: day },,{ value: year }] = dateTimeFormat .formatToParts(review.createdAt ) %>
