@@ -16,7 +16,7 @@
 
       <div class="flexbox-item home item">
         <div class="separate">
-          <a href="/" class="flexbox-item" id="title">
+          <a href="/" class="flexbox-item navbar-a" id="title">
             <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/xchange.png">
             <span class="item">X-Change</span>
           </a>
@@ -26,7 +26,7 @@
       <!-- if logged in -->
       <div class="flexbox-item session flexbox-container" id="user-bar">
         <div class="separate">
-          <a href="<%= explore %>" class="flexbox-item">
+          <a href="<%= explore %>" class="flexbox-item navbar-a">
             <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/search-icon.png">
             <span class="item">Buscar</span>
           </a>
@@ -37,21 +37,21 @@
           </div>
           <hr>
             <div class="separate item">
-              <a href="<%= profile(currentUser) %>" class="flexbox-item">
+              <a href="<%= profile(currentUser) %>" class="flexbox-item navbar-a">
                 <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/account.png">
                 <span class="item">Perfil</span>
               </a>
             </div>
             <hr>
             <div class="separate">
-              <a href="<%= inventory(currentUser) %>" class="flexbox-item">
+              <a href="<%= inventory(currentUser) %>" class="flexbox-item navbar-a">
                 <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/inventory.png">
                 <span class="item">Inventario</span>
               </a>
             </div>
             <hr>
             <div class="separate">
-              <a href="<%= negotiations %>" class="flexbox-item">
+              <a href="<%= negotiations %>" class="flexbox-item navbar-a">
                 <img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/negotiation.png">
                 <span class="item">Negociaciones</span>
               </a>

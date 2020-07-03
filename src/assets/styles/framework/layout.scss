@@ -126,6 +126,14 @@ html, body {
   }
 }
 
+.navbar-a {
+  color: inherit;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  padding:5px;
+}
+
 a {
   color: inherit;
   text-align: center;
@@ -134,10 +142,6 @@ a {
   padding:5px;
 }
 
-a:hover{
-  background-color: rgb(242, 242, 242);
-  border-radius: 15px;
-}
 
 h1 {
   margin: 0;
