@@ -90,7 +90,9 @@ class ObjectForm extends Component {
         </div>
         <div className={form ? ('modal') : ('hidden')}>
           <div className="modal-content">
-            <span className="close" onClick={this.ToogleForm}>Close</span>
+            <div className="close">
+              <span onClick={this.ToogleForm}>✖</span>
+            </div>
             <div>
               {errors.map((error) => (
                 <p key={error}>{error}</p>
@@ -107,13 +109,14 @@ class ObjectForm extends Component {
 function Form(props) {
   const { categories, submitForm } = props;
   return (
-    <form onSubmit={submitForm}>
-      <div className="field">
-        <input type="text" name="name" placeholder="Ingrese el nombre del objeto" className="float-r" />
+    <form className="modal-form" onSubmit={submitForm}>
+      <h2 className="center modal-title">Agregar Objeto</h2>
+      <div className="field center">
+        <input className="input-register" type="text" name="name" placeholder="Ingrese el nombre del objeto" />
       </div>
-      <div>
-        <select name="categoryId" id="categoryId" className="float-r" defaultValue="">
-          <option value="" disabled>Selecciones una categoria</option>
+      <div className="center">
+        <select className="input-register dropdown" name="categoryId" id="categoryId" defaultValue="">
+          <option value="" disabled>Selecciona una categoria</option>
           {categories.map((category) => (
             <option
               key={category.id}
@@ -124,11 +127,11 @@ function Form(props) {
           ))}
         </select>
       </div>
-      <div className="field">
-        <input type="textarea" name="description" placeholder="Ingrese una descripción" className="float-r" />
+      <div className="field center">
+        <input className="input-register" type="textarea" name="description" placeholder="Ingrese una descripción" />
       </div>
-      <div className="field">
-        <input type="submit" name="create" value="Crear" />
+      <div className="field center">
+        <input className="btn" type="submit" name="create" value="Crear" />
       </div>
     </form>
   );
