@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+
 const jwt = require('koa-jwt');
 const authApi = require('./auth');
 const notificationsApi = require('./notifications');
@@ -26,3 +27,4 @@ router.use('/negotiations', negotiationsApi.routes());
 router.use('/objects', objectsApi.routes());
 
 module.exports = router;
+

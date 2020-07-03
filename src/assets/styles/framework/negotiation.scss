@@ -31,6 +31,7 @@
 }
 
 .negotiation-images{
+    cursor: pointer;
     width: var(--image-size);
     height: var(--image-size);
     border-radius: 7px;
@@ -50,8 +51,12 @@
     margin-bottom: 5px;
 }
 
+.negotiation-info-container {
+    max-height: 600px;
+}
+
 .full-width {
-    width: 100%;
+    width: 50%;
     margin-left: 10px;
 }
 
