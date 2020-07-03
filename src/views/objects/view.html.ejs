@@ -20,29 +20,43 @@
               <h1 class="center"><%= object.name %></h1>
             </div>
             <div class="form">
-              <div class="flexbox-item">
-                Estado:
-                <%= object.state ? 'Disponible' : 'No Disponible' %>
+              <div>
+                <span class="text-style">
+                  Estado:
+                </span>
+                <span>
+                  <%= object.state ? 'Disponible' : 'No Disponible' %>
+                </span>
               </div>
-              <div class="flexbox-item">
-                Dueño del objeto:
-                <%= owner.username %>
+              <div>
+                <span class="text-style">
+                  Dueño del objeto:
+                </span>
+                <span>
+                  <%= owner.username %>
+                </span>
               </div>
-              <div class="flexbox-item">
-                Categoria:
-                <%= category %>
+              <div>
+                <span class="text-style">
+                  Categoria:
+                </span>
+                <span>
+                  <%= category %>
+                </span>
               </div>
-              <div class="flexbox-item">
-                Descripción:
-                <%= object.description %>
+              <div>
+                <span class="text-style">
+                  Descripción:
+                </span>
+                <span>
+                  <%= object.description %>
+                </span>
               </div>
             </div>
         </div>
     </div>
     <% if(currentUser.id == object.userId) { %>
-      <a href="<%= editObjectPath %>">Editar objeto</a>
-       
-       
+      <a href="<%= editObjectPath %>">Editar objeto</a> 
     <% } %>
   </div>
 
@@ -59,25 +73,23 @@
 </div>
 
 <div class="slideshow-container">
-
-
-<% if (photos.length) {%>
-  <% for (var i = 0; i < photos.length; i++) { %>
-    <a class="mySlides fade" href="">
-      <div class="numbertext"><%= i+1 %> / <%= photos.length %></div>
-      <img src="https://xchangestorage.s3.us-east-2.amazonaws.com/<%=photos[i].fileName%>">
-    </a>
+  <% if (photos.length) {%>
+    <% for (var i = 0; i < photos.length; i++) { %>
+      <a class="mySlides fade" href="">
+        <div class="numbertext"><%= i+1 %> / <%= photos.length %></div>
+        <img src="https://xchangestorage.s3.us-east-2.amazonaws.com/<%=photos[i].fileName%>">
+      </a>
+    <% } %>
+  <% } else {%>
+      <a class="mySlides fade" href="">
+        <div class="numbertext"><%= 0 %> / <%= photos.length %></div>
+        <img src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg">
+      </a>
   <% } %>
-<% } else {%>
-    <a class="mySlides fade" href="">
-      <div class="numbertext"><%= 0 %> / <%= photos.length %></div>
-      <img src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg">
-    </a>
-<% } %>
 
- <!-- Next and previous buttons -->
- <a class="prev">&#10094;</a>
- <a class="next">&#10095;</a>
+  <!-- Next and previous buttons -->
+  <a class="prev">&#10094;</a>
+  <a class="next">&#10095;</a>
 </div>
 
 <!-- The dots/circles -->

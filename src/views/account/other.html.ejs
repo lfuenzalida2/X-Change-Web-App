@@ -1,22 +1,41 @@
 <div class="fixed-width-lg">
-    <a href="<%= profile(currentUser) %>">Volver</a>
     <div id="image_profile">
       <img src=<%=`https://xchangestorage.s3.us-east-2.amazonaws.com/${currentUser.profilePicture}`%> alt="profile" />
     </div>
     <h1 class="center"><%= reviewer.username %></h1>
     <div class="form">
-        Información sobre <%= reviewer.username %>
-         
-         
+      <h2>Información sobre <%= reviewer.username %></h2>
         <div>
             <div>
-                Región: <%= reviewer.region %>
+              <span class="text-style">
+                Región:
+              </span>
+              <span>
+                <%= reviewer.region %>
+              </span>
             </div>
             <div>
-                Cantidad de X-Changes: 0
+              <span class="text-style">
+                Cantidad de X-Changes:
+              </span>
+              <span>
+                <%= xChangesCount %>
+              </span>
             </div>
             <div>
-                Promedio de Reseñas
+              <span class="text-style">
+                Promedio de Reseñas:
+              </span>
+              <span>
+                <div class="ratings">
+                  <% for (var i = 0; i < avgRating; i++) { %>
+                    <div class="star active-star">★</div>
+                  <% } %>
+                  <% for (var i = 0; i < 5 - avgRating; i++) { %>
+                    <span class="star">★</span>
+                  <% } %>
+                </div>
+              </span>
             </div>
         </div>
     </div>
