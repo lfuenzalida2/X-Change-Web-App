@@ -58,7 +58,7 @@ router.post('objects.search', '/', async (ctx) => {
       include: includeStatement,
     },
   );
-  
+
   if (objectsList.length && search.language !== 'es') {
     for (let i = 0; i < objectsList.length; i++) {
       promises.push(
