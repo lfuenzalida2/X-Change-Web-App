@@ -112,7 +112,7 @@ function Form(props) {
     <form className="modal-form" onSubmit={submitForm}>
       <h2 className="center modal-title">Agregar Objeto</h2>
       <div className="field center">
-        <input className="input-register" type="text" name="name" placeholder="Ingrese el nombre del objeto" />
+        <input className="input-register" type="text" name="name" placeholder="Nombre del objeto" />
       </div>
       <div className="center">
         <select className="input-register dropdown" name="categoryId" id="categoryId" defaultValue="">
@@ -128,7 +128,7 @@ function Form(props) {
         </select>
       </div>
       <div className="field center">
-        <input className="input-register" type="textarea" name="description" placeholder="Ingrese una descripción" />
+        <input className="input-register" type="textarea" name="description" placeholder="Descripción del objeto" />
       </div>
       <div className="field center">
         <input className="btn" type="submit" name="create" value="Crear" />
