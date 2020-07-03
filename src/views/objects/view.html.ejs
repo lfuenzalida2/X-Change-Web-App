@@ -31,7 +31,7 @@
               </div>
               <div>
                 <span class="text-style">
-                  Dueño del objeto:
+                  Dueño:
                 </span>
                 <span>
                   <%= owner.username %>
@@ -56,22 +56,18 @@
               </div>
               <% if(currentUser.id == object.userId) { %>
                 <a class="btn show-btn" href="<%= editObjectPath %>">Editar objeto</a>
+              <% } else if (object.state){ %>
+                <form id="create-negotiation" action="<%= createNegotiation  %>" method="POST">
+                    <input type="hidden" name="customerId" value=<%= object.userId %>>
+                    <input type="hidden" name="state" value="In Progress">
+                    <input type="hidden" name="sellerId" value=<%= currentUser.id %>>
+                    <input type="submit" class="btn show-btn" value="Negociar" />
+                </form>
               <% } %>
             </div>
         </div>
     </div>
   </div>
-
-  <% if (currentUser) {%>
-      <% if (currentUser.id !== object.userId) { %>
-          <form id="create-negotiation" action="<%= createNegotiation  %>" method="POST">
-              <input type="hidden" name="customerId" value=<%= object.userId %>>
-              <input type="hidden" name="state" value="In Progress">
-              <input type="hidden" name="sellerId" value=<%= currentUser.id %>>
-              <input type="submit" value="Crear negociación" />
-          </form>
-      <% } %>
-  <% } %>
 </div>
 
 <div class="slideshow-container">
@@ -95,26 +91,22 @@
 </div>
 
 <!-- The dots/circles -->
- 
-
-<div class="dots">
+<div class="dots show-dots">
   <% for (var i = 0; i < photos.length; i++) { %>
  <span class="dot"></span>
  <% } %>
 </div>
 
- 
-
+<div class="center">
 <% if (currentUser.id == object.userId){ %>
   <form action="<%= submitObjectPath %>" enctype="multipart/form-data" method="post" >
     <div class="field">
-      <label for="list">Seleccionar archivo</label>
-      <input type="file" name="list" />
-    </div>
-     
-    <div class="field">
+      <label for="list"></label>
+      <input type="file" name="list" value="Seleccionar archivo"/>
       <input type="submit" name="upload" value="Subir imagen" class="btn"/>
     </div>
   </form>
-</div>
 <% } %>
+</div>
+
+</div>

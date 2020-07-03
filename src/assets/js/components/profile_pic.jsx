@@ -93,11 +93,13 @@ class ProfilePic extends Component {
             <p key={error}>{error}</p>
           ))}
         </div>
-        <h3>Subir foto</h3>
-        <form onSubmit={this.onFormSubmit}>
-          <input type="file" onChange={this.onChange} />
-          <button type="submit" className="btn">Subir</button>
-        </form>
+        <div className="center">
+          <h3>Cambiar foto de perfil</h3>
+          <form onSubmit={this.onFormSubmit}>
+            <input type="file" onChange={this.onChange} />
+            <button type="submit" className="btn">Subir</button>
+          </form>
+        </div>
       </div>
     );
   }
