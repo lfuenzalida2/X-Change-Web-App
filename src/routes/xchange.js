@@ -53,7 +53,7 @@ router.patch('xchange.upload', '/upload', async (ctx) => {
     }
     const currentUser = await ctx.state.currentUser;
     const { file } = ctx.request.files;
-    file.name = `${currentUser.id}_profile_${new Date().toLocaleString()}${file.name.slice(file.name.lastIndexOf('.'), file.name.length)}`;
+    file.name = `${currentUser.id}_profile_${new Date().getTime() / 1000}${file.name.slice(file.name.lastIndexOf('.'), file.name.length)}`;
     const profilePicture = file.name;
     await fileStorage.upload(file);
     await currentUser.update({ profilePicture });
