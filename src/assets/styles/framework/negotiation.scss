@@ -3,7 +3,7 @@
     --color-2: rgb(235, 235, 235);
     --color-3: #EBEBEB;
     --color-4: ;
-    
+
 }
 
 .neg_layout{
@@ -31,8 +31,13 @@
 
 .full-width h3 {
     margin: 0;
-    margin-left: 5px;
+    margin-left: 15px;
     margin-bottom: 5px;
+}
+
+.full-width {
+    width: 100%;
+    margin-left: 10px;
 }
 
 .form h3 {
@@ -46,10 +51,6 @@
     height: 250px;
     overflow-y: scroll;
     overflow-x: hidden;
-}
-
-.full-width {
-    width: 100%;
 }
 
 .negotiation_layout {
@@ -96,13 +97,9 @@ tr{
 
 .scrollable {
     overflow-y: scroll;
+    overflow-x: hidden;
     max-height: 750px;
 }
-
-.scrollable::-webkit-scrollbar {
-    display: none;
-}
-
 
 .negotiation {
     cursor: pointer;
@@ -111,7 +108,6 @@ tr{
     border-bottom: 2px solid gray;
     background-color: var(--color-1);
     color: black;
-    opacity: 1.0;
   }
 
 .negotiation:hover {
@@ -128,10 +124,16 @@ tr{
     z-index: 9999;
     height: inherit;
     width: inherit;
+    background-color: var(--color-1);
+    opacity: 0;
+}
+
+.top:hover {
+    opacity: 0.2;
 }
 
 .trading-object-row .top {
-    width: 25%;
+    width: 100px;
 }
 
 .dropdown {
@@ -140,7 +142,6 @@ tr{
     border-radius: 5px;
     border-color: var(--color-3);
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.18);
-    padding: 2px;
     font-weight: bold;
 }
 
@@ -199,11 +200,6 @@ tr{
     padding-bottom: 0;
     border-radius: 10px;
     background-color: var(--color-1);
-    opacity: 0.8;
-}
-
-.negotiation-object-display:hover {
-    opacity: 1.0;
 }
 
 .trading-object-row {
