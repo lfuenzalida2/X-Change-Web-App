@@ -141,10 +141,13 @@ tr{
     width: inherit;
     background-color: var(--color-1);
     opacity: 0;
-}
 
 .top:hover {
     opacity: 0.2;
+}
+
+.trading-object-row .top {
+    width: 100px;
 }
 
 .trading-object-row .top {
