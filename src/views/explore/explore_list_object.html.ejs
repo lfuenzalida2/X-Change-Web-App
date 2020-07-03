@@ -1,6 +1,6 @@
 <div class="fixed-width-lg flexbox-container " id="search">
     <div class="form" id="container-search-item-1">
-      <h2 class="underline">Buscar</h2>
+      <h2>Buscar</h2>
       <form action="<%= submitSearchPath %>" method="post">
         <div>
           <label class="topic" for="keywords">Palabras Clave: </label>
@@ -8,35 +8,35 @@
         </div>
         <div>
           <label class="topic" for="state">Estado: </label>
-          <select name="state" id="state" class="float-r input-search">
+          <select name="state" id="state" class="float-r input-search dropdown">
             <option value="true">Disponible</option>
             <option value="false">No disponible</option>
           </select>
         </div>
         <div>
           <label class="topic" for="region">Region: </label>
-          <select name="region" id="region" class="float-r input-search">
-            <option value="todas">Todas</option>
-            <option value="Aisen del G. Carlos Ibáñez del Campo">Aisén del G. Carlos Ibáñez del Campo</option>
-            <option value="Antofagasta">Antofagasta</option>
-            <option value="Arica y Parinacota">Arica y Parinacota</option>
-            <option value="Atacama">Atacama</option>
-            <option value="Biobio">Biobío</option>
-            <option value="Coquimbo">Coquimbo</option>
-            <option value="La Araucania">La Araucanía</option>
-            <option value="Libertador General Bernardo O'Higgins">Libertador General Bernardo O'Higgins</option>
-            <option value="Los Lagos">Los Lagos</option>
-            <option value="Los Rios">Los Ríos</option>
-            <option value="Magallanes y de la Antartica Chilena">Magallanes y de la Antártica Chilena</option>
-            <option value="Metropolitana de Santiago">Metropolitana de Santiago</option>
-            <option value="Nuble">Ñuble</option>
-            <option value="Tarapaca">Tarapacá</option>
-            <option value="Valparaiso">Valparaíso</option>
+          <select name="region" id="region" class="float-r input-search dropdown">
+            <option class="option-width-search" value="todas">Todas</option>
+            <option class="option-width-search" value="Aisen del G. Carlos Ibáñez del Campo">Aisén del G. Carlos Ibáñez del Campo</option>
+            <option class="option-width-search" value="Antofagasta">Antofagasta</option>
+            <option class="option-width-search" value="Arica y Parinacota">Arica y Parinacota</option>
+            <option class="option-width-search" value="Atacama">Atacama</option>
+            <option class="option-width-search" value="Biobio">Biobío</option>
+            <option class="option-width-search" value="Coquimbo">Coquimbo</option>
+            <option class="option-width-search" value="La Araucania">La Araucanía</option>
+            <option class="option-width-search" value="Libertador General Bernardo O'Higgins">Libertador General Bernardo O'Higgins</option>
+            <option class="option-width-search" value="Los Lagos">Los Lagos</option>
+            <option class="option-width-search" value="Los Rios">Los Ríos</option>
+            <option class="option-width-search" value="Magallanes y de la Antartica Chilena">Magallanes y de la Antártica Chilena</option>
+            <option class="option-width-search" value="Metropolitana de Santiago">Metropolitana de Santiago</option>
+            <option class="option-width-search" value="Nuble">Ñuble</option>
+            <option class="option-width-search" value="Tarapaca">Tarapacá</option>
+            <option class="option-width-search" value="Valparaiso">Valparaíso</option>
           </select>
         </div>
         <div>
           <label class="topic" for="categoryId">Categoria: </label>
-          <select name="categoryId" id="categoryId" class="float-r input-search">
+          <select name="categoryId" id="categoryId" class="float-r input-search dropdown">
             <option value="todas">Todas</option>
             <% categoryList.forEach((category)=> { %>
               <option value="<%= category.id %>"><%= category.name %></option>
@@ -45,7 +45,7 @@
         </div>
         <div>
           <label class="topic" for="language">Idioma: </label>
-          <select name="language" id="language" class="float-r input-search">
+          <select name="language" id="language" class="float-r input-search dropdown">
             <option value="es">Español</option>
             <option value="en">Inglés</option>
             <option value="de">Alemán</option>
