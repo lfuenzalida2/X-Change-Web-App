@@ -426,7 +426,7 @@ li{
   font-size: 14px;
   border-bottom: 2px solid gray;
   background-color: #CD5C5C;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .seeNotification {
@@ -489,6 +489,7 @@ a.see-all-notifications:hover {
   word-wrap: break-word;
   margin-left: 20px;
   margin-right: 20px;
+  padding: 0;
 }
 
 .inline-date {
@@ -496,6 +497,7 @@ a.see-all-notifications:hover {
   font-style: italic;
   text-align: center;
   word-wrap: break-word;
+  padding: 0;
 }
 
 .delete {

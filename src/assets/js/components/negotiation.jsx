@@ -92,19 +92,23 @@ class NegotiationsList extends Component {
               <h3 className="text-style">Centro de negociaciones</h3>
               <p>Haz click en una negociación para desplegar su información</p>
               <p>
-                A continuación, tienes los tres estados posibles de una negociación:
+                Los tres estados posibles de una negociación son:
               </p>
-              <div className="dot-display">
-                <span className="dot green" />
-                <span>: &quot;Aceptada&quot;</span>
-              </div>
-              <div className="dot-display">
-                <span className="dot yellow" />
-                <span>: &quot;En Progreso&quot;</span>
-              </div>
-              <div className="dot-display">
-                <span className="dot red" />
-                <span>: &quot;Cancelada&quot;</span>
+              <div className="state-dots">
+                <div>
+                  <div className="dot-display">
+                    <span className="state-dot green" />
+                    <span>: Aceptada</span>
+                  </div>
+                  <div className="dot-display">
+                    <span className="state-dot yellow" />
+                    <span>: En Progreso</span>
+                  </div>
+                  <div className="dot-display">
+                    <span className="state-dot red" />
+                    <span>: Cancelada</span>
+                  </div>
+                </div>
               </div>
               <p className="text-style">
                 Para ofertar un objeto en la negociación haz click sobre su imagen
@@ -138,16 +142,18 @@ function Negotiations(props) {
                 <div key={negotiation.id} className={`${actualNegotiation === negotiation.id ? 'actual' : ''} negotiation row`}>
                   <div className="top" onClick={openNegotiation} value={negotiation.id} />
                   <div className="bottom">
-                    <span className={`dot float-r
-                    ${negotiation.attributes.state === 'Accepted'
-                      ? 'green'
-                      : negotiation.attributes.state === 'Cancelled'
-                        ? 'red'
-                        : 'yellow'}`}
-                    />
-                    { negotiation.attributes.customer.id !== currentUser.id
-                      ? <span>{negotiation.attributes.customer.username}</span>
-                      : <span>{negotiation.attributes.seller.username}</span> }
+                    <div className="dot-display">
+                      <span className={`state-dot float-r
+                      ${negotiation.attributes.state === 'Accepted'
+                        ? 'green'
+                        : negotiation.attributes.state === 'Cancelled'
+                          ? 'red'
+                          : 'yellow'}`}
+                      />
+                      { negotiation.attributes.customer.id !== currentUser.id
+                        ? <span>{negotiation.attributes.customer.username}</span>
+                        : <span>{negotiation.attributes.seller.username}</span> }
+                    </div>
                   </div>
                 </div>
               ))}
