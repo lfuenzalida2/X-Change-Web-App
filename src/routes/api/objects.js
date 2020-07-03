@@ -3,10 +3,15 @@ const Fuse = require('fuse.js');
 
 const router = new KoaRouter();
 
+function sortByDateDesc(a, b) {
+  return -(new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+}
+
 const options = {
   includeScore: true,
   shouldSort: true,
   includeMatches: true,
+  thereshold: 0.1,
   // Search in `name` and in 'description'
   keys: ['dataValues.name', 'dataValues.description'],
 };
@@ -52,8 +57,16 @@ router.post('api.objects.search', '/search', async (ctx) => {
       include: includeStatement,
     },
   );
+  if (search.keywords === '') {
+    search.keywords = ' ';
+  } else {
+    options.minMatchCharLength = Math.ceil(search.keywords.length / 2);
+  }
   const fuse = new Fuse(objectsList, options);
   const result = fuse.search(search.keywords);
+  if (search.keywords === ' ') {
+    result.sort(sortByDateDesc);
+  }
   ctx.body = ctx.jsonSerializer('object', {
     pluralizeType: false,
     keyForAttribute: 'camelCase',

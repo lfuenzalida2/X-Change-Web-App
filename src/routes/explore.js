@@ -5,6 +5,10 @@ const translatorConfig = require('../config/translator');
 
 const router = new KoaRouter();
 
+function sortByDateDesc(a, b) {
+  return -(new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+}
+
 const options = {
   includeScore: true,
   shouldSort: true,
@@ -22,6 +26,7 @@ router.get('explore.list', '/', async (ctx) => {
   });
   const fuse = new Fuse(objectsList, options);
   const result = fuse.search(' ');
+  result.sort(sortByDateDesc);
   try {
     await ctx.render('explore/explore_list_object', {
       result,
@@ -47,6 +52,7 @@ router.post('objects.search', '/', async (ctx) => {
     keywords = ' ';
   } else {
     keywords = search.keywords;
+    options.minMatchCharLength = Math.ceil(search.keywords.length / 2);
   }
   const users = await ctx.orm.user;
   const categoryList = await ctx.orm.category.findAll();
@@ -82,6 +88,11 @@ router.post('objects.search', '/', async (ctx) => {
   }
   const fuse = new Fuse(objectsList, options);
   const result = fuse.search(keywords);
+  if (keywords === ' ') {
+    result.sort(sortByDateDesc);
+  } else {
+    options.minMatchCharLength = Math.ceil(search.keywords.length / 2);
+  }
   await ctx.render('explore/explore_list_object', {
     result,
     categoryList,

@@ -40,7 +40,7 @@ function Valid(string) {
 router.get('users.list', '/', async (ctx) => {
   const usersList = await ctx.orm.user.findAll();
   const { currentUser } = ctx.state;
-  if (currentUser && currentUser.isAdmin) {
+  if (currentUser && currentUser.isModerator) {
     await ctx.render('users/index', {
       usersList,
       newUserPath: ctx.router.url('users.new'),
