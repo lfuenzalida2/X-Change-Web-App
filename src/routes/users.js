@@ -141,13 +141,12 @@ router.get('users.index', '/:id', async (ctx) => {
 
 router.get('users.view', '/:id/profile', async (ctx) => {
   const reviewer = await ctx.orm.user.findByPk(ctx.params.id);
-  const { currentUser } = await ctx.state;
-  const user = await ctx.orm.user;
-  const xChangesGotten = await currentUser.getNegotiationsGotten({ where: { state: 'Accepted' } });
-  const xChangesStarted = await currentUser.getNegotiationsStarted({ where: { state: 'Accepted' } });
+  const { user } = await ctx.orm;
+  const xChangesGotten = await reviewer.getNegotiationsGotten({ where: { state: 'Accepted' } });
+  const xChangesStarted = await reviewer.getNegotiationsStarted({ where: { state: 'Accepted' } });
   const xChangesCount = xChangesGotten.length + xChangesStarted.length;
   const avgQuery = await ctx.orm.review.findAll({
-    attributes: [[sequelize.fn('avg', sequelize.col('rating')), 'avgRating']], where: { reviewedId: currentUser.id },
+    attributes: [[sequelize.fn('avg', sequelize.col('rating')), 'avgRating']], where: { reviewedId: reviewer.id },
   });
   const avgRating = Math.round(avgQuery[0].dataValues.avgRating);
   const reviews = await ctx.orm.review.findAll({

@@ -27,7 +27,14 @@
                 Promedio de Reseñas:
               </span>
               <span>
-                <%= avgRating %>
+                <div class="ratings">
+                  <% for (var i = 0; i < avgRating; i++) { %>
+                    <div class="star active-star">★</div>
+                  <% } %>
+                  <% for (var i = 0; i < 5 - avgRating; i++) { %>
+                    <span class="star">★</span>
+                  <% } %>
+                </div>
               </span>
             </div>
         </div>
