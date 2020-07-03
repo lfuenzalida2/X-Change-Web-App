@@ -33,6 +33,12 @@ form > div {
   display: inline-block;
 }
 
+.span-image-search {
+  display: flex;
+  align-items: center;
+}
+
+
 .pagination {
   margin: auto;
   text-align: center;
@@ -51,8 +57,7 @@ form > div {
 }
 
 .group-item-text {
-  padding: 0px;
-  margin: 0px;
+  padding: 4px;
 }
 
 .group-item {
@@ -83,6 +88,6 @@ form > div {
 }
 
 .group h3 {
-  padding-top: 7%;
-  padding-bottom: 20px
+  padding-top: 8%;
+  padding-bottom: 10 px
 }
