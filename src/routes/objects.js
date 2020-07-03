@@ -15,13 +15,18 @@ function MyError(name, message) {
 }
 
 router.get('objects.list', '/', async (ctx) => {
+  const { currentUser } = ctx.state;
   const objectsList = await ctx.orm.object.findAll();
-  await ctx.render('objects/index', {
-    objectsList,
-    editObjectPath: (object) => ctx.router.url('objects.edit', { id: object.id }),
-    deleteObjectPath: (object) => ctx.router.url('objects.delete', { id: object.id }),
-    showObjectPath: (object) => ctx.router.url('objects.view', { id: object.id }),
-  });
+  if (currentUser && currentUser.isModerator) {
+    await ctx.render('objects/index', {
+      objectsList,
+      editObjectPath: (object) => ctx.router.url('objects.edit', { id: object.id }),
+      deleteObjectPath: (object) => ctx.router.url('objects.delete', { id: object.id }),
+      showObjectPath: (object) => ctx.router.url('objects.view', { id: object.id }),
+    });
+  } else {
+    ctx.redirect('back');
+  }
 });
 
 router.get('objects.new', '/new', async (ctx) => {
