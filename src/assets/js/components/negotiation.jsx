@@ -776,19 +776,17 @@ class Messages extends Component {
       <div id="chat">
         <form onSubmit={this.handleSubmit}>
           <div className="traductor">
-            <label>
-              <span className="text-style">Traducir al: &nbsp;</span>
-              <select value={targetLanguage} onChange={this.handleChangeTarget} className="dropdown">
-                <option value="es">Español</option>
-                <option value="en">Inglés</option>
-                <option value="de">Alemán</option>
-                <option value="fr">Francés</option>
-                <option value="it">Italiano</option>
-                <option value="pt">Portugués</option>
-              </select>
-            </label>
+            <input type="submit" value="Traducir al" id="translate-btn" className="btn" />
+            <select value={targetLanguage} onChange={this.handleChangeTarget} className="dropdown translate-language">
+              <option value="es">Español</option>
+              <option value="en">Inglés</option>
+              <option value="de">Alemán</option>
+              <option value="fr">Francés</option>
+              <option value="it">Italiano</option>
+              <option value="pt">Portugués</option>
+            </select>
+            <hr />
           </div>
-          <input type="submit" value="Traducir" className="btn" />
         </form>
         <div id="messages" ref={this.messagesRef}>
           { messages.map((message) => (
