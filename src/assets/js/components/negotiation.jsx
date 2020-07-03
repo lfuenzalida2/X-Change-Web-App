@@ -89,8 +89,8 @@ class NegotiationsList extends Component {
           )
           : (
             <div className="negotiation-alternative center">
-              <h3 className="text-style">Hola!</h3>
-              <p>Haz click sobre cualquier negociación que tengas</p>
+              <h3 className="text-style">Centro de negociaciones</h3>
+              <p>Haz click en una negociación para desplegar su información</p>
               <p>
                 Los tres estados posibles de una negociación son:
               </p>
@@ -111,8 +111,7 @@ class NegotiationsList extends Component {
                 </div>
               </div>
               <p className="text-style">
-                *Para agregar un objeto a la negociación haz click sobre su imagen, este luego pasará
-                a los objetos que tu estas ofreciendo!
+                Para ofertar un objeto en la negociación haz click sobre su imagen
               </p>
             </div>
           )}
