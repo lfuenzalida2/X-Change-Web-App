@@ -584,78 +584,80 @@ class Submit extends Component {
     }
 
     return (
-      <div className="submit-container">
-        { review ? (
-          <div className="form" id="review">
-            <h3>Tu review</h3>
-            <div className="ratings">
-              { activeStars.map(() => (
-                <span className="star active-star">★</span>
-              ))}
-              { stars.map(() => (
-                <span className="star">★</span>
-              ))}
-            </div>
-            <label htmlFor="text" className="text-style triple_dot">Texto:&nbsp;</label>
-            <span name="text">{review.attributes.text}</span>
-          </div>
-        ) : ((negotiation.attributes.state === 'Accepted' || negotiation.attributes.state === 'Cancelled') && (
-          <>
-            <form onSubmit={this.openReviewSubmit} method="POST">
-              <input type="submit" value="Hacer una Review" className="btn" />
-            </form>
-          </>
-        )
-        )}
-        <input type="hidden" id="currentUser" value={currentUser.id} />
-        { (negotiation.attributes.state === 'In Progress') ? (
-          <>
-            <form onSubmit={submitNegotiation} method="POST">
-              <input type="hidden" name="state" value="Accepted" />
-              <input type="submit" value="Aceptar Oferta" className="btn" />
-            </form>
+      <>
+        <>
+          <input type="hidden" id="currentUser" value={currentUser.id} />
+          { (negotiation.attributes.state === 'In Progress') ? (
+            <>
+              <form onSubmit={submitNegotiation} method="POST">
+                <input type="hidden" name="state" value="Accepted" />
+                <input type="submit" value="Aceptar Oferta" className="btn" />
+              </form>
 
-            <form onSubmit={submitNegotiation} method="POST">
-              <input type="hidden" name="state" value="Cancelled" />
-              <input type="submit" value="Cancelar Negociación" className="btn" />
-            </form>
-          </>
-        ) : (negotiation.attributes.state === other ? (
-          <>
-            <span>La otra persona esta esperando a que aceptes</span>
-            <form onSubmit={submitNegotiation} method="POST">
-              <input type="hidden" name="state" value="Accepted" />
-              <input type="submit" value="Aceptar Oferta" className="btn" />
-            </form>
-
-            <form onSubmit={submitNegotiation} method="POST">
-              <input type="hidden" name="state" value="In Progress" />
-              <input type="submit" value="Quiero hacer cambios" className="btn" />
-            </form>
-          </>
-        ) : (negotiation.attributes.state === 'Accepted' ? (
-          <>
+              <form onSubmit={submitNegotiation} method="POST">
+                <input type="hidden" name="state" value="Cancelled" />
+                <input type="submit" value="Cancelar Negociación" className="btn" />
+              </form>
+            </>
+          ) : (negotiation.attributes.state === other ? (
             <div className="form">
-              <span>Felicidades, han podido realizar un X-Change exitoso!</span>
+              <form onSubmit={submitNegotiation} method="POST">
+                <input type="hidden" name="state" value="Accepted" />
+                <input type="submit" value="Aceptar Oferta" className="btn" />
+              </form>
+
+              <form onSubmit={submitNegotiation} method="POST">
+                <input type="hidden" name="state" value="In Progress" />
+                <input type="submit" value="Quiero hacer cambios" className="btn" />
+              </form>
+              <span className="value center text-style">La otra persona esta esperando a que aceptes</span>
             </div>
-          </>
-        ) : (negotiation.attributes.state === 'Cancelled' ? (
-          <div className="form value">
-            <span>Es una pena que no haya funcionado el X-Change ;(</span>
-          </div>
-        ) : (negotiation.attributes.state !== 'In Progress'
-        && negotiation.attributes.state !== 'Cancelled'
-        && negotiation.attributes.state !== 'Accepted' && (
-          <div className="form">
-            <span>Ahora debes esperar a que acepte la negociación</span>
-            <form onSubmit={submitNegotiation} method="POST">
-              <input type="hidden" name="state" value="In Progress" />
-              <input type="submit" value="No estoy Listo" className="btn" />
-            </form>
-          </div>
-        ))))
-        )}
-      </div>
+          ) : (negotiation.attributes.state === 'Accepted' ? (
+            <div className="form center">
+              <span className="text-style">Felicidades, han podido realizar un X-Change exitoso!</span>
+            </div>
+          ) : (negotiation.attributes.state === 'Cancelled' ? (
+            <div className="form center text-style">
+              <span>Es una pena que no haya funcionado el X-Change ;(</span>
+            </div>
+          ) : (negotiation.attributes.state !== 'In Progress'
+          && negotiation.attributes.state !== 'Cancelled'
+          && negotiation.attributes.state !== 'Accepted' && (
+            <div className="form center text-style">
+              <span>Ahora debes esperar a que acepte la negociación</span>
+              <form onSubmit={submitNegotiation} method="POST">
+                <input type="hidden" name="state" value="In Progress" />
+                <input type="submit" value="No estoy Listo" className="btn" />
+              </form>
+            </div>
+          ))))
+          )}
+        </>
+        <div className="submit-container">
+          { review ? (
+            <div className="form triple_dot" id="review">
+              <h3>Tu review</h3>
+              <div className="ratings">
+                { activeStars.map(() => (
+                  <span className="star active-star">★</span>
+                ))}
+                { stars.map(() => (
+                  <span className="star">★</span>
+                ))}
+              </div>
+              <label htmlFor="text" className="text-style">Texto:&nbsp;</label>
+              <span name="text">{review.attributes.text}</span>
+            </div>
+          ) : ((negotiation.attributes.state === 'Accepted' || negotiation.attributes.state === 'Cancelled') && (
+            <>
+              <form onSubmit={this.openReviewSubmit} method="POST">
+                <input type="submit" value="Hacer una Review" className="btn" />
+              </form>
+            </>
+          )
+          )}
+        </div>
+      </>
     );
   }
 }
