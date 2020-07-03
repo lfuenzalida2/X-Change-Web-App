@@ -3,7 +3,22 @@
     --color-2: rgb(235, 235, 235);
     --color-3: #EBEBEB;
     --color-4: ;
-    
+
+}
+
+#register_form {
+  margin-top: 50px;
+}
+
+.title-register {
+  padding: 20px;
+}
+
+.input-register {
+  font-size: .85rem;
+  color: black;
+  padding: 10px;
+  width: 65%;
 }
 
 .neg_layout{
@@ -126,7 +141,6 @@ tr{
     width: inherit;
     background-color: var(--color-1);
     opacity: 0;
-}
 
 .top:hover {
     opacity: 0.2;
@@ -136,14 +150,8 @@ tr{
     width: 100px;
 }
 
-.dropdown {
-    cursor: pointer;
-    background-color: var(--color-1);
-    border-radius: 5px;
-    border-color: var(--color-3);
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.18);
-    padding: 2px;
-    font-weight: bold;
+.trading-object-row .top {
+    width: 100px;
 }
 
 .traductor {
