@@ -97,6 +97,16 @@
     display: flex;
 }
 
+.align_vertical {
+    display: flex;
+    justify-content: center;
+}
+
+.align_vertical div {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
 td{
     width: 100%;
 }

@@ -588,17 +588,21 @@ class Submit extends Component {
         <>
           <input type="hidden" id="currentUser" value={currentUser.id} />
           { (negotiation.attributes.state === 'In Progress') ? (
-            <>
-              <form onSubmit={submitNegotiation} method="POST">
-                <input type="hidden" name="state" value="Accepted" />
-                <input type="submit" value="Aceptar Oferta" className="btn" />
-              </form>
+            <div className="center align_vertical">
+              <div>
+                <form onSubmit={submitNegotiation} method="POST">
+                  <input type="hidden" name="state" value="Accepted" />
+                  <input type="submit" value="Aceptar Oferta" className="btn" />
+                </form>
+              </div>
 
-              <form onSubmit={submitNegotiation} method="POST">
-                <input type="hidden" name="state" value="Cancelled" />
-                <input type="submit" value="Cancelar Negociación" className="btn" />
-              </form>
-            </>
+              <div>
+                <form onSubmit={submitNegotiation} method="POST">
+                  <input type="hidden" name="state" value="Cancelled" />
+                  <input type="submit" value="Cancelar Negociación" className="btn" />
+                </form>
+              </div>
+            </div>
           ) : (negotiation.attributes.state === other ? (
             <div className="form">
               <form onSubmit={submitNegotiation} method="POST">
