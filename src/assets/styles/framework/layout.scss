@@ -238,7 +238,8 @@ td{
   border-radius: 5px;
   background-color: rgb(242, 242, 242);
   min-height: 30px;
-  height: 600px;
+  max-height: 600px;
+  height: 100%;
   width: 300px;
 }
 
@@ -311,6 +312,7 @@ li{
 .wrapper-me {
   text-align: right;
 }
+
 .me {
   word-wrap: break-word;
   display: inline-block;

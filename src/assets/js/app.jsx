@@ -8,7 +8,6 @@ import ProfilePic from './components/profile_pic';
 const url = window.location.href;
 const negotiationHtml = document.getElementById('negotiation');
 const objectFormHtml = document.getElementById('add_object');
-const objectInventoryFormHtml = document.getElementById('add_object_inventory');
 const registerForm = document.getElementById('register_form');
 const profilePicForm = document.getElementById('profilePic');
 
@@ -23,10 +22,6 @@ if (negotiationHtml) {
 
 if (objectFormHtml) {
   ReactDOM.render(<ObjectForm url={url.slice(0, url.indexOf('/', 10))} />, objectFormHtml);
-}
-
-if (objectInventoryFormHtml) {
-  ReactDOM.render(<ObjectForm url={url.slice(0, url.indexOf('/', 10))} />, objectInventoryFormHtml);
 }
 
 if (registerForm) {

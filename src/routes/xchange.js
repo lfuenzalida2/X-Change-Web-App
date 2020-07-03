@@ -64,7 +64,6 @@ router.patch('xchange.upload', '/upload', async (ctx) => {
   }
 });
 
-
 router.get('xchange.negotiation.get.negotiations', '/negotiations', async (ctx) => {
   const users = await ctx.orm.user;
   const currentUser = await ctx.state.currentUser;
@@ -178,6 +177,7 @@ router.get('xchange.negotiation.get', '/negotiation/:id', async (ctx) => {
     attributes: ['customerId', 'sellerId', 'state'],
   }).serialize(negotiation);
   ctx.body.other = other.username;
+  ctx.body.picture = other.profilePicture;
 });
 
 router.del('xchange.object_del', '/:id/object', async (ctx) => {
@@ -194,7 +194,6 @@ router.post('xchange.object_add', '/:id/object', async (ctx) => {
     await objectNegotiation.save({ fields: ['negotiationId', 'objectId'] });
     negotiation.changed('updatedAt', true);
     await negotiation.save();
-    const respuesta = { status: 200, text: 'gucci la wea salió fina' };
     ctx.redirect(ctx.router.url('xchange.objects.list', { id: ctx.params.id }));
   } catch (err) {
     const respuesta = { status: 400, text: 'miegda la wea se ha caido' };

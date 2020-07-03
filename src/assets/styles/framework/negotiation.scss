@@ -34,6 +34,10 @@
   width: 65%;
 }
 
+#review {
+    max-width: 300px;
+}
+
 .neg_layout{
     display: flex;
     margin: 1%;
@@ -44,6 +48,7 @@
 }
 
 .negotiation-images{
+    cursor: pointer;
     width: var(--image-size);
     height: var(--image-size);
     border-radius: 7px;
@@ -63,8 +68,12 @@
     margin-bottom: 5px;
 }
 
+.negotiation-info-container {
+    max-height: 600px;
+}
+
 .full-width {
-    width: 100%;
+    width: 50%;
     margin-left: 10px;
 }
 
@@ -94,11 +103,21 @@
 
 .submit-container {
     display: flex;
-    width: 600px;
+    width: 300px;
 }
 
 #negotiation {
     display: flex;
+}
+
+.align_vertical {
+    display: flex;
+    justify-content: center;
+}
+
+.align_vertical div {
+    margin-right: 10px;
+    margin-left: 10px;
 }
 
 td{
@@ -174,6 +193,10 @@ tr{
     opacity: 0;
     margin-top: 5px;
     margin-left: 5px;
+}
+
+.value {
+    margin-left: 50%;
 }
 
 .top:hover {
