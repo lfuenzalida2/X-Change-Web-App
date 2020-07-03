@@ -2,9 +2,13 @@ ul > li {
   display: inline-block;
 }
 
+form > div {
+  padding-bottom: 15px;
+}
+
 #container-search-item-1 {
   display: inline-block;
-  max-height: 290px;
+  max-height: 315px;
 }
 
 #container-search-item-1 > h2 {
@@ -12,10 +16,28 @@ ul > li {
   text-align: center;
 }
 
+.item-topic {
+  padding: 10px;
+}
+
+.input-search {
+  border-radius: 5px;
+  width: 65%;
+}
+
+.option-width-search {
+  width: 200px;
+}
+
 #container-search-item-2 {
   display: inline-block;
-
 }
+
+.span-image-search {
+  display: flex;
+  align-items: center;
+}
+
 
 .pagination {
   margin: auto;
@@ -26,7 +48,7 @@ ul > li {
 .group {
   cursor: pointer;
   display:block;
-  width: 600px;
+  width: 610px;
   vertical-align:top;
   margin:0px;
   text-align:center;
@@ -35,23 +57,19 @@ ul > li {
 }
 
 .group-item-text {
-  padding: 0px;
-  margin: 0px;
-  overflow: hidden;
-   text-overflow: ellipsis;
-   display: -webkit-box;
-   -webkit-line-clamp: 2; /* number of lines to show */
-   -webkit-box-orient: vertical;
+  padding: 4px;
 }
 
 .group-item {
   width: 600px;
   height: 150px;
-  background-color: rgb(224,255,255);
   border-radius: 15px;
-  border: solid 5px;
+  background-color: white;
 }
 
+.group-item:hover {
+    opacity: 0.6;
+}
 .group-footer {
   display: inline-block;
   padding-left: 10px;
@@ -60,7 +78,7 @@ ul > li {
   color: black;
 }
 
-.group span{
+.group span {
   padding: 5px;
   font-weight: 501;
 }
@@ -70,5 +88,6 @@ ul > li {
 }
 
 .group h3 {
-  padding-top: 10px;
+  padding-top: 8%;
+  padding-bottom: 10 px
 }

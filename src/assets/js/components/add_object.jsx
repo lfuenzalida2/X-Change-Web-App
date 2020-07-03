@@ -1,14 +1,3 @@
-/* eslint-disable no-else-return */
-/* eslint-disable class-methods-use-this */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/prop-types */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable max-classes-per-file */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 
 const axios = require('axios');
@@ -32,7 +21,7 @@ class ObjectForm extends Component {
     const { url } = this.props;
     await axios({
       method: 'get',
-      url: `${url}/api/categories`,
+      url: `${url}/xchange/categories`,
     })
       .then(async (res) => {
         this.setState({ categories: res.data.data, loading: false });
@@ -55,7 +44,7 @@ class ObjectForm extends Component {
     event.preventDefault();
     const { url } = this.props;
     const { name, categoryId, description } = event.target;
-    const ur = `${url}/api/object_create`;
+    const ur = `${url}/xchange/object_create`;
     const body = {
       name: name.value, categoryId: categoryId.value, description: description.value,
     };
@@ -82,7 +71,7 @@ class ObjectForm extends Component {
     if (!form) {
       return (
         <div className="header clickable">
-          <a onClick={this.ToogleForm} className="flexbox-item">
+          <a onClick={this.ToogleForm} className="flexbox-item navbar-a">
             <img className="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/publish.png" alt="add_object_form" />
             <span className="item">Publicar</span>
           </a>
@@ -99,53 +88,53 @@ class ObjectForm extends Component {
             <span className="item">Publicar</span>
           </a>
         </div>
-        <div className={form ? ('dropdown') : ('hidden')}>
-          <div>
-            {errors.map((error) => (
-              <p key={error}>{error}</p>
-            ))}
+        <div className={form ? ('modal') : ('hidden')}>
+          <div className="modal-content">
+            <div className="close">
+              <span onClick={this.ToogleForm}>✖</span>
+            </div>
+            <div>
+              {errors.map((error) => (
+                <p key={error}>{error}</p>
+              ))}
+            </div>
+            <Form categories={categories} submitForm={this.submitForm} />
           </div>
-          <Form categories={categories} submitForm={this.submitForm} />
         </div>
       </>
     );
   }
 }
 
-class Form extends Component {
-  render() {
-    const { categories, submitForm } = this.props;
-    return (
-      <div className="form">
-        <form onSubmit={submitForm}>
-          <div className="field">
-            <input type="text" name="name" placeholder="Ingrese el nombre del objeto" className="float-r" />
-          </div>
-          <br />
-          <br />
-          <div>
-            <select name="categoryId" id="categoryId" className="float-r" defaultValue="">
-              <option value="" disabled>Selecciones una categoria</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.attributes.id}>{category.attributes.name}</option>
-              ))}
-            </select>
-          </div>
-          <br />
-          <br />
-          <div className="field">
-            <input type="textarea" name="description" placeholder="Ingrese una descripción" className="float-r" />
-          </div>
-          <br />
-          <br />
-          <div className="field">
-            <input type="submit" name="create" value="Crear" />
-          </div>
-        </form>
+function Form(props) {
+  const { categories, submitForm } = props;
+  return (
+    <form className="modal-form" onSubmit={submitForm}>
+      <h2 className="center modal-title">Agregar Objeto</h2>
+      <div className="field center">
+        <input className="input-register" type="text" name="name" placeholder="Nombre del objeto" />
       </div>
-    );
-  }
+      <div className="center">
+        <select className="input-register dropdown" name="categoryId" id="categoryId" defaultValue="">
+          <option value="" disabled>Selecciona una categoria</option>
+          {categories.map((category) => (
+            <option
+              key={category.id}
+              value={category.attributes.id}
+            >
+              {category.attributes.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="field center">
+        <input className="input-register" type="textarea" name="description" placeholder="Descripción del objeto" />
+      </div>
+      <div className="field center">
+        <input className="btn" type="submit" name="create" value="Crear" />
+      </div>
+    </form>
+  );
 }
-
 
 export default ObjectForm;

@@ -1,5 +1,5 @@
 <div class="grid-container">
-  <div class="inventory-title">Mi inventario</div>
+  <div class="inventory-title"><span>Mi inventario</span></div>
 <% objectsList.forEach((object) => { %>
   <a class="grid-item" href="<%= objectView(object) %>">
   <% if (object.photos.length > 0) { %>
@@ -9,10 +9,10 @@
   <% }%>
     <div class="object-info">
       <div class="object-name"> <%= object.name %> </div>
-      <div class="object-description"> <%= object.description %> </div>
-      <div class="object-category"> Categoría: <%= object.category.name %> </div>
-      <div class="object-views"> Vistas: <%= object.views %> </div>
-      <div class="object-state"> Estado: <%= object.state ? 'Disponible' : 'No Disponible' %> </div>
+      <div class="object-description max-lines"> <%= object.description %> </div>
+      <div class="object-category"> <span><span class="text-style">Categoría:</span> <%= object.category.name %></span></div>
+      <div class="object-views"><span><span class="text-style">Vistas:</span> <%= object.views %></span> </div>
+      <div class="object-state"><span><span class="text-style">Estado:</span> <%= object.state ? 'Disponible' : 'No Disponible' %></span></div>
     </div>
   </a>
 <% }) %>
@@ -21,8 +21,4 @@
     <div class="grid-item"></div>
   <% } %>
 <% } %>
-</div>
-
-<div class="center">
-  <a class="newObject" href="<%= newObject %>">Agregar objeto</a>
 </div>

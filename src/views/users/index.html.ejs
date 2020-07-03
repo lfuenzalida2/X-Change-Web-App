@@ -1,6 +1,6 @@
 <div class="fixed-width">
     <h1>Vista Users</h1>
-    
+
     <% if (!usersList.length) { %>
     <p>No results</p>
     <% } else{ %>
@@ -10,7 +10,6 @@
                 <th>ID</th>
                 <th>Username</th>
                 <th>mail</th>
-                <th>Password</th>
                 <th>number</th>
                 <th>region</th>
                 <th>profile picture</th>
@@ -23,7 +22,6 @@
                     <td><span class="span"><%= user.id %></span></td>
                     <td><span><%= user.username %></span></td>
                     <td><span><%= user.mail %></span></td>
-                    <td><span class="span"><%= user.password %></span></td>
                     <td><span><%= user.number %></span></td>
                     <td><span><%= user.region %></span></td>
                     <td><span><%= user.profile_picture %></span></td>
@@ -39,6 +37,6 @@
         </tbody>
     </table>
     <% } %>
-    
+
     <a href="<%= newUserPath %>">New User</a>
 </div>

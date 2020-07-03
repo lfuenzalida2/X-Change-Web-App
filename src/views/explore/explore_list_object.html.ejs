@@ -1,53 +1,60 @@
 <div class="fixed-width-lg flexbox-container " id="search">
     <div class="form" id="container-search-item-1">
-      <h2 class="underline">Buscar</h2>
+      <h2>Buscar</h2>
       <form action="<%= submitSearchPath %>" method="post">
         <div>
-          <label for="keywords">Palabras Clave: </label>
-          <input type="text" name="keywords"  class="float-r">
+          <label class="topic" for="keywords">Palabras Clave: </label>
+          <input type="text" name="keywords" class="float-r input-search">
         </div>
-        <br>
         <div>
-          <label for="state">Estado: </label>
-          <select name="state" id="state" class="float-r">
+          <label class="topic" for="state">Estado: </label>
+          <select name="state" id="state" class="float-r input-search dropdown">
             <option value="true">Disponible</option>
             <option value="false">No disponible</option>
           </select>
         </div>
-        <br>
         <div>
-          <label for="region">Region: </label>
-          <select name="region" id="region" class="float-r">
-            <option value="todas">Todas</option>
-            <option value="Aisen del G. Carlos Ibáñez del Campo">Aisén del G. Carlos Ibáñez del Campo</option>
-            <option value="Antofagasta">Antofagasta</option>
-            <option value="Arica y Parinacota">Arica y Parinacota</option>
-            <option value="Atacama">Atacama</option>
-            <option value="Biobio">Biobío</option>
-            <option value="Coquimbo">Coquimbo</option>
-            <option value="La Araucania">La Araucanía</option>
-            <option value="Libertador General Bernardo O'Higgins">Libertador General Bernardo O'Higgins</option>
-            <option value="Los Lagos">Los Lagos</option>
-            <option value="Los Rios">Los Ríos</option>
-            <option value="Magallanes y de la Antartica Chilena">Magallanes y de la Antártica Chilena</option>
-            <option value="Metropolitana de Santiago">Metropolitana de Santiago</option>
-            <option value="Nuble">Ñuble</option>
-            <option value="Tarapaca">Tarapacá</option>
-            <option value="Valparaiso">Valparaíso</option>
+          <label class="topic" for="region">Región: </label>
+          <select name="region" id="region" class="float-r input-search dropdown">
+            <option class="option-width-search" value="todas">Todas</option>
+            <option class="option-width-search" value="Aisen del G. Carlos Ibáñez del Campo">Aisén del G. Carlos Ibáñez del Campo</option>
+            <option class="option-width-search" value="Antofagasta">Antofagasta</option>
+            <option class="option-width-search" value="Arica y Parinacota">Arica y Parinacota</option>
+            <option class="option-width-search" value="Atacama">Atacama</option>
+            <option class="option-width-search" value="Biobio">Biobío</option>
+            <option class="option-width-search" value="Coquimbo">Coquimbo</option>
+            <option class="option-width-search" value="La Araucania">La Araucanía</option>
+            <option class="option-width-search" value="Libertador General Bernardo O'Higgins">Libertador General Bernardo O'Higgins</option>
+            <option class="option-width-search" value="Los Lagos">Los Lagos</option>
+            <option class="option-width-search" value="Los Rios">Los Ríos</option>
+            <option class="option-width-search" value="Magallanes y de la Antartica Chilena">Magallanes y de la Antártica Chilena</option>
+            <option class="option-width-search" value="Metropolitana de Santiago">Metropolitana de Santiago</option>
+            <option class="option-width-search" value="Nuble">Ñuble</option>
+            <option class="option-width-search" value="Tarapaca">Tarapacá</option>
+            <option class="option-width-search" value="Valparaiso">Valparaíso</option>
           </select>
         </div>
-        <br>
         <div>
-          <label for="categoryId">Categoria: </label>
-          <select name="categoryId" id="categoryId" class="float-r">
+          <label class="topic" for="categoryId">Categoría: </label>
+          <select name="categoryId" id="categoryId" class="float-r input-search dropdown">
             <option value="todas">Todas</option>
             <% categoryList.forEach((category)=> { %>
               <option value="<%= category.id %>"><%= category.name %></option>
             <% }) %>
           </select>
         </div>
-        <br>
         <div>
+          <label class="topic" for="language">Idioma: </label>
+          <select name="language" id="language" class="float-r input-search dropdown">
+            <option value="es">Español</option>
+            <option value="en">Inglés</option>
+            <option value="de">Alemán</option>
+            <option value="fr">Francés</option>
+            <option value="it">Italiano</option>
+            <option value="pt">Portugués</option>
+          </select>
+        </div>
+        <div class="center">
           <input type="submit" name="Submit"  value="Buscar" class="btn">
         </div>
       </form>
@@ -65,11 +72,10 @@
               <% object = element.item.dataValues; %>
             <div class="group">
               <a href="<%= view(object) %>" class="group-item active">
-                <span class="float-l cursiva"><img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/account.png"><%= object.user.username %></span>
-                <span class="float-r cursiva"><img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/address.png"><%= object.user.region %></span>
-                <br>
-                <h3 class="group-item-heading underline"><%= object.name %></h3>
-                <p class="group-item-text"><%= object.description %></p>
+                <span class="float-l cursiva span-image-search"><img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/account.png"> <span><%= object.user.username %></span></span>
+                <span class="float-r cursiva span-image-search"><img class="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/address.png"> <span><%= object.user.region %></span></span>
+                <h3 class="underline"><%= object.name %></h3>
+                <p class="group-item-text max-lines"><%= object.description %></p>
               </a>
             </div>
             <% }) %>

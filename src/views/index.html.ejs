@@ -1,73 +1,125 @@
-<div class="vertical-align-container">
 <div class="sidenav">
   <a class="side-title">Categorías</a>
   <% categoriesList.forEach((category) => { %>
     <a class="side-category" href="<%= showCategoryPath(category) %>"><%= category.name %></a>
   <% }) %>
 </div>
-</div>
-<div class="fixed-width-lg">
-  <h1 class="landing-title center">
-    <span id="x">X</span>-Change
-  </h1>
-  <article class="welcome-text">
-    <p class="bolder">La aplicación X-Change te dará la facilidad de realizar intercambios a lo largo del país, con cualquier persona,
-    a cualquier hora y de la forma más simple que podrás imaginar. Para realizar un intercambio el primer paso es buscar un
-    objeto que te interese en el buscador y luego iniciar el intercambio. A partir de ahí podrás negociar con
-    el propetario del objeto para obtener ese u otros de su inventario. ¡Eso es todo!</p>
-  </article>
-  <div>
-    <article class="welcome-text">
-      <p class="cursiva">Tu día será bueno si te despiertas haciendo un intercambio sabiendo que construirás un futuro mejor. Si no, tendrás un mal día. ~ Elon Musk</p>
-    </article>
-  </div>
-</div>
 
-<div class="search-container">
-  <form action="<%= submitSearchPath %>" method="post">
-    <input  type="text" name="keywords" placeholder="Buscar..">
-    <input type="hidden" name="region" value="todas"  />
-    <input type="hidden" name="categoryId" value="todas"  />
-    <input type="hidden" name="state" value="true"  />
-    <button type="submit" class="btn">Buscar</button>
-  </form>
-</div>
-<br>
-<div>
-  <h2 class="center underline">
-    Objetos más vistos
-  </h2>
-</div>
-<!-- Slideshow container -->
-<div class="slideshow-container">
+<div class="index-grid">
+    <div class="index-grid-item-1">
+      <div>
+      <h1 class="landing-title center">
+        <span id="x">X</span>-Change
+      </h1>
+      <p class="bolder welcome-text">La aplicación X-Change te dará la facilidad de realizar intercambios a lo largo del país, con cualquier persona,
+        a cualquier hora y de la forma más simple que podrás imaginar. Para realizar un intercambio el primer paso es buscar un
+        objeto que te interese en el buscador y luego iniciar el intercambio. A partir de ahí podrás negociar con
+        el propetario del objeto para obtener ese u otros de su inventario. ¡Eso es todo!</p>
+      <p class="cursiva center">Tu día será bueno si te despiertas haciendo un intercambio sabiendo que construirás un futuro mejor. Si no, tendrás un mal día. ~ Elon Musk</p>
+      <% if (currentUser) { %>
+        <div class="search-container">
+          <form action="<%= submitSearchPath %>" method="post">
+            <input  type="text" name="keywords" placeholder="Buscar un objeto...">
+            <input type="hidden" name="region" value="todas"  />
+            <input type="hidden" name="categoryId" value="todas"  />
+            <input type="hidden" name="state" value="true"  />
+            <input type="hidden" name="language" value="es"  />
+            <button type="submit" class="btn">Buscar</button>
+          </form>
+        </div>
+      <% } else { %>
+        <div class="center">
+          <a class="index-button btn register" href="<%= registerSession %>"> Regístrate </a>
+          <a class="index-button btn" href="<%= newSessionPath %>"> Inicia sesión </a>
+        </div>
+      <% } %>
+      </div>
+    </div>
+    <div class="index-grid-item">
+      <div>
+      <h2 class="center underline">
+        X-Changers mejor valorados
+      </h2>
+      <table class="top-users">
+      <% for (var i = 0; i < bestXChangers.length; i++) { %>
+        <tr>
+          <td><%= bestXChangers[i].username %></td>
+          <% let avgRating = Math.round(bestXChangers[i].dataValues.avgRating) %>
+          <td>
+            <div class="ratings">
+            <% for (var j = 0; j < avgRating; j++) { %>
+              <div class="star active-star">★</div>
+            <% } %>
+            <% for (var j = 0; j < 5 - avgRating; j++) { %>
+              <span class="star">★</span>
+            <% } %>
+            </div>
+          </td>
+          <td>
+            <% avgRating = Math.round((bestXChangers[i].dataValues.avgRating * 10) / 10).toFixed(1) %>
+            <div class="real-rating <%= avgRating >= 4 ? 'good' : avgRating >= 2.5 ? 'enough' : 'bad' %>"><%= avgRating %></div>
+          </td>
+        </tr>
+      <% } %>
+      </table>
+      <h2 class="center underline">
+        <% const date = new Date(); %>
+        <% date.setMonth(date.getMonth() - 1) %>
+        <% const month = new Intl.DateTimeFormat('es-CL', { month: 'numeric' }).format(date); %>
+        <% const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'] %>
+        Más X-Changes en el mes de <%= meses[month - 1] %>
+      </h2>
+      <table class="top-users">
+      <% for (var i = 0; i < topXChangers.length; i++) { %>
+        <tr>
+          <td><%= i == 0 ? '🥇' : i == 1 ? '🥈' : '🥉' %></td>
+          <td><%= topXChangers[i].username %></td>
+          <td><div class="xchanges"><%= topXChangers[i].xChanges %></div><td>
+        </tr>
+      <% } %>
+      </table>
+      </div>
+    </div>
+    <div class="index-grid-item">
+      <div>
+      <div>
+        <h2 class="center underline">
+          Objetos más vistos
+        </h2>
+      </div>
+      <!-- Slideshow container -->
+      <div class="slideshow-container">
 
-<% for (var i = 0; i < mostViewed.length; i++) { %>
-  <a class="mySlides fade" href="<%= showObjectPath(mostViewed[i]) %>">
-  <div class="numbertext"><%= i+1 %> / <%= mostViewed.length %></div>
-     <% if (mostViewed[i].photos.length > 0) { %>
-       <img src="https://xchangestorage.s3.us-east-2.amazonaws.com/<%=mostViewed[i].photos[0].fileName%>">
-     <% } else { %>
-       <img src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg">
-     <% }%>
-  </a>
-<% } %>
+      <% for (var i = 0; i < mostViewed.length; i++) { %>
+        <a class="mySlides fade" href="<%= showObjectPath(mostViewed[i]) %>">
+        <div class="numbertext"><%= i+1 %> / <%= mostViewed.length %></div>
+           <% if (mostViewed[i].photos.length > 0) { %>
+             <img src="https://xchangestorage.s3.us-east-2.amazonaws.com/<%=mostViewed[i].photos[0].fileName%>">
+           <% } else { %>
+             <img src="https://xchangestorage.s3.us-east-2.amazonaws.com/no_disponible.jpg">
+           <% }%>
+        </a>
+      <% } %>
 
- <!-- Next and previous buttons -->
- <a class="prev">&#10094;</a>
- <a class="next">&#10095;</a>
-</div>
+       <!-- Next and previous buttons -->
+       <a class="prev">&#10094;</a>
+       <a class="next">&#10095;</a>
+      </div>
 
-<!-- captions -->
-<% for (var i = 0; i < mostViewed.length; i++) { %>
-  <div class="caption fade">
-    <div class="title"><%= mostViewed[i].name %></div>
-    <div class="description"><%= mostViewed[i].description %></div>
-  </div>
-<% } %>
+      <!-- captions -->
+      <% for (var i = 0; i < mostViewed.length; i++) { %>
+        <div class="caption fade">
+          <div class="title"><%= mostViewed[i].name %></div>
+          <div class="index-description max-lines cursiva"><%= mostViewed[i].description %></div>
+        </div>
+      <% } %>
 
-<!-- The dots/circles -->
-<div class="dots">
-  <% for (var i = 0; i < mostViewed.length; i++) { %>
-    <span class="dot"></span>
- <% } %>
+      <!-- The dots/circles -->
+      <div class="dots">
+        <% for (var i = 0; i < mostViewed.length; i++) { %>
+          <span class="dot"></span>
+       <% } %>
+      </div>
+      </div>
+    </div>
 </div>

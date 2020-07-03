@@ -25,12 +25,13 @@ router.post('messages.create', '/', async (ctx) => {
   const receiverId = +ctx.request.body.receiverId;
   const currentUserId = ctx.state.currentUser.id;
   const negotiationId = +ctx.request.body.negotiationId;
+  const { language } = ctx.request.body;
   const { text } = ctx.request.body;
   const message = ctx.orm.message.build({
-    senderId, receiverId, text, negotiationId,
+    senderId, receiverId, text, negotiationId, language,
   });
   try {
-    await message.save({ fields: ['senderId', 'receiverId', 'text', 'negotiationId'] });
+    await message.save({ fields: ['senderId', 'receiverId', 'text', 'negotiationId', 'language'] });
     const negotiation = await message.getNegotiation();
     negotiation.changed('updatedAt', true);
     await negotiation.save();

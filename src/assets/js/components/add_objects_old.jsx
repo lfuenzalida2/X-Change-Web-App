@@ -41,7 +41,7 @@ class Negotiation extends Component {
   }
 
   async componentDidMount() {
-    // API calls to get my objects and the other's object
+    // xchange calls to get my objects and the other's object
     await this.myObjects();
     await this.otherObjects();
 
@@ -53,7 +53,7 @@ class Negotiation extends Component {
     // negotiation info, only request
     await axios({
       method: 'get',
-      url: `${this.state.url}/api/negotiation/${this.state.id}`,
+      url: `${this.state.url}/xchange/negotiation/${this.state.id}`,
     })
       .then(async (res) => {
         this.setState({ negotiation: res.data.data, loading: false });
@@ -65,7 +65,7 @@ class Negotiation extends Component {
   async myObjects() {
     await axios({
       method: 'get',
-      url: `${this.state.url}/api/${this.state.id}`,
+      url: `${this.state.url}/xchange/${this.state.id}`,
     })
       .then(async (res) => {
         this.setState({ data: res.data.data });
@@ -77,7 +77,7 @@ class Negotiation extends Component {
   async otherObjects() {
     await axios({
       method: 'get',
-      url: `${this.state.url}/api/other/${this.state.id}`,
+      url: `${this.state.url}/xchange/other/${this.state.id}`,
     })
       .then(async (res) => {
         this.setState({ other_data: res.data.data });
@@ -111,7 +111,7 @@ class Negotiation extends Component {
     event.preventDefault();
     const negotiationId = event.target.negotiationId.value;
     const objectId = event.target.objectId.value;
-    const url = `${this.state.url}/api/${negotiationId}/object`;
+    const url = `${this.state.url}/xchange/${negotiationId}/object`;
     const body = { negotiationId, objectId, add: 'Añadir' };
     await axios.post(url, body)
       .then(async (res) => {
@@ -131,7 +131,7 @@ class Negotiation extends Component {
     event.preventDefault();
     const negotiationId = event.target.negotiationId.value;
     const objectId = event.target.objectId.value;
-    const url = `${this.state.url}/api/${negotiationId}/object`;
+    const url = `${this.state.url}/xchange/${negotiationId}/object`;
     const body = { negotiationId, objectId, _method: 'delete' };
     await axios.post(url, body)
       .then((res) => {
@@ -215,7 +215,6 @@ class Negotiation extends Component {
             </table>
           </div>
         </div>
-        <br />
         <div className="neg_layout">
           <div className="neg_obj_list">
             <table className="form">

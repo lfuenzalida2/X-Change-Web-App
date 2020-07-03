@@ -1,13 +1,19 @@
 const KoaRouter = require('koa-router');
 const Fuse = require('fuse.js');
-const { Op } = require('sequelize');
+const axios = require('axios');
+const translatorConfig = require('../config/translator');
 
 const router = new KoaRouter();
+
+function sortByDateDesc(a, b) {
+  return -(new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+}
 
 const options = {
   includeScore: true,
   shouldSort: true,
   includeMatches: true,
+  thereshold: 0.1,
   // Search in `name` and in 'description'
   keys: ['dataValues.name', 'dataValues.description'],
 };
@@ -20,6 +26,7 @@ router.get('explore.list', '/', async (ctx) => {
   });
   const fuse = new Fuse(objectsList, options);
   const result = fuse.search(' ');
+  result.sort(sortByDateDesc);
   try {
     await ctx.render('explore/explore_list_object', {
       result,
@@ -39,40 +46,53 @@ router.get('explore.list', '/', async (ctx) => {
 
 router.post('objects.search', '/', async (ctx) => {
   const search = ctx.request.body;
+  const promises = [];
+  let keywords;
+  if (search.keywords === '') {
+    keywords = ' ';
+  } else {
+    keywords = search.keywords;
+    options.minMatchCharLength = Math.ceil(search.keywords.length / 2);
+  }
   const users = await ctx.orm.user;
   const categoryList = await ctx.orm.category.findAll();
-  let objectsList = null;
-  if (search.region === 'todas' && search.categoryId === 'todas') {
-    objectsList = await ctx.orm.object.findAll(
-      {
-        where: { state: search.state },
-        include: [{ model: users }],
-      },
-    );
-  } else if (search.region === 'todas' && search.categoryId !== 'todas') {
-    objectsList = await ctx.orm.object.findAll(
-      {
-        where: { categoryId: search.categoryId, state: search.state },
-        include: [{ model: users }],
-      },
-    );
-  } else if (search.region !== 'todas' && search.categoryId === 'todas') {
-    objectsList = await ctx.orm.object.findAll(
-      {
-        where: { state: search.state },
-        include: [{ model: users, where: { region: search.region } }],
-      },
-    );
-  } else {
-    objectsList = await ctx.orm.object.findAll(
-      {
-        where: { categoryId: search.categoryId, state: search.state },
-        include: [{ model: users, where: { region: search.region } }],
-      },
-    );
+  const includeStatement = search.region !== 'todas' ? [{ model: users, where: { region: search.region } }] : [{ model: users }];
+  const whereStatement = search.categoryId !== 'todas' ? { categoryId: search.categoryId, state: search.state } : { state: search.state };
+  const objectsList = await ctx.orm.object.findAll(
+    {
+      where: whereStatement,
+      include: includeStatement,
+    },
+  );
+
+  if (objectsList.length && search.language !== 'es') {
+    for (let i = 0; i < objectsList.length; i++) {
+      promises.push(
+        axios({
+          method: 'GET',
+          url: 'https://systran-systran-platform-for-language-processing-v1.p.rapidapi.com/translation/text/translate',
+          headers: translatorConfig,
+          params: {
+            source: 'es',
+            target: search.language,
+            input: `${objectsList[i].dataValues.name}|||${objectsList[i].dataValues.description}`,
+          },
+        }).then((response) => {
+          const res = response.data.outputs[0].output;
+          objectsList[i].dataValues.name = res.slice(0, res.indexOf('|||'));
+          objectsList[i].dataValues.description = res.slice(res.indexOf('|||') + 3, res.length);
+        }),
+      );
+    }
+    await Promise.all(promises);
   }
   const fuse = new Fuse(objectsList, options);
-  const result = fuse.search(search.keywords);
+  const result = fuse.search(keywords);
+  if (keywords === ' ') {
+    result.sort(sortByDateDesc);
+  } else {
+    options.minMatchCharLength = Math.ceil(search.keywords.length / 2);
+  }
   await ctx.render('explore/explore_list_object', {
     result,
     categoryList,

@@ -55,11 +55,11 @@
       <% if (negotiation.state == "Accepted") { %>
         <div class="form">
           Felicidades, han podido realizar un X-Change exitoso!
-          <br>
+           
           Aquí está el email y telefono de <%= otherRole.username %>
-          <br>
+           
           mail: <%= otherRole.mail %>
-          <br>
+           
           telefono: <%= otherRole.number %>
         </div>
       <% } else if (negotiation.state == "Cancelled") { %>
@@ -67,7 +67,7 @@
           Es una pena que no haya funcionado el X-Change ;(
         </div>
       <% } %>
-      <br>
+       
       <% if (currentReview) { %>
         <div class="border" id="review">
             <h3>Tu review fue</h3>
@@ -82,7 +82,7 @@
             <% }); %>
           </div>
           <% } %>
-        <br>
+         
         <% if (currentReview) { %>
           <button type="button" name="button" disabled class="btn">Ya realizaste una review</button>
           <% } else { %>
