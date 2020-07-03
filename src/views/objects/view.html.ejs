@@ -17,9 +17,10 @@
     <div>
         <div>
             <div class="flexbox-item center">
-              <h1 class="center"><%= object.name %></h1>
+              <h1 class="show-title"><%= object.name %></h1>
             </div>
-            <div class="form">
+            <div class="form show-container">
+              <div class="show-info">
               <div class="flexbox-item">
                 Estado:
                 <%= object.state ? 'Disponible' : 'No Disponible' %>
@@ -36,14 +37,13 @@
                 Descripción:
                 <%= object.description %>
               </div>
+              </div>
+              <% if(currentUser.id == object.userId) { %>
+                <a class="btn show-btn" href="<%= editObjectPath %>">Editar objeto</a>
+              <% } %>
             </div>
         </div>
     </div>
-    <% if(currentUser.id == object.userId) { %>
-      <a href="<%= editObjectPath %>">Editar objeto</a>
-      <br>
-      <br>
-    <% } %>
   </div>
 
   <% if (currentUser) {%>

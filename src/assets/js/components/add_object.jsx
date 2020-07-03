@@ -71,7 +71,7 @@ class ObjectForm extends Component {
     if (!form) {
       return (
         <div className="header clickable">
-          <a onClick={this.ToogleForm} className="flexbox-item">
+          <a onClick={this.ToogleForm} className="flexbox-item navbar-a">
             <img className="navbar-images" src="https://xchangestorage.s3.us-east-2.amazonaws.com/publish.png" alt="add_object_form" />
             <span className="item">Publicar</span>
           </a>

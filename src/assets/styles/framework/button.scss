@@ -10,6 +10,7 @@
     height: 42px;
     background-color: #FFFFFF;
     border-color: #EBEBEB;
+    color: black;
 }
 
 .btn:hover{
@@ -58,4 +59,12 @@
     color: #000;
     text-decoration: none;
     cursor: pointer;
+}
+
+a.btn {
+  display: inline-block;
+  text-decoration: none;
+  color: black;
+  line-height: 42px;
+  height: 42px;
 }

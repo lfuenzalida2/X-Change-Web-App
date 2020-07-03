@@ -6,6 +6,26 @@
   background-color: #EE3D3D;
 }
 
+.show-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.show-info {
+  display: inline-block;
+  width: 75%;
+}
+
+.show-btn {
+  display: inline-block;
+  text-align: right;
+}
+
+.show-title {
+  margin: 15px auto;
+}
+
 #image_profile img{
   padding: 20px;
   display: block;
@@ -45,7 +65,7 @@
   margin-top: 10px;
   padding-left: 10px;
   color: #333;
-  margin-bottom: 0px; 
+  margin-bottom: 0px;
 }
 
 .review-container {
