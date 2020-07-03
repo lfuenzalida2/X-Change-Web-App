@@ -596,7 +596,7 @@ class Submit extends Component {
                 <span className="star">★</span>
               ))}
             </div>
-            <label htmlFor="text" className="text-style">Texto:</label>
+            <label htmlFor="text" className="text-style triple_dot">Texto:&nbsp;</label>
             <span name="text">{review.attributes.text}</span>
           </div>
         ) : ((negotiation.attributes.state === 'Accepted' || negotiation.attributes.state === 'Cancelled') && (
@@ -640,7 +640,7 @@ class Submit extends Component {
             </div>
           </>
         ) : (negotiation.attributes.state === 'Cancelled' ? (
-          <div className="form">
+          <div className="form value">
             <span>Es una pena que no haya funcionado el X-Change ;(</span>
           </div>
         ) : (negotiation.attributes.state !== 'In Progress'
