@@ -1,9 +1,4 @@
 <div class="fixed-width">
-  <% if (!object.isNewRecord) { %>
-    <h3>Actualizar Objeto</h3>
-  <% } else { %>
-    <h3>Nuevo Objeto</h3>
-   <% } %>
 
   <% if (locals.errors) { %>
     <div class="errors">
@@ -15,10 +10,10 @@
       </ul>
     </div>
   <% } %>
-  <a href="<%= inventory(currentUser) %>">Volver al inventario</a>
-  <div class="form">
-    <form action="<%= submitObjectPath %>" method="post">
+  <div class="flex-item bg-gray" id="profile_form">
+    <form action="<%= submitObjectPath %>" method="post" class="border form">
       <% if (!object.isNewRecord) { %>
+        <h1 class="center title-register">Actualizar objeto</h1>
         <input type="hidden" name="_method" value="patch" />
         <input type="hidden" name="views" value="<%= object.views %>" />
         <input type="hidden" name="state" value="<%= object.state %>" />
@@ -27,30 +22,31 @@
         <input type="hidden" name="state" value="true" />
        <% } %>
       <input type="hidden" name="userId" value="<%= currentUser.id %>"  />
-      <div class="field">
-         <label for="name">Nombre del objeto</label>
-         <input type="text" name="name" value="<%= object.name %>" class="float-r" />
+      <div class="field center">
+         <input type="text" name="name" value="<%= object.name %>" class="input-register" />
       </div>
-       
-      <div>
-         <label for="categoryId">Categoria</label>
-         <select name="categoryId" value="<%= object.categoryId %>" id="categoryId" class="float-r">
+
+      <div class="center">
+         <select name="categoryId" id="categoryId" class="input-register dropdown">
+           <option value="<%= categoryObject.id%>"><%= categoryObject.name %></option>
            <% categoryList.forEach((category)=> { %>
-             <option value="<%= category.id %>"><%= category.name %></option>
+             <%if (category.id !== categoryObject.id) { %>
+               <option value="<%= category.id %>"><%= category.name %></option>
+             <% } %>
+
            <% }) %>
          </select>
       </div>
-       
-      <div class="field">
-        <label for="description">Descripción</label>
-        <input type="text" name="description" value="<%= object.description %>" class="float-r"/>
+
+      <div class="field center">
+        <input type="text" name="description" value="<%= object.description %>" class="input-register"/>
       </div>
-     
-      <div class="field">
+
+      <div class="field center">
         <% if (object.isNewRecord) { %>
           <input type="submit" name="create" value="Crear"  />
         <% } else {%>
-          <input type="submit" name="update" value="Actualizar"  />
+          <input class="btn" type="submit" name="update" value="Actualizar"  />
         <% } %>
       </div>
     </form>

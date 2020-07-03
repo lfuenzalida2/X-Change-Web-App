@@ -92,20 +92,23 @@ class NegotiationsList extends Component {
               <h3 className="text-style">Hola!</h3>
               <p>Haz click sobre cualquier negociación que tengas</p>
               <p>
-                El estado de una negociación se
-                traduce en el color del punto junto a esta, donde:
+                Los tres estados posibles de una negociación son:
               </p>
-              <div className="dot-display">
-                <span className="dot green" />
-                <span>: significa que la negociación está &quot;Aceptada&quot;</span>
-              </div>
-              <div className="dot-display">
-                <span className="dot yellow" />
-                <span>: significa que la negociación está &quot;En Progreso&quot;</span>
-              </div>
-              <div className="dot-display">
-                <span className="dot red" />
-                <span>: significa que la negociación está &quot;Cancelada&quot;</span>
+              <div className="state-dots">
+                <div>
+                  <div className="dot-display">
+                    <span className="state-dot green" />
+                    <span>: Aceptada</span>
+                  </div>
+                  <div className="dot-display">
+                    <span className="state-dot yellow" />
+                    <span>: En Progreso</span>
+                  </div>
+                  <div className="dot-display">
+                    <span className="state-dot red" />
+                    <span>: Cancelada</span>
+                  </div>
+                </div>
               </div>
               <p className="text-style">
                 *Para agregar un objeto a la negociación haz click sobre su imagen, este luego pasará
@@ -140,16 +143,18 @@ function Negotiations(props) {
                 <div key={negotiation.id} className={`${actualNegotiation === negotiation.id ? 'actual' : ''} negotiation row`}>
                   <div className="top" onClick={openNegotiation} value={negotiation.id} />
                   <div className="bottom">
-                    <span className={`dot float-r
-                    ${negotiation.attributes.state === 'Accepted'
-                      ? 'green'
-                      : negotiation.attributes.state === 'Cancelled'
-                        ? 'red'
-                        : 'yellow'}`}
-                    />
-                    { negotiation.attributes.customer.id !== currentUser.id
-                      ? <span>{negotiation.attributes.customer.username}</span>
-                      : <span>{negotiation.attributes.seller.username}</span> }
+                    <div className="dot-display">
+                      <span className={`state-dot float-r
+                      ${negotiation.attributes.state === 'Accepted'
+                        ? 'green'
+                        : negotiation.attributes.state === 'Cancelled'
+                          ? 'red'
+                          : 'yellow'}`}
+                      />
+                      { negotiation.attributes.customer.id !== currentUser.id
+                        ? <span>{negotiation.attributes.customer.username}</span>
+                        : <span>{negotiation.attributes.seller.username}</span> }
+                    </div>
                   </div>
                 </div>
               ))}
@@ -814,19 +819,17 @@ class Messages extends Component {
       <div id="chat">
         <form onSubmit={this.handleSubmit}>
           <div className="traductor">
-            <label>
-              <span className="text-style">Traducir al: &nbsp;</span>
-              <select value={targetLanguage} onChange={this.handleChangeTarget} className="dropdown">
-                <option value="es">Español</option>
-                <option value="en">Inglés</option>
-                <option value="de">Alemán</option>
-                <option value="fr">Francés</option>
-                <option value="it">Italiano</option>
-                <option value="pt">Portugués</option>
-              </select>
-            </label>
+            <input type="submit" value="Traducir al" id="translate-btn" className="btn" />
+            <select value={targetLanguage} onChange={this.handleChangeTarget} className="dropdown translate-language">
+              <option value="es">Español</option>
+              <option value="en">Inglés</option>
+              <option value="de">Alemán</option>
+              <option value="fr">Francés</option>
+              <option value="it">Italiano</option>
+              <option value="pt">Portugués</option>
+            </select>
+            <hr />
           </div>
-          <input type="submit" value="Traducir" className="btn" />
         </form>
         <div id="messages" ref={this.messagesRef}>
           { messages.map((message) => (
